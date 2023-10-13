@@ -33,33 +33,33 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
-            <version>${spring.boot.version}</version><!--$NO-MVN-MAN-VER$-->
+            <version>${spring.boot.version}</version>
         </dependency>
         <!-- Spring Boot Starter for Web applications -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>${spring.boot.version}</version><!--$NO-MVN-MAN-VER$-->
+            <version>${spring.boot.version}</version>
         </dependency>
         <!-- H2 Database for development (runtime) -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <version>${h2.version}</version><!--$NO-MVN-MAN-VER$-->
+            <version>${h2.version}</version>
             <scope>runtime</scope>
         </dependency>
         <!-- Spring Boot Starter for testing (test scope) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <version>${spring.boot.version}</version><!--$NO-MVN-MAN-VER$-->
+            <version>${spring.boot.version}</version>
             <scope>test</scope>
         </dependency>
         <!-- Lombok for simplified Java code (optional) -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version><!--$NO-MVN-MAN-VER$-->
+            <version>${lombok.version}</version>
             <optional>true</optional>
         </dependency>
     </dependencies>
