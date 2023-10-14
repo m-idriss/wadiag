@@ -21,7 +21,7 @@
         
         <!-- Dependency versions -->
         <spring.boot.version>3.1.4</spring.boot.version>
-        <h2.version>1.4.200</h2.version>
+        <h2.version>2.2.220</h2.version>
         <lombok.version>1.18.22</lombok.version>
     </properties>
 
