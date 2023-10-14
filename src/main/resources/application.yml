@@ -1,0 +1,14 @@
+spring:
+  jpa:
+    open-in-view: true
+  profiles:
+   active: dev
+  application:
+    name: Wadiag Application
+
+logging:
+  level:
+    root: info
+
+
+
