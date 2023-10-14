@@ -77,6 +77,8 @@ I enjoy working with a variety of languages and tools. Here are some of my favor
 
 ![Idriss's GitHub stats](https://github-readme-stats.vercel.app/api?username=m-idriss&show_icons=true&theme=transparent)
 
+[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=m-idriss&layout=compact&theme=transparent)](https://github.com/m-idriss)
+
 These tools and languages are my arsenal for crafting amazing software solutions. If you'd like to collaborate or have a chat, feel free to reach out!
 
 Happy coding! 🚀
