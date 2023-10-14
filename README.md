@@ -11,9 +11,9 @@ Welcome to my GitHub profile! I'm Idriss, a passionate backend developer who's c
 
 Feel free to connect with me on these platforms:
 
-- [LinkedIn](https://www.linkedin.com/in/yourlinkedinprofile)
-- [Twitter](https://twitter.com/yourtwitterhandle)
-- [Portfolio Website](https://www.yourwebsite.com)
+- [LinkedIn](https://www.linkedin.com/in//i-mohamady/)
+- [Twitter](https://twitter.com/3dime13)
+- [Portfolio Website](https://www.3dime.com)
 
 ## Languages and Tools
 
