@@ -20,22 +20,24 @@ public class WadiagApplication {
 	      protocol = "https";
 	    }
 	    log.info("\n");
-	    log.info("""
-	        
-	         ----------------------------------------------------------
-	        \t Application '{}' is running!
-	        \t Access URLs:
-	        \t - Local: \t\t{}://localhost:{}
-	        \t - External: \t{}://{}:{}
-	        \t Sawgger UI: \t{}://localhost:{}/swagger-ui.html
-	        \t Profile(s): \t{}
-	         ----------------------------------------------------------
-	        """,
+	    
+	    final String SERVER_PORT = "server.port";
+		log.info("""
+				
+			----------------------------------------------------------
+			\t Application '{}' is running!
+			\t Access URLs:
+			\t - Local: \t{}://localhost:{}
+			\t - External: \t{}://{}:{}
+			\t Swagger UI: \t{}://localhost:{}/swagger-ui.html
+			\t Profile(s): \t{}
+			----------------------------------------------------------
+			""",
 	        //
 	        env.getProperty("spring.application.name"),
-	        protocol, env.getProperty("server.port"),
-	        protocol, InetAddress.getLocalHost().getHostAddress(), env.getProperty("server.port"),
-	        protocol, env.getProperty("server.port"),
+	        protocol, env.getProperty(SERVER_PORT),
+	        protocol, InetAddress.getLocalHost().getHostAddress(), env.getProperty(SERVER_PORT),
+	        protocol, env.getProperty(SERVER_PORT),
 	        env.getActiveProfiles());
 	  }
 
