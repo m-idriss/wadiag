@@ -1,6 +1,6 @@
 # Wadiag
 
-Welcome to my GitHub profile! I'm Idriss, a passionate backend developer who's constantly exploring and learning. This repository serves as my playground for personal projects and a way to share my journey in the world of software development.
+Welcome to my GitHub profile! I'm Idriss, a passionate Java backend developer who's constantly exploring and learning (expecially Flutter, for now). This repository serves as my playground for personal projects and a way to share my journey in the world of software development.
 
 ## About Me
 
