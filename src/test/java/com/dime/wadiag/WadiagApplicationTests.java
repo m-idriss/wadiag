@@ -20,6 +20,7 @@ class WadiagApplicationTests {
 
     @Test
     @DisplayName("Test main")
+
     void testMain() {
         // Test the main method without throwing exceptions
         Assertions.assertDoesNotThrow(() -> WadiagApplication.main(new String[]{}));
