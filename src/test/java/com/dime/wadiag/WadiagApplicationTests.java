@@ -20,9 +20,10 @@ class WadiagApplicationTests {
 
     @Test
     @DisplayName("Test main")
-    void testMain() throws UnknownHostException {
-    	WadiagApplication.main(new String[]{});
-        Assertions.assertTrue(true);
+
+    void testMain() {
+        // Test the main method without throwing exceptions
+        Assertions.assertDoesNotThrow(() -> WadiagApplication.main(new String[]{}));
     }
 
     @Test
