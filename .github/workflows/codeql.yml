@@ -32,7 +32,8 @@ jobs:
       with:
         distribution: "temurin"
         java-version: 17
-
+        node-version: 16  # Add this line to specify Node.js version 16
+        
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v2
       with:
