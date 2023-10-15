@@ -2,8 +2,6 @@ package com.dime.wadiag;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.net.UnknownHostException;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,7 +18,6 @@ class WadiagApplicationTests {
 
     @Test
     @DisplayName("Test main")
-
     void testMain() {
         // Test the main method without throwing exceptions
         Assertions.assertDoesNotThrow(() -> WadiagApplication.main(new String[]{}));
