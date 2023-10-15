@@ -63,6 +63,41 @@
             <optional>true</optional>
         </dependency>
     </dependencies>
+    
+	<profiles>
+	    <!-- Development Profile -->
+	    <profile>
+	        <id>development</id>
+	        <properties>
+	            <environment>development</environment>
+	        </properties>
+	    </profile>
+	
+	    <!-- Production Profile -->
+	    <profile>
+	        <id>production</id>
+	        <properties>
+	            <environment>production</environment>
+	        </properties>
+	    </profile>
+	
+	    <!-- Test Profile -->
+	    <profile>
+	        <id>test</id>
+	        <build>
+	            <plugins>
+	                <plugin>
+	                    <groupId>org.apache.maven.plugins</groupId>
+	                    <artifactId>maven-surefire-plugin</artifactId>
+	                    <version>3.0.0</version>
+	                    <configuration>
+	                        <!-- Configure test-related settings here -->
+	                    </configuration>
+	                </plugin>
+	            </plugins>
+	        </build>
+	    </profile>
+	</profiles>
 
     <build>
         <plugins>
