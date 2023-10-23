@@ -3,9 +3,25 @@ spring:
     name: Wadiag Application
   jpa:
     open-in-view: true
+    hibernate:
+      ddl-auto: create
   profiles:
    active: dev
 
 logging:
   level:
     root: info
+    web: debug
+    org.springframework.web: debug
+    org.hibernate: error
+server:
+    port: 8081
+
+# Specify the path of the OpenAPI documentation
+springdoc:
+    api-docs:
+        path: /api-docs
+    swagger-ui:
+        path: /swagger-ui.html
+        enabled: true
+
