@@ -22,7 +22,22 @@ jobs:
       contents: write
       pull-requests: write
       repository-projects: write
-      
+    services:
+      postgres:
+        image: postgres
+
+        env:
+          POSTGRES_PASSWORD: diag
+          POSTGRES_USER: diag
+          POSTGRES_DB: diag
+
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432 
     steps:
     - uses: actions/checkout@v3
 
@@ -33,26 +48,8 @@ jobs:
         distribution: 'temurin'
         cache: maven
 
-    # Install PostgreSQL client
-    - name: Install PostgreSQL Client
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y postgresql-client
-
     - name: Build with Maven
       run: mvn -B package --file pom.xml
-
-    # Connect to PostgreSQL and run database operations
-    - name: Connect to PostgreSQL and Execute SQL
-      env:
-        PGHOST: localhost
-        PGPORT: 5432
-        PGDATABASE: diag
-        PGUSER: diag
-        PGPASSWORD: diag
-      run: |
-        # You can run PostgreSQL commands or SQL scripts here
-        psql -c "SELECT * FROM your_table;" -d $PGDATABASE -U $PGUSER
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     - name: Update dependency graph
