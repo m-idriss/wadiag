@@ -45,7 +45,7 @@ jobs:
     # Connect to PostgreSQL and run database operations
     - name: Connect to PostgreSQL and Execute SQL
       env:
-        PGHOST: diag
+        PGHOST: localhost
         PGPORT: 5432
         PGDATABASE: diag
         PGUSER: diag
