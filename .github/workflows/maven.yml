@@ -6,7 +6,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Java CI with Maven
+name: Java CI with Maven and PostgreSQL
 
 on:
   push:
@@ -25,14 +25,34 @@ jobs:
       
     steps:
     - uses: actions/checkout@v3
+
     - name: Set up JDK 17
       uses: actions/setup-java@v3
       with:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
+
+    # Install PostgreSQL client
+    - name: Install PostgreSQL Client
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y postgresql-client
+
     - name: Build with Maven
       run: mvn -B package --file pom.xml
+
+    # Connect to PostgreSQL and run database operations
+    - name: Connect to PostgreSQL and Execute SQL
+      env:
+        PGHOST: diag
+        PGPORT: 5432
+        PGDATABASE: diag
+        PGUSER: diag
+        PGPASSWORD: diag
+      run: |
+        # You can run PostgreSQL commands or SQL scripts here
+        psql -c "SELECT * FROM your_table;" -d $PGDATABASE -U $PGUSER
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     - name: Update dependency graph
