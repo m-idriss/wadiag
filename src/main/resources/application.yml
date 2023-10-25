@@ -5,9 +5,21 @@ spring:
     open-in-view: true
     hibernate:
       ddl-auto: create
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          lob:
+            non_contextual_creation: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/diag
+    username: diag
+    password: diag
+    driver-class-name: org.postgresql.Driver
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.xml
   profiles:
    active: dev
-
 logging:
   level:
     root: info

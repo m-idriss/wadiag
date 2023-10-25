@@ -6,7 +6,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Java CI with Maven
+name: Java CI with Maven and PostgreSQL
 
 on:
   push:
@@ -22,15 +22,32 @@ jobs:
       contents: write
       pull-requests: write
       repository-projects: write
-      
+    services:
+      postgres:
+        image: postgres
+
+        env:
+          POSTGRES_PASSWORD: diag
+          POSTGRES_USER: diag
+          POSTGRES_DB: diag
+
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432 
     steps:
     - uses: actions/checkout@v3
+
     - name: Set up JDK 17
       uses: actions/setup-java@v3
       with:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
+
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
