@@ -17,7 +17,7 @@ jobs:
         artifact: '' # You need to specify the name of the artifact.
 
         # Name of the check run
-        name: '' # You need to specify a name for the check run.
+        name: 'Test Run Report' # You need to specify a name for the check run.
 
         # Comma-separated list of paths to test results
         path: '' # You need to specify the path to your test results.
