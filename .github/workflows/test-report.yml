@@ -22,7 +22,6 @@ jobs:
       - name: Generate Test Report
         uses: dorny/test-reporter@v1
         with:
-          artifact: test-results                  # Artifact name
           name: test-results                      # Name of the check run to be created
           path: target/surefire-reports/*.xml     # Path to test results (inside artifact .zip)
           reporter: java-junit                    # Format of test results
