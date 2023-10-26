@@ -13,8 +13,9 @@ jobs:
     - name: Test Reporter
       uses: dorny/test-reporter@v1.7.0
       with:
+        artifact: test-results            # artifact name
         name: test-results
-        path: jest-junit.xml
+        path: target/surefire-reports/*.xml
 
         # The fast-glob library that is internally used interprets backslashes as escape characters.
         # If enabled, all backslashes in the provided path will be replaced by forward slashes and act as directory separators.
