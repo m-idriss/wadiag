@@ -13,14 +13,8 @@ jobs:
     - name: Test Reporter
       uses: dorny/test-reporter@v1.7.0
       with:
-        # Name or regex of artifact containing test results
-        artifact: '' # You need to specify the name of the artifact.
-
-        # Name of the check run
-        name: 'Test Run Report' # You need to specify a name for the check run.
-
-        # Comma-separated list of paths to test results
-        path: '' # You need to specify the path to your test results.
+        name: test-results
+        path: jest-junit.xml
 
         # The fast-glob library that is internally used interprets backslashes as escape characters.
         # If enabled, all backslashes in the provided path will be replaced by forward slashes and act as directory separators.
