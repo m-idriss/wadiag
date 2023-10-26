@@ -1,7 +1,7 @@
 name: 'Test Report'
 on:
   workflow_run:
-    workflows: ['Java CI with Maven and PostgreSQL']  # runs after CI workflow
+    workflows: ['CI']  # runs after CI workflow
     types:
       - completed
 permissions:
