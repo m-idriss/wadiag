@@ -58,12 +58,16 @@ jobs:
       - name: Test
         run: mvn --batch-mode test
 
-      # Upload test report files as an artifact
-      - name: Upload Test Report
+      # Zip the test report files
+      - name: Archive Test Results
+        run: zip -r test-results.zip target/surefire-reports
+
+      # Upload the ZIP archive as an artifact
+      - name: Upload Test Results
         uses: actions/upload-artifact@v2
         with:
           name: test-results
-          path: target/surefire-reports
+          path: test-results.zip
         
       # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
       - name: Update dependency graph
