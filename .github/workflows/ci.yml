@@ -11,10 +11,7 @@ jobs:
       uses: actions/checkout@v2  # Use the checkout action to fetch your code.
 
     - name: Build
-      run: mvn --batch-mode -DskipTests package
-
-    - name: Test
-      run: mvn --batch-mode -Dmaven.test.failure.ignore=true test
+      run: mvn --batch-mode package
       
     - name: Test Reporter
       uses: dorny/test-reporter@v1.7.0
