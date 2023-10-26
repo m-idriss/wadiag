@@ -15,37 +15,12 @@ jobs:
       with:
         name: test-results
         path: target/surefire-reports/*.xml
-
-        # The fast-glob library that is internally used interprets backslashes as escape characters.
-        # If enabled, all backslashes in the provided path will be replaced by forward slashes and act as directory separators.
-        # It might be useful when the path input variable is composed dynamically from existing directory paths on Windows.
-        path-replace-backslashes: false # Set to true if you want to replace backslashes.
-
-        # Format of test results. Supported options:
+        path-replace-backslashes: false
         reporter: java-junit
-
-        # Limits which test suites are listed. Supported options:
         list-suites: all
-
-        # Limits which test cases are listed. Supported options:
         list-tests: all
-
-        # Limits the number of created annotations with error message and stack trace captured during test execution.
         max-annotations: 10
-
-        # Set this action as failed if the test report contains any failed test
         fail-on-error: true
-
-        # Set this action as failed if no test results were found
         fail-on-empty: true
-
-        # Relative path under $GITHUB_WORKSPACE where the repository was checked out
-        working-directory: '' # You need to specify the working directory if necessary.
-
-        # Allows you to generate only the summary.
-        # If enabled, the report will contain a table listing each test results file and the number of passed, failed, and skipped tests.
-        # Detailed listing of test suites and test cases will be skipped.
         only-summary: false
-
-        # GitHub Access Token
         token: ${{ secrets.GITHUB_TOKEN }}  # Use the GitHub Token secret for authentication.
