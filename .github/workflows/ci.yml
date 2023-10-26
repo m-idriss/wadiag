@@ -13,7 +13,6 @@ jobs:
     - name: Test Reporter
       uses: dorny/test-reporter@v1.7.0
       with:
-        artifact: test-results            # artifact name
         name: test-results
         path: target/surefire-reports/*.xml
 
