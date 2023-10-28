@@ -116,6 +116,7 @@
                         <version>3.0.0</version>
                         <configuration>
                             <!-- Configure test-related settings here -->
+                            <linkXRef>false</linkXRef>
                         </configuration>
                     </plugin>
                 </plugins>
