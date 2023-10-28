@@ -1,111 +1,101 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.1.5</version>
-        <relativePath /> <!-- lookup parent from the repository -->
     </parent>
 
     <groupId>com.dime</groupId>
     <artifactId>wadiag-app</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+
+    <description>Wadiag, just another game.</description>
 
     <properties>
         <java.version>17</java.version>
-        <project.version>0.0.1-SNAPSHOT</project.version>
-
-        <!-- Dependency versions -->
         <spring.boot.version>3.1.5</spring.boot.version>
         <h2.version>2.2.224</h2.version>
         <lombok.version>1.18.30</lombok.version>
         <spring-data-jpa.version>3.1.5</spring-data-jpa.version>
+        <springdoc.version>2.2.0</springdoc.version>
+        <snakeyaml.version>2.2</snakeyaml.version>
+        <liquibase.version>4.24.0</liquibase.version>
+        <postgresql.version>42.6.0</postgresql.version>
+        <jackson-module-scala.version>2.15.3</jackson-module-scala.version>
+        <maven-project-info-reports-plugin.version>3.4.5</maven-project-info-reports-plugin.version>
+        <maven-surefire-plugin.version>3.0.0</maven-surefire-plugin.version>
     </properties>
 
-    <name>Wadiag</name>
-    <description>Wadiag, just another game.</description>
-
     <dependencies>
-        <!-- Spring Boot Starter for JPA and Spring Data -->
+        <!-- Spring Boot Starters -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
             <version>${spring.boot.version}</version>
         </dependency>
-        <!-- Spring Boot Starter for Web applications -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
             <version>${spring.boot.version}</version>
         </dependency>
-        <!-- H2 Database for development (runtime) -->
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>${h2.version}</version>
-            <scope>runtime</scope>
-        </dependency>
-        <!-- Spring Boot Starter for testing (test scope) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <version>${spring.boot.version}</version>
             <scope>test</scope>
         </dependency>
-        <!-- Lombok for simplified Java code (optional) -->
+
+        <!-- Database and Other Dependencies -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
             <optional>true</optional>
         </dependency>
-        <!-- Swagger -->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>2.2.0</version>
+            <version>${springdoc.version}</version>
         </dependency>
-        <!-- Snakeyaml for github security -->
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
-            <version>2.2</version>
+            <version>${snakeyaml.version}</version>
         </dependency>
-        <!-- Liquibase -->
         <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
-            <version>4.24.0</version>
+            <version>${liquibase.version}</version>
         </dependency>
-        <!-- Postgresql -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.module</groupId>
+            <artifactId>jackson-module-scala_3</artifactId>
+            <version>${jackson-module-scala.version}</version>
         </dependency>
     </dependencies>
 
     <profiles>
-        <!-- Development Profile -->
         <profile>
             <id>development</id>
             <properties>
                 <environment>development</environment>
             </properties>
         </profile>
-
-        <!-- Production Profile -->
         <profile>
             <id>production</id>
             <properties>
                 <environment>production</environment>
             </properties>
         </profile>
-
-        <!-- Test Profile -->
         <profile>
             <id>test</id>
             <build>
@@ -113,9 +103,8 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-surefire-plugin</artifactId>
-                        <version>3.0.0</version>
+                        <version>${maven-surefire-plugin.version}</version>
                         <configuration>
-                            <!-- Configure test-related settings here -->
                             <linkXRef>false</linkXRef>
                         </configuration>
                     </plugin>
@@ -137,7 +126,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-project-info-reports-plugin</artifactId>
-                    <version>3.1.0</version>
+                    <version>${maven-project-info-reports-plugin.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
