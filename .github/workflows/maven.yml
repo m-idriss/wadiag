@@ -45,10 +45,10 @@ jobs:
           node-version: 16  # Add this line to specify Node.js version 16
 
       - name: Build with Maven
-        run: mvn -B package --file backend/pom.xml
+        run: cd backend && mvn -B package --file pom.xml
 
       - name: Test
-        run: mvn --batch-mode test
+        run: cd backend && mvn --batch-mode test
       
       - name: Test Reporter
         uses: dorny/test-reporter@v1.7.0
