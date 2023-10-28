@@ -54,7 +54,7 @@ jobs:
         uses: dorny/test-reporter@v1.7.0
         with:
           name: test-results
-          path: target/surefire-reports/*.xml
+          path: backend/target/surefire-reports/*.xml
           path-replace-backslashes: false
           reporter: java-junit
           list-suites: all
