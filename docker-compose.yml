@@ -1,0 +1,26 @@
+# Docker Compose file Reference (https://docs.docker.com/compose/compose-file/)
+version: '3'
+
+#Define services
+services:
+
+  #PostgreSQL Database for the application
+  diag-postgres:
+    image: "postgres:alpine"
+    restart: always
+    container_name: diag-postgres
+    #Volume mounted for database for the storage
+    volumes:
+      - diag-data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432' # Forward the exposed port 5432 on the container to port 5432 on the host machine
+
+    #Environment variable for DB name, user and password
+    environment:
+      - POSTGRES_DB=diag
+      - POSTGRES_USER=diag
+      - POSTGRES_PASSWORD=diag
+
+#Volumes for DB data
+volumes:
+  diag-data:

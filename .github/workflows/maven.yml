@@ -45,16 +45,16 @@ jobs:
           node-version: 16  # Add this line to specify Node.js version 16
 
       - name: Build with Maven
-        run: mvn -B package --file pom.xml
+        run: cd backend && mvn -B package --file pom.xml
 
       - name: Test
-        run: mvn --batch-mode test
+        run: cd backend && mvn --batch-mode test
       
       - name: Test Reporter
         uses: dorny/test-reporter@v1.7.0
         with:
           name: test-results
-          path: target/surefire-reports/*.xml
+          path: backend/target/surefire-reports/*.xml
           path-replace-backslashes: false
           reporter: java-junit
           list-suites: all
