@@ -16,18 +16,18 @@ class MainControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    void testIndexEndpoint() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/"))
+    void testIndexWordEndpoint() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/rest/word/"))
                .andExpect(MockMvcResultMatchers.status().isOk())
                .andExpect(MockMvcResultMatchers.content().string("You're lost !"));
     }
 
     @Test
-    void testLostEndpoint() throws Exception {
+    void testLostWordEndpoint() throws Exception {
         String name = "John";
-        mockMvc.perform(MockMvcRequestBuilders.get("/" + name))
+        mockMvc.perform(MockMvcRequestBuilders.get("/rest/word/" + name))
                .andExpect(MockMvcResultMatchers.status().isOk())
-               .andExpect(MockMvcResultMatchers.content().string("You're lost ! " + name));
+               .andExpect(MockMvcResultMatchers.content().string("Your word is : " + name));
     }
 }
 
