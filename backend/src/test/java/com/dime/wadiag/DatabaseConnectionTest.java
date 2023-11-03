@@ -28,7 +28,7 @@ class DatabaseConnectionTest {
 
     @DisplayName("Test connection to database and get somes tables")
     @Test
-    void connection() throws Exception {
+    void test_connection() throws Exception {
         String jdbcUrl = env.getProperty("spring.datasource.url");
         String username = env.getProperty("spring.datasource.username");
         String password = env.getProperty("spring.datasource.password");

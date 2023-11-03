@@ -1,5 +1,6 @@
 package com.dime.wadiag.diag;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
@@ -23,8 +24,9 @@ class WordControllerTest {
 
     private final Faker faker = new Faker();
 
+    @DisplayName("Should dialog with save word endpoint")
     @Test
-    void testSaveWordEndpoint() throws Exception {
+    void test_save_word_endpoint() throws Exception {
         String name = faker.lorem().word();
         Word word = new Word(1, name);
 

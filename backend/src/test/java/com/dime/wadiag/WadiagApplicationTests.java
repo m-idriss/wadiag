@@ -17,13 +17,13 @@ class WadiagApplicationTests {
 
 	@DisplayName("Should load application")
 	@Test
-	void testMain() {
+	void test_main() {
 		Assertions.assertDoesNotThrow(() -> WadiagApplication.main(new String[] {}));
 	}
 
 	@DisplayName("Should load context")
 	@Test
-	void contextLoads() {
+	void test_context_loads() {
 		assertThat(context).isNotNull();
 	}
 

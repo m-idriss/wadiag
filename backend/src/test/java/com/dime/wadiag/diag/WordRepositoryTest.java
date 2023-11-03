@@ -25,7 +25,7 @@ class WordRepositoryTest {
 
     @DisplayName("Should save and retrieve word")
     @Test
-    void testSaveAndRetrieveWord() {
+    void test_save_and_retrieve_word() {
         Word word = Word.builder().name(faker.lorem().word()).build();
         entityManager.persistAndFlush(word);
 
@@ -36,7 +36,7 @@ class WordRepositoryTest {
 
     @DisplayName("Should find word by name")
     @Test
-    void testFindByName() {
+    void test_find_by_name() {
         String randomName = faker.lorem().word();
         Word word = Word.builder().name(randomName).build();
         entityManager.persistAndFlush(word);
@@ -48,7 +48,7 @@ class WordRepositoryTest {
 
     @DisplayName("Should find all word already save")
     @Test
-    void testFindAll() {
+    void test_find_all() {
         Word word = Word.builder().name(faker.lorem().word()).build();
         entityManager.persistAndFlush(word);
 
