@@ -1,4 +1,5 @@
 name: CI/CD
+# Name of the workflow, you can change this to a more descriptive name if needed.
 
 on:
   push:
@@ -6,33 +7,35 @@ on:
   pull_request:
     branches: [ "master" ]
   schedule:
-    - cron: '0 7 * * *' # Schedule: Run every day at 7:00 AM
+    - cron: '22 19 * * 6'
+  # Define the trigger conditions for the workflow:
+  # - On push to the master branch
+  # - On pull requests targeting the master branch
+  # - Scheduled to run every Saturday at 7:22 PM
 
 jobs:
   build_and_analyze:
     runs-on: ubuntu-latest
+    # Define the job to run on the latest version of Ubuntu.
 
     env:
       JAVA_HOME: /opt/java/jdk17
       MAVEN_HOME: /opt/maven
-
-    strategy:
-      matrix:
-        java-version: [17] # Java version to use
+      # Define environment variables for Java and Maven paths.
 
     steps:
     - name: Checkout Code
       uses: actions/checkout@v2
-      # Check out the project's source code.
+      # Step to check out the project's source code.
 
     - name: Set up Java and Maven
       uses: actions/setup-java@v2
       with:
         distribution: "temurin"
-        java-version: ${{ matrix.java-version }}
+        java-version: 17
         maven-version: 3.8
         cache: 'c:/temp/maven'
-      # Set up Java and Maven with caching for improved performance.
+      # Step to set up Java and Maven with caching for improved performance.
 
     - name: Build and Test
       run: |
@@ -41,7 +44,7 @@ jobs:
         mvn --batch-mode test
       env:
         MAVEN_HOME: ${{ env.MAVEN_HOME }}
-      # Build and test the Java project using Maven.
+      # Step to build and test the Java project using Maven.
 
     - name: Test Reporter
       uses: dorny/test-reporter@v1.7.0
@@ -57,20 +60,20 @@ jobs:
         fail-on-empty: true
         only-summary: false
         token: ${{ secrets.GITHUB_TOKEN }}
-      # Report test results to GitHub.
+      # Step to report test results to GitHub.
 
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v2
       with:
         languages: 'java-kotlin'
-      # Initialize CodeQL for Java and Kotlin.
+      # Step to initialize CodeQL for Java and Kotlin.
 
     - name: Autobuild
       uses: github/codeql-action/autobuild@v2
-      # Autobuild the CodeQL database.
+      # Step to autobuild the CodeQL database.
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
       with:
         category: "/language:java-kotlin"
-      # Perform CodeQL analysis on the Java and Kotlin code.
+      # Step to perform CodeQL analysis on the Java and Kotlin code.
