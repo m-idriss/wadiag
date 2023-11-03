@@ -1,0 +1,76 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+  schedule:
+    - cron: '0 7 * * *' # Schedule: Run every day at 7:00 AM
+
+jobs:
+  build_and_analyze:
+    runs-on: ubuntu-latest
+
+    env:
+      JAVA_HOME: /opt/java/jdk17
+      MAVEN_HOME: /opt/maven
+
+    strategy:
+      matrix:
+        java-version: [17] # Java version to use
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v2
+      # Check out the project's source code.
+
+    - name: Set up Java and Maven
+      uses: actions/setup-java@v2
+      with:
+        distribution: "temurin"
+        java-version: ${{ matrix.java-version }}
+        maven-version: 3.8
+        cache: 'c:/temp/maven'
+      # Set up Java and Maven with caching for improved performance.
+
+    - name: Build and Test
+      run: |
+        cd backend
+        mvn -B package --file pom.xml
+        mvn --batch-mode test
+      env:
+        MAVEN_HOME: ${{ env.MAVEN_HOME }}
+      # Build and test the Java project using Maven.
+
+    - name: Test Reporter
+      uses: dorny/test-reporter@v1.7.0
+      with:
+        name: test-results
+        path: backend/target/surefire-reports/*.xml
+        path-replace-backslashes: false
+        reporter: java-junit
+        list-suites: all
+        list-tests: all
+        max-annotations: 10
+        fail-on-error: true
+        fail-on-empty: true
+        only-summary: false
+        token: ${{ secrets.GITHUB_TOKEN }}
+      # Report test results to GitHub.
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages: 'java-kotlin'
+      # Initialize CodeQL for Java and Kotlin.
+
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@v2
+      # Autobuild the CodeQL database.
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
+      with:
+        category: "/language:java-kotlin"
+      # Perform CodeQL analysis on the Java and Kotlin code.
