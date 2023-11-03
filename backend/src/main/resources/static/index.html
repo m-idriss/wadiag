@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html lang="fr">
 <head>
-    <title>Thema API demo</title>
+    <title>Diag API demo</title>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
 </head>
 <body>
@@ -23,7 +23,7 @@
     function getWord() {
         const word_name = document.getElementById("word_name").value;
         const xhttp = new XMLHttpRequest();
-        xhttp.open("GET", "/rest/word/" + word_name, true);
+        xhttp.open("POST", "/rest/words/" + word_name, true);
         xhttp.onreadystatechange = function () {
             if (this.readyState === 4 && this.status === 200) {
                 document.getElementById("result").innerHTML = xhttp.responseText;
