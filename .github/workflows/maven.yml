@@ -39,6 +39,7 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+          node-version: 16  # Add this line to specify Node.js version 16
 
       - name: Set up Node.js 16
         uses: actions/setup-node@v2
@@ -47,6 +48,8 @@ jobs:
           
       - name: Checkout Code
         uses: actions/checkout@v2
+        with:
+          node-version: 16
         
       - name: Build with Maven
         run: cd backend && mvn -B package --file pom.xml
@@ -68,11 +71,13 @@ jobs:
           fail-on-empty: true
           only-summary: false
           token: ${{ secrets.GITHUB_TOKEN }}
+          node-version: 16
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v2
         with:
           languages: ${{ matrix.language }}
+          node-version: 16
   
       - name: Autobuild
         uses: github/codeql-action/autobuild@v2
