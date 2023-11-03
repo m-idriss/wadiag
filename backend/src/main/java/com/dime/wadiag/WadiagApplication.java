@@ -28,6 +28,7 @@ public class WadiagApplication {
 				----------------------------------------------------------
 				\t Application '{}' is running!
 				\t Access URLs:
+				\t - index: \t{}://localhost:{}/index.html
 				\t - Local: \t{}://localhost:{}
 				\t - External: \t{}://{}:{}
 				\t Swagger UI: \t{}://localhost:{}/swagger-ui.html
