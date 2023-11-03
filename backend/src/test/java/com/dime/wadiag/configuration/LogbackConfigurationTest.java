@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.slf4j.LoggerFactory;
 
@@ -45,8 +46,9 @@ class LogbackConfigurationTest {
 		context.reset();
 	}
 
+	@DisplayName("Should see log from logback configuration")
 	@Test
-	void testLogbackConfiguration() {
+	void test_logback_configuration() {
 		// Get a logger instance
 		Logger logger = context.getLogger("com.dime");
 		assertEquals("com.dime", logger.getName());

@@ -19,7 +19,7 @@ spring:
   liquibase:
     change-log: classpath:/db/changelog/db.changelog-master.xml
   profiles:
-   active: dev
+    active: dev
 logging:
   level:
     root: info
@@ -27,13 +27,12 @@ logging:
     org.springframework.web: debug
     org.hibernate: error
 server:
-    port: 8081
+  port: 8081
 
 # Specify the path of the OpenAPI documentation
 springdoc:
-    api-docs:
-        path: /api-docs
-    swagger-ui:
-        path: /swagger-ui.html
-        enabled: true
-
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true

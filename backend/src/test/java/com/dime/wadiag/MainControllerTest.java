@@ -18,7 +18,7 @@ class MainControllerTest {
 
     @DisplayName("Should i lost with main controller")
     @Test
-    void testMainEndpoint() throws Exception {
+    void test_main_endpoint() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string("You're lost !"));
