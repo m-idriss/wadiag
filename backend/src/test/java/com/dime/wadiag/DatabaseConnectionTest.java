@@ -16,6 +16,7 @@ import org.springframework.core.env.Environment;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 @SpringBootTest
@@ -25,6 +26,7 @@ class DatabaseConnectionTest {
     @Autowired
     private Environment env;
 
+    @DisplayName("Test connection to database and get somes tables")
     @Test
     void connection() throws Exception {
         String jdbcUrl = env.getProperty("spring.datasource.url");
@@ -38,7 +40,7 @@ class DatabaseConnectionTest {
 
         // Get a list of all table names
         List<String> tableNames = getAllTableNames(connection);
-        assertThat(tableNames).contains("databasechangelog","word");
+        assertThat(tableNames).contains("databasechangelog", "word");
     }
 
     private List<String> getAllTableNames(Connection connection) {
