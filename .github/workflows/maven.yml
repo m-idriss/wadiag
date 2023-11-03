@@ -71,13 +71,11 @@ jobs:
           fail-on-empty: true
           only-summary: false
           token: ${{ secrets.GITHUB_TOKEN }}
-          node-version: 16
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v2
         with:
           languages: ${{ matrix.language }}
-          node-version: 16
   
       - name: Autobuild
         uses: github/codeql-action/autobuild@v2
