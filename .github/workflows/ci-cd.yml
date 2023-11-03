@@ -32,11 +32,6 @@ jobs:
       matrix:
         language: [ 'java-kotlin', 'swift' ]
 
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
-
     steps:
     - name: Checkout Code
       uses: actions/checkout@v2
