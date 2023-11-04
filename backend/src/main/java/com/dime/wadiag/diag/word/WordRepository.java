@@ -1,4 +1,4 @@
-package com.dime.wadiag.diag;
+package com.dime.wadiag.diag.word;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

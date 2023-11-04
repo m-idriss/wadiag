@@ -1,4 +1,4 @@
-package com.dime.wadiag.config;
+package com.dime.wadiag.configuration;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
