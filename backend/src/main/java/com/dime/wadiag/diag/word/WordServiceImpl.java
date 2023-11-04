@@ -1,10 +1,11 @@
-package com.dime.wadiag.diag;
+package com.dime.wadiag.diag.word;
+
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import java.util.List;
 
 @Service
 @Slf4j

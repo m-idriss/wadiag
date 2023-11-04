@@ -1,4 +1,4 @@
-package com.dime.wadiag.diag;
+package com.dime.wadiag.diag.word;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
