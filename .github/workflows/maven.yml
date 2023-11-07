@@ -48,9 +48,13 @@ jobs:
         
       - name: Build with Maven
         run: cd backend && mvn -B package --file pom.xml
-      - name: Set Up Environment for Integration Tests
+        
+      - name: Create Configuration File
         run: |
+          mkdir -p src/main/resources
           echo "wordsapi.host.key=${WORDSAPI_API_KEY}" > src/main/resources/conf.properties
+        shell: bash
+        
       - name: Test
         run: cd backend && mvn --batch-mode test
       
@@ -81,3 +85,14 @@ jobs:
         uses: github/codeql-action/analyze@v2
         with:
           category: "/language:${{matrix.language}}"
+
+      - name: Clean Workspace
+        run: |
+          # Remove any temporary files or directories
+          rm -rf /path/to/temporary/files
+      
+          # Optionally, remove the entire workspace
+          # rm -rf $GITHUB_WORKSPACE
+      
+        # Use the shell where you created the temporary files
+        shell: bash
