@@ -46,7 +46,7 @@ jobs:
       - name: Create Configuration File
         run: |
           mkdir -p backend/src/main/resources/private/
-          echo "wordsapi.host.key=${WORDSAPI_API_KEY}" > src/main/resources/private/conf.properties
+          echo "wordsapi.host.key=${WORDSAPI_API_KEY}" > backend/src/main/resources/private/conf.properties
         shell: bash
         
       - name: Checkout Code
