@@ -48,7 +48,15 @@ jobs:
           mkdir -p backend/src/main/resources/private/
           echo "wordsapi.host.key=${WORDSAPI_API_KEY}" > backend/src/main/resources/private/conf.properties
         shell: bash
-        
+
+      - name: List Files in Directory
+        run: |
+          # Change the directory to the location where conf.properties is expected.
+          cd
+          # List the files in the directory.
+          ls
+        shell: bash
+
       - name: Checkout Code
         uses: actions/checkout@v2
         
