@@ -144,8 +144,12 @@
             </build>
         </profile>
     </profiles>
-
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
         <plugins>
             <!-- Spring Boot Maven plugin for packaging and running your application -->
             <plugin>
