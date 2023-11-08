@@ -42,18 +42,18 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-      
-      - name: Checkout Code
-        uses: actions/checkout@v2
-        
-      - name: Build with Maven
-        run: cd backend && mvn -B package --file pom.xml
         
       - name: Create Configuration File
         run: |
           mkdir -p backend/src/main/resources/private/
           echo "wordsapi.host.key=${WORDSAPI_API_KEY}" > src/main/resources/private/conf.properties
         shell: bash
+        
+      - name: Checkout Code
+        uses: actions/checkout@v2
+        
+      - name: Build with Maven
+        run: cd backend && mvn -B package --file pom.xml
         
       - name: Test
         run: cd backend && mvn --batch-mode test
