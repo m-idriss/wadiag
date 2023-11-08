@@ -90,9 +90,10 @@ jobs:
         run: |
           # Remove any temporary files or directories
           rm -rf src/main/resources/private/
-      
+        
           # Optionally, remove the entire workspace
           # rm -rf $GITHUB_WORKSPACE
       
         # Use the shell where you created the temporary files
         shell: bash
+
