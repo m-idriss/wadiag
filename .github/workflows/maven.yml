@@ -50,11 +50,7 @@ jobs:
         shell: bash
 
       - name: List Files in Directory
-        run: |
-          # Change the directory to the location where conf.properties is expected.
-          cd
-          # List the files in the directory.
-          ls
+        run: cd backend && ls
         shell: bash
 
       - name: Checkout Code
