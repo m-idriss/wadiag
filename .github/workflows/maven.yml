@@ -50,7 +50,7 @@ jobs:
         shell: bash
 
       - name: List Files in Directory
-        run: cd backend && ls
+        run: cd backend && tree
         shell: bash
 
       - name: Checkout Code
