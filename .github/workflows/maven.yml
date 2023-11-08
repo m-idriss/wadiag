@@ -45,8 +45,8 @@ jobs:
         
       - name: Create Configuration File
         run: |
-          mkdir -p backend/src/main/resources/private/
-          echo "wordsapi.host.key=${WORDSAPI_API_KEY}" > backend/src/main/resources/private/conf.properties
+          mkdir -p /home/runner/work/wadiag/wadiag/backend/src/main/resources/private/
+          echo "wordsapi.host.key=${WORDSAPI_API_KEY}" > /home/runner/work/wadiag/wadiag/backend/src/main/resources/private/conf.properties
         shell: bash
 
       - name: List Files in Directory
@@ -93,7 +93,7 @@ jobs:
       - name: Clean Workspace
         run: |
           # Remove any temporary files or directories
-          rm -rf backend/src/main/resources/private/
+          rm -rf /home/runner/work/wadiag/wadiag/backend/src/main/resources/private/
         
           # Optionally, remove the entire workspace
           # rm -rf $GITHUB_WORKSPACE
