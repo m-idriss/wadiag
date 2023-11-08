@@ -51,7 +51,7 @@ jobs:
         
       - name: Create Configuration File
         run: |
-          mkdir -p src/main/resources/private/
+          mkdir -p backend/src/main/resources/private/
           echo "wordsapi.host.key=${WORDSAPI_API_KEY}" > src/main/resources/private/conf.properties
         shell: bash
         
@@ -89,7 +89,7 @@ jobs:
       - name: Clean Workspace
         run: |
           # Remove any temporary files or directories
-          rm -rf src/main/resources/private/
+          rm -rf backend/src/main/resources/private/
         
           # Optionally, remove the entire workspace
           # rm -rf $GITHUB_WORKSPACE
