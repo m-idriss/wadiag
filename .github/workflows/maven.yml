@@ -46,9 +46,10 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v2
         
-      - uses: "finnp/create-file-action@master"
+      - name: Create-file
+      - uses: finnp/create-file-action@master
         env:
-          FILE_NAME: "${{ github.workspace }}/src/main/resources/fileName.txt"
+          FILE_NAME: "${{ github.workspace }}/src/main/resources/private/"
           FILE_DATA: "file content"
         
       - name: Create directory if it doesn't exist
