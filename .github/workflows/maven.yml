@@ -48,6 +48,14 @@ jobs:
           mkdir -p /home/runner/work/wadiag/wadiag/backend/src/main/resources/private/
           echo "wordsapi.host.key=${{ secrets.WORDSAPI_API_KEY }}" > /home/runner/work/wadiag/wadiag/backend/src/main/resources/private/conf.properties
         shell: bash
+
+      - name: Write value from Properties-file
+        id: write_property
+        uses: Reedyuk/write-properties@latest
+        with:
+          path: './src/main/resources/private/conf.properties'
+          property: 'wordsapi.host.key'
+          value: '${{ secrets.WORDSAPI_API_KEY }}'
   
       - name: List Files in Directory
         run: cd && tree
