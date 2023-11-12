@@ -51,13 +51,7 @@ jobs:
         env:
           FILE_NAME: "${{ github.workspace }}/src/main/resources/private/conf.properties"
           FILE_DATA: "file content"
-        
-      - name: Create directory if it doesn't exist
-        run: mkdir -p ${{ github.workspace }}/src/main/resources/private/
-
-      - name: Create conf.properties file
-        run: echo "" > ${{ github.workspace }}/src/main/resources/private/conf.properties
-
+      
       - name: Write values to Properties-file
         uses: christian-draeger/write-properties@1.1.0
         with:
