@@ -49,6 +49,12 @@ jobs:
           echo "wordsapi.host.key=${WORDSAPI_API_KEY}" > /home/runner/work/wadiag/wadiag/backend/src/main/resources/private/conf.properties
         shell: bash
 
+      - name: Create Configuration File
+        run: |
+          mkdir -p /home/runner/work/wadiag/wadiag/backend/src/main/resources/private/
+          echo "wordsapi.host.key=${{ secrets.WORDSAPI_API_KEY }}" > /home/runner/work/wadiag/wadiag/backend/src/main/resources/private/conf.properties
+        shell: bash
+  
       - name: List Files in Directory
         run: cd && tree
         shell: bash
