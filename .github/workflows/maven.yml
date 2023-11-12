@@ -49,7 +49,7 @@ jobs:
       - name: Create-file
         uses: finnp/create-file-action@master
         env:
-          FILE_NAME: "${{ github.workspace }}/src/main/resources/private/"
+          FILE_NAME: "${{ github.workspace }}/src/main/resources/private/conf.properties"
           FILE_DATA: "file content"
         
       - name: Create directory if it doesn't exist
