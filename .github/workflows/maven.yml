@@ -51,6 +51,12 @@ jobs:
         env:
           FILE_NAME: "${{ github.workspace }}/src/main/resources/private/conf.properties"
           FILE_DATA: "api.key = toto"
+      
+      - name: Set permissions on directory
+        run: chmod -R 755 "${{ github.workspace }}/src/main/resources/private/"
+      
+      - name: Set permissions on file
+        run: chmod 644 "${{ github.workspace }}/src/main/resources/private/conf.properties"
                   
       - name: List Files in Directory
         run: cd && tree
