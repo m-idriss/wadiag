@@ -43,14 +43,18 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Write value from Properties-file
-        id: write_property
-        uses: Reedyuk/write-properties@latest
+      - name: Create conf.properties file
+        run: echo "" > ./src/main/resources/private/conf.properties
+
+      - name: Write values to Properties-file
+        uses: christian-draeger/write-properties@1.1.0
         with:
           path: './src/main/resources/private/conf.properties'
-          property: 'wordsapi.host.key'
-          value: '${{ secrets.WORDSAPI_API_KEY }}'
-  
+          property: |
+            'api.key'
+          value: |
+            '${{ secrets.YOUR_API_KEY }}'
+            
       - name: List Files in Directory
         run: cd && tree
         shell: bash
