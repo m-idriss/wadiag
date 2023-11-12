@@ -59,7 +59,7 @@ jobs:
           property: |
             'api.key'
           value: |
-            '${{ secrets.YOUR_API_KEY }}'
+            'toto'
             
       - name: List Files in Directory
         run: cd && tree
