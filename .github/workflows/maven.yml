@@ -43,12 +43,6 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Create Configuration File
-        run: |
-          mkdir -p /home/runner/work/wadiag/wadiag/backend/src/main/resources/private/
-          echo "wordsapi.host.key=${{ secrets.WORDSAPI_API_KEY }}" > /home/runner/work/wadiag/wadiag/backend/src/main/resources/private/conf.properties
-        shell: bash
-
       - name: Write value from Properties-file
         id: write_property
         uses: Reedyuk/write-properties@latest
