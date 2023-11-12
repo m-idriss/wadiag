@@ -43,6 +43,9 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Create directory if it doesn't exist
+        run: mkdir -p ./src/main/resources/private/
+
       - name: Create conf.properties file
         run: echo "" > ./src/main/resources/private/conf.properties
 
