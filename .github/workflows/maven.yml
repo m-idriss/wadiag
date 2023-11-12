@@ -47,15 +47,15 @@ jobs:
         uses: actions/checkout@v2
         
       - name: Create directory if it doesn't exist
-        run: mkdir -p ./src/main/resources/private/
+        run: mkdir -p ${{ github.workspace }}/src/main/resources/private/
 
       - name: Create conf.properties file
-        run: echo "" > ./src/main/resources/private/conf.properties
+        run: echo "" > ${{ github.workspace }}/src/main/resources/private/conf.properties
 
       - name: Write values to Properties-file
         uses: christian-draeger/write-properties@1.1.0
         with:
-          path: './src/main/resources/private/conf.properties'
+          path: ${{ github.workspace }}/src/main/resources/private/conf.properties
           property: |
             'api.key'
           value: |
