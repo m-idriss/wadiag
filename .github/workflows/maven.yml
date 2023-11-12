@@ -42,12 +42,6 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-        
-      - name: Create Configuration File
-        run: |
-          mkdir -p /home/runner/work/wadiag/wadiag/backend/src/main/resources/private/
-          echo "wordsapi.host.key=${WORDSAPI_API_KEY}" > /home/runner/work/wadiag/wadiag/backend/src/main/resources/private/conf.properties
-        shell: bash
 
       - name: Create Configuration File
         run: |
