@@ -50,17 +50,8 @@ jobs:
         uses: finnp/create-file-action@master
         env:
           FILE_NAME: "${{ github.workspace }}/src/main/resources/private/conf.properties"
-          FILE_DATA: "file content"
-      
-      - name: Write values to Properties-file
-        uses: christian-draeger/write-properties@1.1.0
-        with:
-          path: ${{ github.workspace }}/src/main/resources/private/conf.properties
-          property: |
-            'api.key'
-          value: |
-            'toto'
-            
+          FILE_DATA: "api.key = toto"
+                  
       - name: List Files in Directory
         run: cd && tree
         shell: bash
