@@ -47,7 +47,11 @@ jobs:
 
       - name: Checkout Code
         uses: actions/checkout@v2
-        
+      - name: Debug Environment Variables
+        run: |
+          echo "WORDSAPI_KEY: $WORDSAPI_KEY"
+          echo "WORDSAPI_URL: $WORDSAPI_URL"
+
       - name: Build with Maven
         run: cd backend && mvn -B package --file pom.xml
         
@@ -81,15 +85,4 @@ jobs:
         uses: github/codeql-action/analyze@v2
         with:
           category: "/language:${{matrix.language}}"
-
-      - name: Clean Workspace
-        run: |
-          # Remove any temporary files or directories
-          rm -rf /home/runner/work/wadiag/wadiag/backend/src/main/resources/private/
-        
-          # Optionally, remove the entire workspace
-          # rm -rf $GITHUB_WORKSPACE
-      
-        # Use the shell where you created the temporary files
-        shell: bash
 
