@@ -42,19 +42,25 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-        
-      - name: Create Configuration File
-        run: |
-          mkdir -p backend/src/main/resources/private/
-          echo "wordsapi.host.key=${WORDSAPI_API_KEY}" > backend/src/main/resources/private/conf.properties
-        shell: bash
-
-      - name: List Files in Directory
-        run: cd backend && tree
-        shell: bash
 
       - name: Checkout Code
         uses: actions/checkout@v2
+        
+      - name: Create-file
+        uses: finnp/create-file-action@master
+        env:
+          FILE_NAME: "${{ github.workspace }}/src/main/resources/private/conf.properties"
+          FILE_DATA: "api.key = toto"
+      
+      - name: Set permissions on directory
+        run: chmod -R 755 "${{ github.workspace }}/src/main/resources/private/"
+      
+      - name: Set permissions on file
+        run: chmod 644 "${{ github.workspace }}/src/main/resources/private/conf.properties"
+                  
+      - name: List Files in Directory
+        run: cd && tree
+        shell: bash
         
       - name: Build with Maven
         run: cd backend && mvn -B package --file pom.xml
@@ -93,7 +99,7 @@ jobs:
       - name: Clean Workspace
         run: |
           # Remove any temporary files or directories
-          rm -rf backend/src/main/resources/private/
+          rm -rf /home/runner/work/wadiag/wadiag/backend/src/main/resources/private/
         
           # Optionally, remove the entire workspace
           # rm -rf $GITHUB_WORKSPACE
