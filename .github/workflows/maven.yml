@@ -52,11 +52,8 @@ jobs:
           echo "WORDSAPI_KEY: $WORDSAPI_KEY"
           echo "WORDSAPI_URL: $WORDSAPI_URL"
 
-      - name: Build with Maven
-        run: cd backend && mvn -B package --file pom.xml
-        
-      - name: Test
-        run: cd backend && mvn --batch-mode test
+      - name: Build and Test with Maven
+        run: cd backend && mvn -B verify --file pom.xml
       
       - name: Test Reporter
         uses: dorny/test-reporter@v1.7.0
