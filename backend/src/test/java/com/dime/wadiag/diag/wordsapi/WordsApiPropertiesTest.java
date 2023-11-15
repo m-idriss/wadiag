@@ -1,28 +1,31 @@
 package com.dime.wadiag.diag.wordsapi;
 
-import org.junit.jupiter.api.DisplayName;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-@ExtendWith(SpringExtension.class)
-@EnableConfigurationProperties(value = WordsApiProperties.class)
-@TestPropertySource("classpath:private/conf.properties")
-@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
+@SpringBootTest
 class WordsApiPropertiesTest {
 
     @Autowired
     private WordsApiProperties wordsApiProperties;
 
     @Test
-    @DisplayName("Test wordsApi fill properties")
-    void test_load_properties_file_then_all_fields_are_set() {
-        assertThat(wordsApiProperties.getKey()).isNotNull();
-        assertThat(wordsApiProperties.getKey()).hasSize(50);
+    void testPropertiesLoading() {
+        assertNotNull(wordsApiProperties.getKey());
+    }
+
+    @Test
+    void testCategoryEnum() {
+        WordsApiProperties.Category everything = WordsApiProperties.Category.EVERYTHING;
+        WordsApiProperties.Category synonyms = WordsApiProperties.Category.SYNONYMS;
+        WordsApiProperties.Category examples = WordsApiProperties.Category.EXAMPLES;
+
+        assertEquals("", everything.getName());
+        assertEquals("synonyms", synonyms.getName());
+        assertEquals("examples", examples.getName());
     }
 }

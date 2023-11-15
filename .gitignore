@@ -130,3 +130,5 @@ build/
 .vscode/
 
 /backend/src/main/resources/private/
+
+*.env
