@@ -18,12 +18,10 @@ public class WordsApiService {
 
     private WordsApiProperties wordsApiProperties;
 
-    public static final String API_URL = "https://wordsapiv1.p.rapidapi.com";
-
     public WordsApiService(WordsApiProperties apiProperties) {
         this.wordsApiProperties = apiProperties;
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(API_URL)
+                .baseUrl(wordsApiProperties.getUrl())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -50,6 +48,7 @@ public class WordsApiService {
             }
         } catch (IOException e) {
             // Handle exceptions
+            log.info("Failed to getSynonymsForWord, cause : " + e.getMessage());
             throw e;
         }
     }
