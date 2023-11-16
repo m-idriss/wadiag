@@ -2,9 +2,9 @@ name: Java CI with Maven and Tests
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "master", "develop" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "master", "develop" ]
   schedule:
     - cron: '0 7 * * *'
     # Schedule: Run every day at 7:00 AM
