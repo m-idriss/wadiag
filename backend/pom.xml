@@ -22,7 +22,7 @@
         <spring-data-jpa.version>3.1.5</spring-data-jpa.version>
         <springdoc.version>2.2.0</springdoc.version>
         <snakeyaml.version>2.2</snakeyaml.version>
-        <liquibase.version>4.24.0</liquibase.version>
+        <liquibase.version>4.25.0</liquibase.version>
         <postgresql.version>42.6.0</postgresql.version>
         <jackson-module-scala.version>2.15.3</jackson-module-scala.version>
         <javafaker.version>1.0.2</javafaker.version>
@@ -55,7 +55,6 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
-            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.springdoc</groupId>
@@ -138,6 +137,15 @@
                         <version>${maven-surefire-plugin.version}</version>
                         <configuration>
                             <linkXRef>false</linkXRef>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <version>3.8.1</version>
+                        <configuration>
+                            <source>17</source>
+                            <target>17</target>
                         </configuration>
                     </plugin>
                 </plugins>
