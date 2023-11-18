@@ -20,6 +20,8 @@ spring:
     change-log: classpath:/db/changelog/db.changelog-master.xml
   profiles:
     active: dev
+  config:
+    import: optional:file:.env[.properties]
 logging:
   level:
     root: info
@@ -36,3 +38,8 @@ springdoc:
   swagger-ui:
     path: /swagger-ui.html
     enabled: true
+
+wordsapi:
+  host:
+    key: ${WORDSAPI_KEY}
+    url: ${WORDSAPI_URL}
