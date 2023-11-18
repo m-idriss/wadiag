@@ -36,9 +36,6 @@ jobs:
         language: [ 'java-kotlin' ]
 
     steps:
-      - name: Install dotenv
-        run: npm install -g dotenv
-        
       - name: Set up Node.js 16
         uses: actions/setup-node@v2
         
@@ -54,8 +51,6 @@ jobs:
         run: |
           echo "WORDSAPI_KEY: $WORDSAPI_KEY"
           echo "WORDSAPI_URL: $WORDSAPI_URL"
-          dotenv -e .env echo "Env variables loaded from .env file"
-
 
       - name: Build and Test with Maven
         run: cd backend && mvn -B verify --file pom.xml
