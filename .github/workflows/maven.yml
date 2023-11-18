@@ -54,8 +54,7 @@ jobs:
         run: |
           echo "WORDSAPI_KEY: $WORDSAPI_KEY"
           echo "WORDSAPI_URL: $WORDSAPI_URL"
-          dotenv -e .env echo "Env variables loaded from .env file"
-
+          source .env && echo "Env variables loaded from .env file"
 
       - name: Build and Test with Maven
         run: cd backend && mvn -B verify --file pom.xml
