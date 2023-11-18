@@ -5,12 +5,12 @@ spring:
     open-in-view: true
     hibernate:
       ddl-auto: create
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-        jdbc:
-          lob:
-            non_contextual_creation: true
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.PostgreSQLDialect
+          jdbc:
+            lob:
+              non_contextual_creation: true
   datasource:
     url: jdbc:postgresql://localhost:5432/diag
     username: diag
@@ -21,17 +21,18 @@ spring:
   profiles:
     active: dev
   config:
-    import: optional:file:.env[.properties]
+    import: optional:file:./application-${spring.profiles.active}.yml
+
 logging:
   level:
     root: info
     web: debug
     org.springframework.web: debug
     org.hibernate: error
+
 server:
   port: 8081
 
-# Specify the path of the OpenAPI documentation
 springdoc:
   api-docs:
     path: /api-docs
