@@ -37,7 +37,8 @@ public class WadiagApplication {
 				""",
 				//
 				env.getProperty("spring.application.name"), protocol, env.getProperty(SERVER_PORT), protocol,
-				InetAddress.getLocalHost().getHostAddress(), env.getProperty(SERVER_PORT), protocol,
+				env.getProperty(SERVER_PORT),
+				protocol, InetAddress.getLocalHost().getHostAddress(), env.getProperty(SERVER_PORT), protocol,
 				env.getProperty(SERVER_PORT), env.getActiveProfiles());
 	}
 }
