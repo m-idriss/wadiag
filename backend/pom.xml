@@ -122,15 +122,15 @@
 
     <profiles>
         <profile>
-            <id>development</id>
+            <id>dev</id>
             <properties>
-                <environment>development</environment>
+                <environment>dev</environment>
             </properties>
         </profile>
         <profile>
-            <id>production</id>
+            <id>action</id>
             <properties>
-                <environment>production</environment>
+                <environment>action</environment>
             </properties>
         </profile>
         <profile>
