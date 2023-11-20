@@ -49,6 +49,13 @@
             <version>${spring.boot.version}</version>
             <scope>test</scope>
         </dependency>
+        <!--
+        https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-actuator -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+            <version>${spring.boot.version}</version>
+        </dependency>
 
         <!-- Database and Other Dependencies -->
         <dependency>
@@ -115,15 +122,15 @@
 
     <profiles>
         <profile>
-            <id>development</id>
+            <id>dev</id>
             <properties>
-                <environment>development</environment>
+                <environment>dev</environment>
             </properties>
         </profile>
         <profile>
-            <id>production</id>
+            <id>action</id>
             <properties>
-                <environment>production</environment>
+                <environment>action</environment>
             </properties>
         </profile>
         <profile>

@@ -10,7 +10,7 @@ spring:
           dialect: org.hibernate.dialect.PostgreSQLDialect
           jdbc:
             lob:
-              non_contextual_creation: true
+              on_contextual_creation: true
   datasource:
     url: jdbc:postgresql://localhost:5432/diag
     username: diag
@@ -28,7 +28,7 @@ logging:
     root: info
     web: debug
     org.springframework.web: debug
-    org.hibernate: error
+    org.hibernate: info
 
 server:
   port: 8081
@@ -39,8 +39,17 @@ springdoc:
   swagger-ui:
     path: /swagger-ui.html
     enabled: true
+  show-actuator: true
 
-wordsapi:
-  host:
-    key: ${WORDSAPI_KEY}
-    url: ${WORDSAPI_URL}
+# Configure Actuator endpoints
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: health
+      base-path: /actuator
+  security:
+    enabled: false
