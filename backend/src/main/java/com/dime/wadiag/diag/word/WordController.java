@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
 
-@RestController("wadiag.WordController")
+@RestController
 @RequestMapping("/rest/words")
 public class WordController {
 

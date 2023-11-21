@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class WordsApiHealthIndicator implements HealthIndicator {
 
-    private final WordsApiService wordsApiService;
+    private final WordsApiServiceImpl wordsApiService;
 
-    public WordsApiHealthIndicator(WordsApiService wordsApiService) {
+    public WordsApiHealthIndicator(WordsApiServiceImpl wordsApiService) {
         this.wordsApiService = wordsApiService;
     }
 
