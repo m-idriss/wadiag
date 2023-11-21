@@ -15,10 +15,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @ContextConfiguration
-class WordServiceImplTest {
+class WordsApiServiceImplTest {
 
     @Autowired
-    WordsApiService wordServiceImpl;
+    WordsApiServiceImpl service;
 
     @Autowired
     WordsApiProperties testProperties;
@@ -26,14 +26,14 @@ class WordServiceImplTest {
     @BeforeEach
     void setup() {
         // Create an instance of the Retrofit client with the test server's base URL
-        wordServiceImpl = new WordsApiService(testProperties);
+        service = new WordsApiServiceImpl(testProperties);
     }
 
     @Test
     @DisplayName("Get synonyms for a valid word")
     void test_get_synonyms_for_word() {
         try {
-            WordsApiResponse wordResponse = wordServiceImpl.getSynonymsForWord("school");
+            WordsApiResponse wordResponse = service.getSynonymsForWord("school");
             assertThat(wordResponse.getSynonyms()).containsExactlyElementsOf(Arrays.asList("shoal", "school day",
                     "schooltime", "civilise", "civilize", "cultivate", "educate", "train", "schooling", "schoolhouse"));
             assertThat(wordResponse.getWord()).isEqualTo("school");
@@ -46,7 +46,7 @@ class WordServiceImplTest {
     @DisplayName("Get synonyms for an invalid word")
     void test_get_synonyms_for_word_resource_not_found_exception() {
         ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class,
-                () -> wordServiceImpl.getSynonymsForWord("toto"));
+                () -> service.getSynonymsForWord("toto"));
         assertThat(exception.getMessage()).isEqualTo("synonyms not found for : toto");
     }
 
