@@ -5,6 +5,8 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("/rest/synonyms")
+@Tag(name = "Synonyms", description = "Manage Synonyms")
 public class WordsApiController {
         @Autowired
         private ModelMapper modelMapper;
@@ -34,7 +37,7 @@ public class WordsApiController {
                         throws ResourceNotFoundException, IOException {
                 WordsApiResponse wordsApiResponse = service.getSynonymsForWord(word);
                 WordsApiResponse dto = modelMapper.map(wordsApiResponse, WordsApiResponse.class);
-                
+
                 return ResponseEntity.ok(dto);
         }
 
