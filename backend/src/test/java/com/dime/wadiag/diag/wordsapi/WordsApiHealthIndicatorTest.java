@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.actuate.health.Health;
@@ -16,8 +17,9 @@ import org.springframework.test.context.ContextConfiguration;
 class WordsApiHealthIndicatorTest {
 
     @Test
+    @DisplayName("Test if connection to wordsapi is up")
     void testHealthyConnection() throws IOException {
-        WordsApiService wordsApiService = Mockito.mock(WordsApiService.class);
+        WordsApiServiceImpl wordsApiService = Mockito.mock(WordsApiServiceImpl.class);
         Mockito.when(wordsApiService.testWordsApiConnection()).thenReturn(true);
 
         WordsApiHealthIndicator healthIndicator = new WordsApiHealthIndicator(wordsApiService);
@@ -27,8 +29,9 @@ class WordsApiHealthIndicatorTest {
     }
 
     @Test
+    @DisplayName("Test when connection to wordsapi is down")
     void testUnhealthyConnection() throws IOException {
-        WordsApiService wordsApiService = Mockito.mock(WordsApiService.class);
+        WordsApiServiceImpl wordsApiService = Mockito.mock(WordsApiServiceImpl.class);
         Mockito.when(wordsApiService.testWordsApiConnection()).thenThrow(new RuntimeException("Connection error"));
 
         WordsApiHealthIndicator healthIndicator = new WordsApiHealthIndicator(wordsApiService);

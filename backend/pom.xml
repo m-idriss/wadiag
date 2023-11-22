@@ -29,6 +29,7 @@
         <jacoco.version>0.8.11</jacoco.version>
         <maven-project-info-reports-plugin.version>3.4.5</maven-project-info-reports-plugin.version>
         <maven-surefire-plugin.version>3.0.0</maven-surefire-plugin.version>
+        <modelmapper.version>3.2.0</modelmapper.version>
     </properties>
 
     <dependencies>
@@ -117,7 +118,11 @@
             <artifactId>converter-gson</artifactId>
             <version>2.9.0</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+            <version>${modelmapper.version}</version>
+        </dependency>
     </dependencies>
 
     <profiles>
