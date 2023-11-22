@@ -1,17 +1,19 @@
-# Wadiag
-
-Welcome to my GitHub profile! I'm Idriss, a passionate Java backend developer who's constantly exploring and learning (expecially Flutter, for now). This repository serves as my playground for personal projects and a way to share my journey in the world of software development.
+# Welcome to My GitHub Playground! 🚀
 
 ## About Me
 
-- 🔭 I’m currently working on **Personal Projects**
-- 🌱 I’m currently learning **Spring and Flutter**
+Hi, I'm Idriss, a passionate Java backend developer exploring and learning, especially in the realms of Spring and Flutter. This repository serves as my playground for personal projects and a way to share my software development journey.
+
+### Currently...
+
+- 🔭 I’m working on **Personal Projects**
+- 🌱 I’m learning **Spring and Flutter**
 
 ## Connect with Me
 
 Feel free to connect with me on these platforms:
 
-- [LinkedIn](https://www.linkedin.com/in//i-mohamady/)
+- [LinkedIn](https://www.linkedin.com/in/i-mohamady/)
 - [Twitter](https://twitter.com/3dime13)
 - [Portfolio Website](https://www.3dime.com)
 
@@ -73,8 +75,7 @@ I enjoy working with a variety of languages and tools. Here are some of my favor
   </a>
 </p>
 
-
-## My littles stats
+## My Little Stats
 
 ![Idriss's GitHub stats](https://github-readme-stats.vercel.app/api?username=m-idriss&show_icons=true&theme=transparent)
 
