@@ -17,7 +17,7 @@ spring:
     password: diag
     driver-class-name: org.postgresql.Driver
   liquibase:
-    change-log: classpath:/db/changelog/db.changelog-master.xml
+    change-log: classpath:/db/changelogs/db.changelog-master.xml
   profiles:
     active: dev
   config:

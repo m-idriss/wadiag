@@ -40,7 +40,7 @@ class DatabaseConnectionTest {
 
         // Get a list of all table names
         List<String> tableNames = getAllTableNames(connection);
-        assertThat(tableNames).contains("databasechangelog", "word");
+        assertThat(tableNames).contains("databasechangelog", "word", "word_theme_category");
     }
 
     private List<String> getAllTableNames(Connection connection) {
