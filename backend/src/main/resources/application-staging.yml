@@ -1,4 +1,3 @@
 wordsapi:
   host:
     key: ${WORDSAPI_KEY}
-    url: ${WORDSAPI_URL}
