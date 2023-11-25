@@ -15,7 +15,6 @@ jobs:
     environment: staging
     env:
       WORDSAPI_KEY: ${{ secrets.WORDSAPI_KEY }}
-      WORDSAPI_URL: ${{ secrets.WORDSAPI_URL }}
     services:
       postgres:
         image: postgres
