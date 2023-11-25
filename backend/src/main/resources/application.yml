@@ -53,3 +53,6 @@ management:
       base-path: /actuator
   security:
     enabled: false
+wordsapi:
+  host:
+    url: https://wordsapiv1.p.rapidapi.com
