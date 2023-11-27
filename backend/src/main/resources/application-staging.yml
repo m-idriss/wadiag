@@ -1,3 +1,7 @@
 wordsapi:
   host:
     key: ${WORDSAPI_KEY}
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/diag
