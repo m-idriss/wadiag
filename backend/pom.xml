@@ -133,9 +133,9 @@
             </properties>
         </profile>
         <profile>
-            <id>action</id>
+            <id>staging</id>
             <properties>
-                <environment>action</environment>
+                <environment>staging</environment>
             </properties>
         </profile>
         <profile>
