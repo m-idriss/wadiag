@@ -2,7 +2,6 @@ package com.dime.wadiag.configuration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,15 +34,6 @@ class LogbackConfigurationTest {
 		listAppender.start();
 		Logger logger = context.getLogger("com.dime");
 		logger.addAppender(listAppender);
-	}
-
-	@AfterEach
-	void tearDown() {
-		// Remove the ListAppender and reset the context after each test
-		Logger logger = context.getLogger("com.dime");
-		logger.detachAppender(listAppender);
-		listAppender.stop();
-		context.reset();
 	}
 
 	@DisplayName("Should see log from logback configuration")

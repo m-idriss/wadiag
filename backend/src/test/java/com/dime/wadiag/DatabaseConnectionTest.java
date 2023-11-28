@@ -47,11 +47,11 @@ class DatabaseConnectionTest {
         List<String> tableNames = new ArrayList<>();
         try {
             Statement statement = connection.createStatement();
-            String sql = "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' ORDER BY table_name;";
+            String sql = "SELECT table_name FROM information_schema.tables";
             ResultSet resultSet = statement.executeQuery(sql);
 
             while (resultSet.next()) {
-                tableNames.add(resultSet.getString(1));
+                tableNames.add(resultSet.getString(1).toLowerCase());
             }
 
             resultSet.close();
