@@ -7,6 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.SpringVersion;
 import org.springframework.core.env.Environment;
 
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +35,7 @@ public class WadiagApplication {
 
 				----------------------------------------------------------
 				\t Application '{}' is running!
+				\t Spring Boot Version: \t{}
 				\t Access URLs:
 				\t - index: \t{}://localhost:{}/index.html
 				\t - Local: \t{}://localhost:{}
@@ -43,7 +45,9 @@ public class WadiagApplication {
 				----------------------------------------------------------
 				""",
 				//
-				env.getProperty("spring.application.name"), protocol, env.getProperty(SERVER_PORT), protocol,
+				env.getProperty("spring.application.name"),
+				SpringVersion.getVersion(),
+				protocol, env.getProperty(SERVER_PORT), protocol,
 				env.getProperty(SERVER_PORT),
 				protocol, InetAddress.getLocalHost().getHostAddress(), env.getProperty(SERVER_PORT), protocol,
 				env.getProperty(SERVER_PORT), env.getActiveProfiles());

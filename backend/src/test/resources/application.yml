@@ -23,15 +23,16 @@ spring:
   config:
     import: optional:file:./application-${spring.profiles.active}.yml
 
-server:
-  port: 8081
-
 logging:
   level:
-    root: info
-    web: debug
-    org.springframework.web: debug
-    org.hibernate: info
+    root: INFO
+    web: DEBUG
+    org.springframework: INFO
+    org.hibernate: INFO
+    com.dime.wadiag: INFO
+
+server:
+  port: 8082
 
 springdoc:
   api-docs:
