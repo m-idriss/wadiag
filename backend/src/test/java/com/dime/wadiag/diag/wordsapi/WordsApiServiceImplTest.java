@@ -8,7 +8,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
-
+import org.springframework.web.server.ResponseStatusException;
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -49,9 +49,9 @@ class WordsApiServiceImplTest {
     @DisplayName("Get synonyms for an invalid word")
     @Test
     void test_get_synonyms_for_word_resource_not_found_exception() {
-        ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class,
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> service.getSynonymsForWord("toto"));
-        assertThat(exception.getMessage()).isEqualTo("synonyms not found for : toto");
+        assertThat(exception.getMessage()).isEqualTo("404 NOT_FOUND \"synonyms not found for: toto\"");
     }
 
     @DisplayName("test request to WordsAPI and receives a successful response")
