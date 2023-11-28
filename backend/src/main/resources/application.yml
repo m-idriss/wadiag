@@ -32,7 +32,7 @@ logging:
     com.dime.wadiag: INFO
 
 server:
-  port: 8080
+  port: ${SPRING_PORT:8080}
 
 springdoc:
   api-docs:

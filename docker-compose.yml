@@ -33,8 +33,9 @@ services:
       - POSTGRES_DB=diag
       - POSTGRES_USER=diag
       - POSTGRES_PASSWORD=diag
+      - SPRING_PORT=${SPRING_PORT}
     ports:
-      - '8081:8081' # Forward the exposed port ${SPRING_PORT} on the container to port 8081 on the host machine
+      - '${SPRING_PORT}:${SPRING_PORT}' # Forward the exposed port ${SPRING_PORT} on the container to port 8081 on the host machine
     links:
       - diag-postgres
     depends_on:
