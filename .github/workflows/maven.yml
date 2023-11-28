@@ -53,7 +53,7 @@ jobs:
           echo "WORDSAPI_URL: $WORDSAPI_URL"
 
       - name: Build and Test with Maven
-        run: cd backend && mvn -B verify --file pom.xml -Dspring.profiles.active=staging
+        run: cd backend && mvn verify --file pom.xml -Dspring.profiles.active=staging
 
       - name: Test Reporter
         uses: dorny/test-reporter@v1.7.0
