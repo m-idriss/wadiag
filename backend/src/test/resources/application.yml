@@ -19,9 +19,12 @@ spring:
   liquibase:
     change-log: classpath:/db/changelogs/db.changelog-master.xml
   profiles:
-    active: test
+    active: dev
   config:
     import: optional:file:./application-${spring.profiles.active}.yml
+
+server:
+  port: 8081
 
 logging:
   level:
