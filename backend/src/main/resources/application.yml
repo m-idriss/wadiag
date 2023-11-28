@@ -12,12 +12,11 @@ spring:
             lob:
               on_contextual_creation: true
   datasource:
-    url: jdbc:postgresql://diag-postgres:5432/diag
+    url: jdbc:postgresql://localhost:5432/diag
     username: diag
     password: diag
     driver-class-name: org.postgresql.Driver
   liquibase:
-    enabled: true
     change-log: classpath:/db/changelogs/db.changelog-master.xml
   profiles:
     active: dev
@@ -28,11 +27,11 @@ logging:
   level:
     root: info
     web: debug
-    org.springframework.web: info
+    org.springframework.web: debug
     org.hibernate: info
 
 server:
-  port: 8080
+  port: 8081
 
 springdoc:
   api-docs:
