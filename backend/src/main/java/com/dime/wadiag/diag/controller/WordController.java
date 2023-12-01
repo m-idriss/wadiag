@@ -1,5 +1,6 @@
-package com.dime.wadiag.diag.word;
+package com.dime.wadiag.diag.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.dime.wadiag.diag.model.Word;
+import com.dime.wadiag.diag.service.WordService;
+import com.dime.wadiag.diag.wordsapi.ResourceNotFoundException;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -29,7 +34,7 @@ public class WordController {
 
   @Operation(summary = "SaveWord")
   @PostMapping("/{word}")
-  public ResponseEntity<Word> save(@PathVariable("word") String word) {
+  public ResponseEntity<Word> save(@PathVariable("word") String word) throws ResourceNotFoundException, IOException {
     return ResponseEntity.ok(service.save(word));
   }
 

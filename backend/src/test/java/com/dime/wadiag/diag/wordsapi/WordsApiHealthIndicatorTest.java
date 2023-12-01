@@ -12,6 +12,8 @@ import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 
+import com.dime.wadiag.diag.service.impl.WordsApiServiceImpl;
+
 @SpringBootTest
 @ContextConfiguration
 class WordsApiHealthIndicatorTest {

@@ -5,33 +5,31 @@ spring:
     open-in-view: true
     hibernate:
       ddl-auto: create
-      properties:
-        hibernate:
-          dialect: org.hibernate.dialect.PostgreSQLDialect
-          jdbc:
-            lob:
-              on_contextual_creation: true
+
   datasource:
     url: jdbc:postgresql://${DB_SERVER:localhost}:5432/diag
     username: diag
     password: diag
     driver-class-name: org.postgresql.Driver
+
   liquibase:
     change-log: classpath:/db/changelogs/db.changelog-master.xml
+
   profiles:
     active: dev
-  config:
-    import: optional:file:./application-${spring.profiles.active}.yml
+    config:
+      import: optional:file:./application-${spring.profiles.active}.yml
 
 logging:
   level:
-    root: info
-    web: debug
-    org.springframework.web: debug
-    org.hibernate: info
+    root: INFO
+    web: INFO
+    org.springframework: INFO
+    org.hibernate: INFO
+    com.dime.wadiag: INFO
 
 server:
-  port: 8080
+  port: ${SPRING_PORT:8080}
 
 springdoc:
   api-docs:
@@ -53,6 +51,7 @@ management:
       base-path: /actuator
   security:
     enabled: false
+
 wordsapi:
   host:
     url: https://wordsapiv1.p.rapidapi.com

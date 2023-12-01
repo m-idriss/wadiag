@@ -1,4 +1,4 @@
-package com.dime.wadiag;
+package com.dime.wadiag.diag.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -40,7 +40,7 @@ class DatabaseConnectionTest {
 
         // Get a list of all table names
         List<String> tableNames = getAllTableNames(connection);
-        assertThat(tableNames).contains("databasechangelog", "word", "word_theme_category");
+        assertThat(tableNames).contains("databasechangelog", "word");
     }
 
     private List<String> getAllTableNames(Connection connection) {

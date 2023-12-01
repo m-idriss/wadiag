@@ -1,4 +1,4 @@
-package com.dime.wadiag;
+package com.dime.wadiag.diag.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
