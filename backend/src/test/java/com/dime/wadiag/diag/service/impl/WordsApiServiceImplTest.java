@@ -1,4 +1,4 @@
-package com.dime.wadiag.diag.wordsapi;
+package com.dime.wadiag.diag.service.impl;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,6 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.web.server.ResponseStatusException;
+
+import com.dime.wadiag.diag.dto.WordDto;
+import com.dime.wadiag.diag.wordsapi.WordsApiProperties;
+
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -37,7 +41,7 @@ class WordsApiServiceImplTest {
     @Test
     void test_get_synonyms_for_word() {
         try {
-            WordsApiResponse wordResponse = service.getSynonymsForWord("school");
+            WordDto wordResponse = service.getSynonymsForWord("school");
             assertThat(wordResponse.getSynonyms()).containsExactlyElementsOf(Arrays.asList("shoal", "school day",
                     "schooltime", "civilise", "civilize", "cultivate", "educate", "train", "schooling", "schoolhouse"));
             assertThat(wordResponse.getWord()).isEqualTo("school");

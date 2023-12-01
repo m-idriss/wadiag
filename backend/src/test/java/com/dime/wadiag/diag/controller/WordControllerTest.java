@@ -1,4 +1,4 @@
-package com.dime.wadiag.diag.word;
+package com.dime.wadiag.diag.controller;
 
 import static org.mockito.Mockito.when;
 
@@ -15,6 +15,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import com.dime.wadiag.diag.model.Word;
+import com.dime.wadiag.diag.service.WordService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
 
@@ -37,7 +39,7 @@ class WordControllerTest {
     @Test
     void test_save_word_endpoint() throws Exception {
         String name = faker.lorem().word();
-        Word word = new Word(1, name);
+        Word word = new Word(name);
 
         when(service.save(name)).thenReturn(word);
 
@@ -51,9 +53,9 @@ class WordControllerTest {
     void test_find_all_words_endpoint() throws Exception {
         // Assuming you have a list of words in your WordService or a database
         List<Word> wordList = Arrays.asList(
-                new Word(1, "word1"),
-                new Word(2, "word2"),
-                new Word(3, "word3"));
+                new Word("word1"),
+                new Word("word2"),
+                new Word("word3"));
 
         when(service.findAll()).thenReturn(wordList);
 

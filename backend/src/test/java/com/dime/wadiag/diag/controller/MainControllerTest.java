@@ -1,4 +1,4 @@
-package com.dime.wadiag;
+package com.dime.wadiag.diag.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

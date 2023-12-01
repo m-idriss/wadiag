@@ -1,4 +1,4 @@
-package com.dime.wadiag.diag.wordsapi;
+package com.dime.wadiag.diag.service.impl;
 
 import java.io.IOException;
 
@@ -7,7 +7,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.dime.wadiag.diag.word.Word;
+import com.dime.wadiag.diag.dto.WordDto;
+import com.dime.wadiag.diag.service.WordsApiService;
+import com.dime.wadiag.diag.wordsapi.ResourceNotFoundException;
+import com.dime.wadiag.diag.wordsapi.WordsApiProperties;
 
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.ResponseBody;
@@ -34,18 +37,14 @@ public class WordsApiServiceImpl {
         wordsApiInterface = retrofit.create(WordsApiService.class);
     }
 
-    public WordsApiResponse getSynonymsForWord(String word) throws ResourceNotFoundException, IOException {
+    public WordDto getSynonymsForWord(String word) throws ResourceNotFoundException, IOException {
         try {
-            Call<WordsApiResponse> call = wordsApiInterface.getSynonymsForWord(word,
+            Call<WordDto> call = wordsApiInterface.getSynonymsForWord(word,
                     wordsApiProperties.getKey());
-            retrofit2.Response<WordsApiResponse> response = call.execute();
+            retrofit2.Response<WordDto> response = call.execute();
 
             if (response.isSuccessful()) {
                 assert response.body() != null;
-                Word entity = Word.builder()
-                        .name(word)
-                        .build();
-                log.info(entity.toString());
                 return response.body();
             } else {
                 log.error(response.toString());
