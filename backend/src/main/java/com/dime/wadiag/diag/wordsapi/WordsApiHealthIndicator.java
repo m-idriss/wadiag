@@ -4,6 +4,8 @@ import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.stereotype.Component;
 
+import com.dime.wadiag.diag.service.impl.WordsApiServiceImpl;
+
 @Component
 public class WordsApiHealthIndicator implements HealthIndicator {
 

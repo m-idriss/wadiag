@@ -1,4 +1,4 @@
-package com.dime.wadiag.diag.wordsapi;
+package com.dime.wadiag.diag.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -15,6 +15,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dime.wadiag.diag.dto.WordDto;
+import com.dime.wadiag.diag.service.impl.WordsApiServiceImpl;
+import com.dime.wadiag.diag.wordsapi.ResourceNotFoundException;
+
 import java.io.IOException;
 
 @RestController
@@ -30,13 +34,13 @@ public class WordsApiController {
         @Operation(summary = "Get a synonyms for word")
         @ApiResponses(value = {
                         @ApiResponse(responseCode = "200", description = "Found the synonyms", content = {
-                                        @Content(mediaType = "application/json", schema = @Schema(implementation = WordsApiResponse.class)) }),
+                                        @Content(mediaType = "application/json", schema = @Schema(implementation = WordDto.class)) }),
                         @ApiResponse(responseCode = "404", description = "Synonyms not found", content = @Content) })
         @GetMapping("/{word}")
-        public ResponseEntity<WordsApiResponse> getSynonymsForWord(@PathVariable("word") String word)
+        public ResponseEntity<WordDto> getSynonymsForWord(@PathVariable("word") String word)
                         throws ResourceNotFoundException, IOException {
-                WordsApiResponse wordsApiResponse = service.getSynonymsForWord(word);
-                WordsApiResponse dto = modelMapper.map(wordsApiResponse, WordsApiResponse.class);
+                WordDto wordsApiResponse = service.getSynonymsForWord(word);
+                WordDto dto = modelMapper.map(wordsApiResponse, WordDto.class);
 
                 return ResponseEntity.ok(dto);
         }

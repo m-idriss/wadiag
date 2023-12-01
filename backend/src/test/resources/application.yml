@@ -3,14 +3,13 @@ spring:
     name: Wadiag Application
   jpa:
     open-in-view: true
+    show-sql: true
     hibernate:
       ddl-auto: create
-      properties:
-        hibernate:
-          dialect: org.hibernate.dialect.H2Dialect
-          jdbc:
-            lob:
-              on_contextual_creation: true
+    properties:
+      hibernate:
+        format_sql: true
+
   datasource:
     url: jdbc:h2:mem:testdb
     username: sa
@@ -18,6 +17,8 @@ spring:
     driver-class-name: org.h2.Driver
   liquibase:
     change-log: classpath:/db/changelogs/db.changelog-master.xml
+    drop-first: true # Whether to first drop the database schema.
+
   profiles:
     active: dev
   config:
@@ -25,11 +26,11 @@ spring:
 
 logging:
   level:
-    root: INFO
+    root: DEBUG
     web: DEBUG
-    org.springframework: INFO
-    org.hibernate: INFO
-    com.dime.wadiag: INFO
+    org.springframework: DEBUG
+    org.hibernate: DEBUG
+    com.dime.wadiag: DEBUG
 
 server:
   port: 8082
@@ -50,7 +51,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: health
+        include: "*"
       base-path: /actuator
   security:
     enabled: false

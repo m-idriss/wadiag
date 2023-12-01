@@ -7,9 +7,5 @@
 
     <!-- Include versioned changelogs -->
     <include file="v1.0/db.changelog-01-word.xml" relativeToChangelogFile="true" />
-    <include file="v1.0/db.changelog-02-theme.xml" relativeToChangelogFile="true" />
-    <include file="v1.0/db.changelog-03-category.xml" relativeToChangelogFile="true" />
-    <include file="v1.0/db.changelog-04-word-theme-category.xml"
-        relativeToChangelogFile="true" />
 
 </databaseChangeLog>
