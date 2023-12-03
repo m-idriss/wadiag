@@ -9,6 +9,8 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: staging
+    env:
+        PUBLIC_IP: ${{ secrets.PUBLIC_IP }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
