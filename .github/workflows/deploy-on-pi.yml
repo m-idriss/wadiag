@@ -19,7 +19,8 @@ jobs:
       - name: Debug Environment Variables
         run: |
           echo "PUBLIC_IP: $PUBLIC_IP"
-          
+          echo "PI_USERNAME: $PI_USERNAME"
+          echo "SSH_PRIVATE_KEY: $SSH_PRIVATE_KEY"      
       - name: SSH to Raspberry Pi and pull changes
         id: ssh_pull
         uses: appleboy/ssh-action@master
