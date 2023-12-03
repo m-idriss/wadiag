@@ -28,7 +28,7 @@ jobs:
           username: ${{ secrets.PI_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /dev/projects/wadiag
+            cd dev/projects/wadiag
             git pull origin master
         continue-on-error: true
 
@@ -44,7 +44,7 @@ jobs:
           username: ${{ secrets.PI_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /dev/projects/wadiag
+            cd dev/projects/wadiag
             docker-compose down
             docker-compose up -d
         continue-on-error: true
