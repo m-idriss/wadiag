@@ -1,0 +1,52 @@
+name: Deploy to Raspberry Pi
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Debug Environment Variables
+        run: |
+          echo "PUBLIC_IP: $PUBLIC_IP"
+          
+      - name: SSH to Raspberry Pi and pull changes
+        id: ssh_pull
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.PUBLIC_IP }}
+          username: ${{ secrets.PI_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /dev/projects/wadiag
+            git pull origin master
+        continue-on-error: true
+
+      - name: Check if git pull was successful
+        if: steps.ssh_pull.outcome == 'failure'
+        run: exit 1  # Fail the workflow if git pull failed
+
+      - name: SSH to Raspberry Pi and restart Docker Compose
+        id: ssh_compose
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.PUBLIC_IP }}
+          username: ${{ secrets.PI_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /dev/projects/wadiag
+            docker-compose down
+            docker-compose up -d
+        continue-on-error: true
+
+      - name: Check if Docker Compose restart was successful
+        if: steps.ssh_compose.outcome == 'failure'
+        run: exit 1  # Fail the workflow if Docker Compose restart failed
+
+      # Add more checks as needed based on your project requirements
