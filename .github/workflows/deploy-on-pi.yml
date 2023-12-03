@@ -10,7 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     environment: staging
     env:
-        PUBLIC_IP: ${{ secrets.PUBLIC_IP }}
+      PUBLIC_IP: ${{ secrets.PUBLIC_IP }}
+      PI_USERNAME: ${{ secrets.PI_USERNAME }}
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
