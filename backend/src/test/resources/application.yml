@@ -26,11 +26,11 @@ spring:
 
 logging:
   level:
-    root: DEBUG
-    web: DEBUG
-    org.springframework: DEBUG
-    org.hibernate: DEBUG
-    com.dime.wadiag: DEBUG
+    root: INFO
+    web: INFO
+    org.springframework: INFO
+    org.hibernate: INFO
+    com.dime.wadiag: INFO
 
 server:
   port: 8082
@@ -51,7 +51,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: "*"
+        include: health
       base-path: /actuator
   security:
     enabled: false
