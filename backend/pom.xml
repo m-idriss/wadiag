@@ -23,11 +23,11 @@
         <springdoc.version>2.2.0</springdoc.version>
         <snakeyaml.version>2.2</snakeyaml.version>
         <liquibase.version>4.25.0</liquibase.version>
-        <postgresql.version>42.6.0</postgresql.version>
-        <jackson-module-scala.version>2.16.0</jackson-module-scala.version>
+        <postgresql.version>42.7.0</postgresql.version>
+        <jackson-module-scala.version>2.15.3</jackson-module-scala.version>
         <javafaker.version>1.0.2</javafaker.version>
         <jacoco.version>0.8.11</jacoco.version>
-        <maven-project-info-reports-plugin.version>3.4.5</maven-project-info-reports-plugin.version>
+        <maven-project-info-reports-plugin.version>3.5.0</maven-project-info-reports-plugin.version>
         <maven-surefire-plugin.version>3.0.0</maven-surefire-plugin.version>
         <modelmapper.version>3.2.0</modelmapper.version>
     </properties>
