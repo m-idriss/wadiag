@@ -50,7 +50,7 @@ jobs:
       - name: Debug Environment Variables
         run: |
           echo "WORDSAPI_KEY: $WORDSAPI_KEY"
-          echo "WORDSAPI_URL: $WORDSAPI_URL"
+          echo "GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}"
 
       - name: Build and Test with Maven
         run: cd backend && mvn verify --file pom.xml -Dspring.profiles.active=staging
