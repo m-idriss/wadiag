@@ -1,6 +1,6 @@
 version: 2
 updates:
   - package-ecosystem: "maven"
-    directory: "wadiag/backend"
+    directory: "/wadiag/backend/"
     schedule:
       interval: "daily"
