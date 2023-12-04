@@ -20,7 +20,7 @@
         <h2.version>2.2.224</h2.version>
         <lombok.version>1.18.30</lombok.version>
         <spring-data-jpa.version>3.1.5</spring-data-jpa.version>
-        <springdoc.version>2.2.0</springdoc.version>
+        <springdoc.version>2.3.0</springdoc.version>
         <snakeyaml.version>2.2</snakeyaml.version>
         <liquibase.version>4.25.0</liquibase.version>
         <postgresql.version>42.6.0</postgresql.version>
