@@ -48,7 +48,7 @@ jobs:
           distribution: "temurin"
 
       - name: Checkout Code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Debug Environment Variables
         run: |
           echo "WORDSAPI_KEY: $WORDSAPI_KEY"
