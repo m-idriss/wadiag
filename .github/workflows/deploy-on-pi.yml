@@ -42,7 +42,7 @@ jobs:
 
       - name: Check if git pull was successful
         if: steps.ssh_pull.outcome == 'failure'
-        run: exit 1  # Fail the workflow if git pull failed
+        run: exit 1 # Fail the workflow if git pull failed
 
       - name: SSH to Raspberry Pi and restart Docker Compose
         id: ssh_compose
@@ -59,4 +59,4 @@ jobs:
 
       - name: Check if Docker Compose restart was successful
         if: steps.ssh_compose.outcome == 'failure'
-        run: exit 1  # Fail the workflow if Docker Compose restart failed
+        run: exit 1 # Fail the workflow if Docker Compose restart failed
