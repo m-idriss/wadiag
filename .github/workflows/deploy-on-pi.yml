@@ -1,6 +1,10 @@
 name: Deploy to Raspberry Pi
 
 on:
+  workflow_run:
+    workflows: ["Java CI with Maven and Tests"]
+    types:
+      - completed
   push:
     branches:
       - master
