@@ -1,6 +1,6 @@
 version: 2
 updates:
   - package-ecosystem: "maven"
-    directory: "backend"
+    directory: "backend/"
     schedule:
       interval: "daily"
