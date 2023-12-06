@@ -20,7 +20,7 @@ class WordsApiHealthIndicatorTest {
 
     @Test
     @DisplayName("Test if connection to wordsapi is up")
-    void testHealthyConnection() throws IOException {
+    void test_healthy_connection() throws IOException {
         WordsApiServiceImpl wordsApiService = Mockito.mock(WordsApiServiceImpl.class);
         Mockito.when(wordsApiService.testWordsApiConnection()).thenReturn(true);
 
@@ -32,7 +32,7 @@ class WordsApiHealthIndicatorTest {
 
     @Test
     @DisplayName("Test when connection to wordsapi is down")
-    void testUnhealthyConnection() throws IOException {
+    void test_unhealthy_connection() throws IOException {
         WordsApiServiceImpl wordsApiService = Mockito.mock(WordsApiServiceImpl.class);
         Mockito.when(wordsApiService.testWordsApiConnection()).thenThrow(new RuntimeException("Connection error"));
 

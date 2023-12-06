@@ -38,9 +38,16 @@ public class WordServiceImpl implements WordService {
     }
 
     @Override
-    public Word findByName(String word) {
-        Word entity = wordRepository.findByName(word);
+    public Word findByName(String name) {
+        Word entity = wordRepository.findByName(name);
         log.debug("Found word: {}", entity);
         return entity;
+    }
+
+    @Override
+    public int deleteByName(String name) {
+        int count = wordRepository.deleteByName(name);
+        log.debug("delete {} count(s) of word: {}", count, name);
+        return count;
     }
 }

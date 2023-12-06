@@ -4,7 +4,8 @@ import lombok.Getter;
 
 @Getter
 public class ResourceNotFoundException extends Exception {
-    private final String type;
+    private static final long serialVersionUID = -5434140839578099309L;
+	private final String type;
     private final String word;
 
     public ResourceNotFoundException(String type, String word) {

@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 public class WadiagApplication {
 
 	@Bean
-	public ModelMapper modelMapper() {
+	ModelMapper modelMapper() {
 		return new ModelMapper();
 	}
 
@@ -31,7 +31,7 @@ public class WadiagApplication {
 		final String port = env.getProperty("server.port");
 		log.info("\n" + """
 
-				-----------------------------------------------------------
+				----------------------------------------------------------+
 				 Application \t: {}
 				 Spring Boot \t: Version {}
 
@@ -45,7 +45,7 @@ public class WadiagApplication {
 				 - Health \t: {}://localhost:{}/actuator/health
 
 				 Profile(s) \t: {}
-				-----------------------------------------------------------
+				----------------------------------------------------------+
 				""",
 				env.getProperty("spring.application.name"),
 				SpringVersion.getVersion(),
