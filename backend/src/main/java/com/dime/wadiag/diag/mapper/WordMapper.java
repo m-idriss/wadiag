@@ -19,7 +19,7 @@ public class WordMapper {
         configureModelMapper();
     }
 
-    private void configureModelMapper() {
+    void configureModelMapper() {
         if (modelMapper.getConfiguration() == null) {
             modelMapper.getConfiguration().setFieldMatchingEnabled(true)
                     .setFieldAccessLevel(Configuration.AccessLevel.PRIVATE)

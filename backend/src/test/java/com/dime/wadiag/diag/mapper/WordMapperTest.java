@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
-
 import com.dime.wadiag.diag.dto.WordDto;
 import com.dime.wadiag.diag.model.Word;
 

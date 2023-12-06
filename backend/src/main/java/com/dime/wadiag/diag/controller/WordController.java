@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dime.wadiag.diag.model.Word;
 import com.dime.wadiag.diag.service.WordService;
-import com.dime.wadiag.diag.wordsapi.ResourceNotFoundException;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -37,7 +36,7 @@ public class WordController {
   @Operation(summary = "SaveWord")
   @PostMapping("/{word}")
   public ResponseEntity<Word> saveWord(@PathVariable(name = "word", required = true) String word)
-      throws ResourceNotFoundException, IOException {
+      throws IOException {
     Word existingWord = service.findByName(word);
     if (existingWord == null) {
       return ResponseEntity.status(HttpStatus.CREATED).body(service.save(word));
@@ -51,7 +50,7 @@ public class WordController {
     try {
       int deletedCount = service.deleteByName(word);
       if (deletedCount == 0) {
-        return ResponseEntity.status(204).build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
       }
       return ResponseEntity.ok(deletedCount + " word(s) deleted successfully");
     } catch (Exception e) {

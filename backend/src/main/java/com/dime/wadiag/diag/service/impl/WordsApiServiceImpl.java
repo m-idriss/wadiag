@@ -9,7 +9,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.dime.wadiag.diag.dto.WordDto;
 import com.dime.wadiag.diag.service.WordsApiService;
-import com.dime.wadiag.diag.wordsapi.ResourceNotFoundException;
 import com.dime.wadiag.diag.wordsapi.WordsApiProperties;
 
 import lombok.extern.slf4j.Slf4j;
@@ -29,33 +28,23 @@ public class WordsApiServiceImpl {
 
     public WordsApiServiceImpl(WordsApiProperties apiProperties) {
         this.wordsApiProperties = apiProperties;
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(wordsApiProperties.getUrl())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(wordsApiProperties.getUrl())
+                .addConverterFactory(GsonConverterFactory.create()).build();
 
         wordsApiInterface = retrofit.create(WordsApiService.class);
     }
 
-    public WordDto getSynonymsForWord(String word) throws ResourceNotFoundException, IOException {
-        try {
-            Call<WordDto> call = wordsApiInterface.getSynonymsForWord(word,
-                    wordsApiProperties.getKey());
-            retrofit2.Response<WordDto> response = call.execute();
+    public WordDto getSynonymsForWord(String word) throws IOException {
+        Call<WordDto> call = wordsApiInterface.getSynonymsForWord(word, wordsApiProperties.getKey());
+        retrofit2.Response<WordDto> response = call.execute();
 
-            if (response.isSuccessful()) {
-                assert response.body() != null;
-                return response.body();
-            } else {
-                log.error(response.toString());
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "synonyms not found for: " + word);
+        if (response.isSuccessful()) {
+            assert response.body() != null;
+            return response.body();
+        } else {
+            log.error(response.toString());
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "synonyms not found for: " + word);
 
-            }
-        } catch (IOException e) {
-            // Handle exceptions
-            log.info("Failed to getSynonymsForWord, cause : " + e.getMessage());
-            throw new ResponseStatusException(
-                    HttpStatus.INTERNAL_SERVER_ERROR, "synonyms not found for: " + word, e);
         }
     }
 

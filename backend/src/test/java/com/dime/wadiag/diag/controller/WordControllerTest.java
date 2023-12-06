@@ -1,5 +1,6 @@
 package com.dime.wadiag.diag.controller;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -14,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -111,7 +114,7 @@ class WordControllerTest {
                 .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(wordList)));
     }
 
-    @DisplayName("Verify that the method returns a 204 status code when the word to be deleted is not found")
+    @DisplayName("Verify that the method returns a 200 status code when word is deleted")
     @Test
     void test_returns_204_when_word_not_found() throws Exception {
         String wordToDelete = faker.lorem().word();
@@ -130,4 +133,34 @@ class WordControllerTest {
         verify(service, times(1)).deleteByName(wordToDelete);
     }
 
+    @DisplayName("Verify that the method returns a 204 status code when the word to be deleted is not found")
+    @Test
+    void test_returns_204_status_code_when_word_not_found() throws Exception {
+        String wordToDelete = faker.lorem().word();
+        int deletedCount = 0;
+
+        // Mocking the behavior of the service
+        when(service.deleteByName(wordToDelete)).thenReturn(deletedCount);
+
+        // Act and Assert
+        mockMvc.perform(MockMvcRequestBuilders.delete("/rest/words/{word}", wordToDelete)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(HttpStatus.NO_CONTENT.value()));
+
+        // Verify that the service method was called with the correct argument
+        verify(service, times(1)).deleteByName(wordToDelete);
+    }
+
+    @DisplayName("Verify that the method returns a 500 status code and an error message when an exception is thrown during the deletion process")
+    @Test
+    void test_returns_500_status_code_and_error_message_when_exception_thrown_during_deletion() {
+        // Arrange
+        WordController wordController = new WordController();
+
+        // Act
+        ResponseEntity<String> response = wordController.deleteByName("exception");
+
+        // Assert
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    }
 }

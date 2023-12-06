@@ -20,7 +20,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.dime.wadiag.diag.dto.WordDto;
 import com.dime.wadiag.diag.model.Word;
 import com.dime.wadiag.diag.repository.WordRepository;
-import com.dime.wadiag.diag.wordsapi.ResourceNotFoundException;
 import com.github.javafaker.Faker;
 
 @ExtendWith(MockitoExtension.class)
@@ -38,7 +37,7 @@ class WordServiceImplTest {
 
     @DisplayName("Saving a new word should create a Word entity with the given name and return it")
     @Test
-    void test_save_new_word() throws ResourceNotFoundException, IOException {
+    void test_save_new_word() throws IOException {
         // Given
         String wordName = faker.lorem().word();
         WordDto mockApiResponse = new WordDto();
@@ -113,7 +112,7 @@ class WordServiceImplTest {
 
     @DisplayName("Should return the Word entity with the given name if it exists in the repository")
     @Test
-    void test_return_word_by_name_id_entity_exists() {
+    void test_return_word_by_name_if_entity_exists() {
         // Arrange
         String name = faker.lorem().word();
         Word expectedEntity = new Word(name);
