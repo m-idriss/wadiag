@@ -4,7 +4,6 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
 import org.modelmapper.config.Configuration;
 import org.modelmapper.convention.MatchingStrategies;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.dime.wadiag.diag.dto.WordDto;
@@ -15,13 +14,12 @@ public class WordMapper {
 
     private final ModelMapper modelMapper;
 
-    @Autowired
     public WordMapper(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
         configureModelMapper();
     }
 
-    private void configureModelMapper() {
+    void configureModelMapper() {
         if (modelMapper.getConfiguration() == null) {
             modelMapper.getConfiguration().setFieldMatchingEnabled(true)
                     .setFieldAccessLevel(Configuration.AccessLevel.PRIVATE)

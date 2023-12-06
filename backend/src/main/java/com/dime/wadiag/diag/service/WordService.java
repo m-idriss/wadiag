@@ -4,13 +4,14 @@ import java.io.IOException;
 import java.util.List;
 
 import com.dime.wadiag.diag.model.Word;
-import com.dime.wadiag.diag.wordsapi.ResourceNotFoundException;
 
 public interface WordService {
-    Word save(String word) throws ResourceNotFoundException, IOException;
+    Word save(String name) throws IOException;
 
     List<Word> findAll();
 
-    Word findByName(String word);
+    Word findByName(String name);
+
+    int deleteByName(String name);
 
 }

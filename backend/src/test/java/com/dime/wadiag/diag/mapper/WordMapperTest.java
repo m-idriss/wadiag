@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
-
 import com.dime.wadiag.diag.dto.WordDto;
 import com.dime.wadiag.diag.model.Word;
 
@@ -27,7 +26,7 @@ class WordMapperTest {
 
     @Test
     @DisplayName("Should map Word entity to WordDto")
-    void testMapToWordDto() {
+    void test_map_to_word_dto() {
         // Given
         Word wordEntity = new Word();
         wordEntity.setName("exampleWord");
@@ -47,7 +46,7 @@ class WordMapperTest {
 
     @Test
     @DisplayName("Should map WordDto to Word entity")
-    void testMapToWord() {
+    void test_map_to_word() {
         // Given
         WordDto wordDto = new WordDto();
         wordDto.setWord("exampleWord");
