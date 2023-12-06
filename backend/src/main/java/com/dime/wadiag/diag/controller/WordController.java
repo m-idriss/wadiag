@@ -18,8 +18,10 @@ import com.dime.wadiag.diag.service.WordService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
+@Slf4j
 @RequestMapping("/rest/words")
 @Tag(name = "Words", description = "Manage Words")
 public class WordController {
@@ -54,7 +56,8 @@ public class WordController {
       }
       return ResponseEntity.ok(deletedCount + " word(s) deleted successfully");
     } catch (Exception e) {
-      return ResponseEntity.status(500).body("Error deleting word: " + e.getMessage());
+      log.warn("Exception occurred", e);
+      return ResponseEntity.status(500).body("Error when deleting word: " + word);
     }
   }
 
