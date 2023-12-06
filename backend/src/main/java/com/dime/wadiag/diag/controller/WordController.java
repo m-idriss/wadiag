@@ -57,7 +57,7 @@ public class WordController {
       return ResponseEntity.ok(deletedCount + " word(s) deleted successfully");
     } catch (Exception e) {
       log.warn("Exception occurred", e);
-      return ResponseEntity.status(500).body("Error when deleting word: " + word);
+      return ResponseEntity.status(500).body("Error when deleting word");
     }
   }
 
