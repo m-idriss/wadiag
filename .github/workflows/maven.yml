@@ -3,7 +3,7 @@ name: Java CI with Maven and Tests
 on:
   push:
     branches: ["master", "develop"]
-  pull_request:
+  pull_request_target:
     branches: ["master", "develop"]
   schedule:
     - cron: "0 7 * * *"
