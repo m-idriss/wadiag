@@ -116,7 +116,7 @@ class WordControllerTest {
 
     @DisplayName("Verify that the method returns a 200 status code when word is deleted")
     @Test
-    void test_returns_204_when_word_not_found() throws Exception {
+    void test_returns_200_when_word_not_found() throws Exception {
         String wordToDelete = faker.lorem().word();
         int deletedCount = 3;
 
