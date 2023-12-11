@@ -39,9 +39,11 @@ public class WordController {
   @PostMapping("/{word}")
   public ResponseEntity<Word> saveWord(@PathVariable(name = "word", required = true) String word)
       throws IOException {
-    Word existingWord = service.findByName(word);
+    String name = word.toLowerCase();
+    Word existingWord = service.findByName(name);
     if (existingWord == null) {
-      return ResponseEntity.status(HttpStatus.CREATED).body(service.save(word));
+      Word entity = service.save(name);
+      return ResponseEntity.status(HttpStatus.CREATED).body(entity);
     }
     return ResponseEntity.ok(existingWord);
   }
@@ -50,11 +52,12 @@ public class WordController {
   @DeleteMapping("/{word}")
   public ResponseEntity<String> deleteByName(@PathVariable String word) {
     try {
-      int deletedCount = service.deleteByName(word);
+      String name = word.toLowerCase();
+      int deletedCount = service.deleteByName(name);
       if (deletedCount == 0) {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
       }
-      return ResponseEntity.ok(deletedCount + " word(s) deleted successfully");
+      return ResponseEntity.ok(deletedCount + (deletedCount > 1 ? " words" : " word") + " deleted successfully");
     } catch (Exception e) {
       log.warn("Exception occurred", e);
       return ResponseEntity.status(500).body("Error when deleting word");

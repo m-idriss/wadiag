@@ -21,21 +21,21 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Service
 public class WordsApiServiceImpl {
 
-    private WordsApiService wordsApiInterface;
-
     @Autowired
     private WordsApiProperties wordsApiProperties;
+
+    private WordsApiService service;
 
     public WordsApiServiceImpl(WordsApiProperties apiProperties) {
         this.wordsApiProperties = apiProperties;
         Retrofit retrofit = new Retrofit.Builder().baseUrl(wordsApiProperties.getUrl())
                 .addConverterFactory(GsonConverterFactory.create()).build();
 
-        wordsApiInterface = retrofit.create(WordsApiService.class);
+        service = retrofit.create(WordsApiService.class);
     }
 
     public WordDto getSynonymsForWord(String word) throws IOException {
-        Call<WordDto> call = wordsApiInterface.getSynonymsForWord(word, wordsApiProperties.getKey());
+        Call<WordDto> call = service.getSynonymsForWord(word, wordsApiProperties.getKey());
         retrofit2.Response<WordDto> response = call.execute();
 
         if (response.isSuccessful()) {
@@ -49,19 +49,11 @@ public class WordsApiServiceImpl {
     }
 
     public boolean testWordsApiConnection() throws IOException {
-        try {
-            // Perform a test request to WordsAPI to check the connection
-            Call<ResponseBody> call = wordsApiInterface.testWordsApiConnection(wordsApiProperties.getKey());
-            retrofit2.Response<ResponseBody> response = call.execute();
-
-            if (!response.isSuccessful()) {
-                throw new IOException("Failed to connect to WordsAPI. HTTP status code: " + response.code());
-            }
-
-            return true;
-        } catch (IOException e) {
-            log.error("Failed to test WordsAPI connection: " + e.getMessage());
-            throw e;
+        Call<ResponseBody> call = service.testWordsApiConnection(wordsApiProperties.getKey());
+        retrofit2.Response<ResponseBody> response = call.execute();
+        if (!response.isSuccessful()) {
+            throw new IOException("Failed to connect to WordsAPI. HTTP status code: " + response.code());
         }
+        return true;
     }
 }

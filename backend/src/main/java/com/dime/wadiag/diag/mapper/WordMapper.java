@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
 import org.modelmapper.config.Configuration;
 import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.dime.wadiag.diag.dto.WordDto;
@@ -14,6 +15,7 @@ public class WordMapper {
 
     private final ModelMapper modelMapper;
 
+    @Autowired
     public WordMapper(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
         configureModelMapper();
@@ -27,12 +29,18 @@ public class WordMapper {
         }
 
         // Customize the mapping between Word and WordDto using typeMap
-        TypeMap<Word, WordDto> typeMapWord = modelMapper.createTypeMap(Word.class, WordDto.class);
-        typeMapWord.addMapping(Word::getName, WordDto::setWord);
+        TypeMap<Word, WordDto> typeMapWord = modelMapper.getTypeMap(Word.class, WordDto.class);
+        if (typeMapWord == null) {
+            typeMapWord = modelMapper.createTypeMap(Word.class, WordDto.class);
+            typeMapWord.addMapping(Word::getName, WordDto::setWord);
+        }
 
         // Add other custom mappings as needed
-        TypeMap<WordDto, Word> typeMapWordDto = modelMapper.createTypeMap(WordDto.class, Word.class);
-        typeMapWordDto.addMapping(WordDto::getWord, Word::setName);
+        TypeMap<WordDto, Word> typeMapWordDto = modelMapper.getTypeMap(WordDto.class, Word.class);
+        if (typeMapWordDto == null) {
+            typeMapWordDto = modelMapper.createTypeMap(WordDto.class, Word.class);
+            typeMapWordDto.addMapping(WordDto::getWord, Word::setName);
+        }
     }
 
     public WordDto toWordDto(Word entity) {

@@ -51,7 +51,7 @@ class WordControllerTest {
         when(service.findByName(name)).thenReturn(null);
         when(service.save(name)).thenReturn(word);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/rest/words/" + name))
+        mockMvc.perform(MockMvcRequestBuilders.post("/rest/words/{word}", name.toUpperCase()))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(word)));
 
@@ -67,7 +67,7 @@ class WordControllerTest {
 
         when(service.findByName(name)).thenReturn(existingWord);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/rest/words/" + name))
+        mockMvc.perform(MockMvcRequestBuilders.post("/rest/words/{word}", name.toUpperCase()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(existingWord)));
 
@@ -83,7 +83,7 @@ class WordControllerTest {
 
         when(service.findByName(name)).thenReturn(existingWord);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/rest/words/" + name))
+        mockMvc.perform(MockMvcRequestBuilders.post("/rest/words/{word}", name.toUpperCase()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(existingWord)));
 
@@ -116,7 +116,26 @@ class WordControllerTest {
 
     @DisplayName("Verify that the method returns a 200 status code when word is deleted")
     @Test
-    void test_returns_200_when_word_not_found() throws Exception {
+    void test_returns_200_when_word_deleted() throws Exception {
+        String wordToDelete = faker.lorem().word();
+        int deletedCount = 1;
+
+        // Mocking the behavior of the service
+        when(service.deleteByName(wordToDelete)).thenReturn(deletedCount);
+
+        // Act and Assert
+        mockMvc.perform(MockMvcRequestBuilders.delete("/rest/words/{word}", wordToDelete.toUpperCase())
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string("1 word deleted successfully"));
+
+        // Verify that the service method was called with the correct argument
+        verify(service, times(1)).deleteByName(wordToDelete);
+    }
+
+    @DisplayName("Verify that the method returns a 200 status code when words is deleted")
+    @Test
+    void test_returns_200_when_words_deleted() throws Exception {
         String wordToDelete = faker.lorem().word();
         int deletedCount = 3;
 
@@ -124,10 +143,10 @@ class WordControllerTest {
         when(service.deleteByName(wordToDelete)).thenReturn(deletedCount);
 
         // Act and Assert
-        mockMvc.perform(MockMvcRequestBuilders.delete("/rest/words/{word}", wordToDelete)
+        mockMvc.perform(MockMvcRequestBuilders.delete("/rest/words/{word}", wordToDelete.toUpperCase())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string(deletedCount + " word(s) deleted successfully"));
+                .andExpect(MockMvcResultMatchers.content().string(("3 words deleted successfully")));
 
         // Verify that the service method was called with the correct argument
         verify(service, times(1)).deleteByName(wordToDelete);
@@ -143,7 +162,7 @@ class WordControllerTest {
         when(service.deleteByName(wordToDelete)).thenReturn(deletedCount);
 
         // Act and Assert
-        mockMvc.perform(MockMvcRequestBuilders.delete("/rest/words/{word}", wordToDelete)
+        mockMvc.perform(MockMvcRequestBuilders.delete("/rest/words/{word}", wordToDelete.toUpperCase())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().is(HttpStatus.NO_CONTENT.value()));
 
@@ -162,5 +181,19 @@ class WordControllerTest {
 
         // Assert
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    }
+
+    @DisplayName("Should handle exception and return 500 Internal Server Error")
+    @Test
+    void testDeleteWordException() throws Exception {
+        String wordToDelete = faker.lorem().word();
+
+        when(service.deleteByName(wordToDelete)).thenThrow(new RuntimeException("Simulated exception"));
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/rest/words/{word}", wordToDelete))
+                .andExpect(MockMvcResultMatchers.status().isInternalServerError())
+                .andExpect(MockMvcResultMatchers.content().string("Error when deleting word"));
+
+        verify(service, times(1)).deleteByName(wordToDelete);
     }
 }

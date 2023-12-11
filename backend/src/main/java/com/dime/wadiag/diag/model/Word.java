@@ -21,10 +21,6 @@ import lombok.Setter;
 @RequiredArgsConstructor
 public class Word {
 
-    public Word(String name) {
-        this.name = name;
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -35,5 +31,9 @@ public class Word {
 
     @ElementCollection
     private Set<String> synonyms;
+
+    public Word(String name) {
+        this.name = name;
+    }
 
 }

@@ -89,4 +89,21 @@ class WordsApiServiceImplTest {
         assertEquals("Failed to connect to WordsAPI", exception.getMessage());
     }
 
+    @Test
+    void test_successful_request() throws IOException {
+        assertTrue(service.testWordsApiConnection());
+    }
+
+    @Test
+    void test_bad_request() throws IOException {
+
+        WordsApiProperties properties = new WordsApiProperties();
+        properties.setKey("key");
+        properties.setUrl(testProperties.getUrl());
+        service = new WordsApiServiceImpl(properties);
+
+        IOException exception = assertThrows(IOException.class, () -> service.testWordsApiConnection());
+        assertEquals("Failed to connect to WordsAPI. HTTP status code: 403", exception.getMessage());
+    }
+
 }
