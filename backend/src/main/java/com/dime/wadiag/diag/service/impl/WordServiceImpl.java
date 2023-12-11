@@ -20,32 +20,32 @@ import lombok.extern.slf4j.Slf4j;
 @AllArgsConstructor
 public class WordServiceImpl implements WordService {
 
-    private final WordRepository wordRepository;
-    private final WordsApiServiceImpl wordsApiService;
+    private final WordRepository repository;
+    private final WordsApiServiceImpl service;
 
     private final WordMapper wordMapper = new WordMapper(new ModelMapper());
 
     @Override
     public Word save(String name) throws IOException {
-        WordDto wordDto = wordsApiService.getSynonymsForWord(name);
-        return wordRepository.save(wordMapper.fromWordDto(wordDto));
+        WordDto wordDto = service.getSynonymsForWord(name);
+        return repository.save(wordMapper.fromWordDto(wordDto));
     }
 
     @Override
     public List<Word> findAll() {
-        return wordRepository.findAll();
+        return repository.findAll();
     }
 
     @Override
     public Word findByName(String name) {
-        Word entity = wordRepository.findByName(name);
+        Word entity = repository.findByName(name);
         log.debug("Found word: {}", entity);
         return entity;
     }
 
     @Override
     public int deleteByName(String name) {
-        int count = wordRepository.deleteByName(name);
+        int count = repository.deleteByName(name);
         log.debug("delete {} count(s) of word: {}", count, name);
         return count;
     }

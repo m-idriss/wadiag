@@ -1,7 +1,6 @@
 package com.dime.wadiag.diag.wordsapi;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.io.IOException;
 
 import org.junit.jupiter.api.DisplayName;
@@ -42,4 +41,5 @@ class WordsApiHealthIndicatorTest {
         assertEquals(Status.DOWN, health.getStatus());
         assertEquals("Connection error", health.getDetails().get("error"));
     }
+
 }
