@@ -53,8 +53,8 @@ class WordRepositoryTest {
     void test_find_all() {
 
         List<String> list = new ArrayList<>();
-        list.add(faker.lorem().word());
-        list.add(faker.lorem().word());
+        list.add("toto");
+        list.add("tata");
 
         entityManager.persistAndFlush(new Word(list.get(0)));
         entityManager.persistAndFlush(new Word(list.get(1)));
