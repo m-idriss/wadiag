@@ -133,3 +133,6 @@ build/
 /backend/logs
 /backend/src/main/resources/application-dev.yml
 /backend/src/main/resources/application-test.yml
+
+### VS Code ### plugin SQLTools ###
+*.session.sql

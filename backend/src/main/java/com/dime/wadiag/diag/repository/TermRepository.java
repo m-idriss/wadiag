@@ -4,14 +4,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.dime.wadiag.diag.model.Word;
+import com.dime.wadiag.diag.model.Term;
 
 @Repository
-public interface WordRepository extends JpaRepository<Word, Long> {
+public interface TermRepository extends JpaRepository<Term, Long> {
 
-    Word findByName(String name);
+    Term findByWord(String word);
 
     @Transactional
-    int deleteByName(String name);
+    int deleteByWord(String name);
 
 }

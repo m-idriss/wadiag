@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.dime.wadiag.diag.dto.WordDto;
+import com.dime.wadiag.diag.model.Term;
 import com.dime.wadiag.diag.wordsapi.WordsApiProperties;
 
 import java.io.IOException;
@@ -41,10 +41,10 @@ class WordsApiServiceImplTest {
     @Test
     void test_get_synonyms_for_word() {
         try {
-            WordDto wordResponse = service.getSynonymsForWord("school");
-            assertThat(wordResponse.getSynonyms()).containsExactlyElementsOf(Arrays.asList("shoal", "school day",
+            Term termResponse = service.getSynonymsForWord("school");
+            assertThat(termResponse.getSynonyms()).containsExactlyElementsOf(Arrays.asList("shoal", "school day",
                     "schooltime", "civilise", "civilize", "cultivate", "educate", "train", "schooling", "schoolhouse"));
-            assertThat(wordResponse.getWord()).isEqualTo("school");
+            assertThat(termResponse.getWord()).isEqualTo("school");
         } catch (Exception e) {
             Assertions.fail("Unexpected exception occurred: " + e.getMessage());
         }

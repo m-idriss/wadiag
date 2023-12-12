@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.dime.wadiag.diag.dto.WordDto;
+import com.dime.wadiag.diag.model.Term;
 import com.dime.wadiag.diag.service.WordsApiService;
 import com.dime.wadiag.diag.wordsapi.WordsApiProperties;
 
@@ -34,9 +34,9 @@ public class WordsApiServiceImpl {
         service = retrofit.create(WordsApiService.class);
     }
 
-    public WordDto getSynonymsForWord(String word) throws IOException {
-        Call<WordDto> call = service.getSynonymsForWord(word, wordsApiProperties.getKey());
-        retrofit2.Response<WordDto> response = call.execute();
+    public Term getSynonymsForWord(String word) throws IOException {
+        Call<Term> call = service.getSynonymsForWord(word, wordsApiProperties.getKey());
+        retrofit2.Response<Term> response = call.execute();
 
         if (response.isSuccessful()) {
             assert response.body() != null;
