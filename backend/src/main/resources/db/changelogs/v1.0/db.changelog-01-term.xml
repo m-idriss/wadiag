@@ -4,11 +4,11 @@
 
     <!-- ChangeSet for word table in version 1.0 -->
     <changeSet id="1" author="Dev_1">
-        <createTable tableName="word">
+        <createTable tableName="term">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false" />
             </column>
-            <column name="name" type="VARCHAR(255)">
+            <column name="word" type="VARCHAR(255)">
                 <constraints nullable="false" />
             </column>
         </createTable>

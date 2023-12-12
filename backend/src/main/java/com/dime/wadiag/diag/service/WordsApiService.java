@@ -1,6 +1,6 @@
 package com.dime.wadiag.diag.service;
 
-import com.dime.wadiag.diag.dto.WordDto;
+import com.dime.wadiag.diag.model.Term;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -10,7 +10,7 @@ import retrofit2.http.Path;
 
 public interface WordsApiService {
     @GET("words/{word}/synonyms")
-    Call<WordDto> getSynonymsForWord(@Path("word") String word, @Header("x-rapidapi-key") String apiKey);
+    Call<Term> getSynonymsForWord(@Path("word") String word, @Header("x-rapidapi-key") String apiKey);
 
     @GET("words/health")
     Call<ResponseBody> testWordsApiConnection(@Header("x-rapidapi-key") String apiKey);

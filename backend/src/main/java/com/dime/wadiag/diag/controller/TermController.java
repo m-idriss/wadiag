@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dime.wadiag.diag.model.Word;
-import com.dime.wadiag.diag.service.WordService;
+import com.dime.wadiag.diag.model.Term;
+import com.dime.wadiag.diag.service.TermService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,45 +22,45 @@ import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @Slf4j
-@RequestMapping("/rest/words")
-@Tag(name = "Words", description = "Manage Words")
-public class WordController {
+@RequestMapping("/rest/terms")
+@Tag(name = "Terms", description = "Manage Terms")
+public class TermController {
 
   @Autowired
-  private WordService service;
+  private TermService service;
 
-  @Operation(summary = "FindAllWord")
+  @Operation(summary = "FindAllTerms")
   @GetMapping()
-  public ResponseEntity<List<Word>> findAll() {
+  public ResponseEntity<List<Term>> findAll() {
     return ResponseEntity.ok(service.findAll());
   }
 
-  @Operation(summary = "SaveWord")
+  @Operation(summary = "SaveTerm")
   @PostMapping("/{word}")
-  public ResponseEntity<Word> saveWord(@PathVariable(name = "word", required = true) String word)
+  public ResponseEntity<Term> saveWord(@PathVariable(name = "word", required = true) String word)
       throws IOException {
-    String name = word.toLowerCase();
-    Word existingWord = service.findByName(name);
-    if (existingWord == null) {
-      Word entity = service.save(name);
+    String wordLower = word.toLowerCase();
+    Term existingTerm = service.findByWord(wordLower);
+    if (existingTerm == null) {
+      Term entity = service.save(wordLower);
       return ResponseEntity.status(HttpStatus.CREATED).body(entity);
     }
-    return ResponseEntity.ok(existingWord);
+    return ResponseEntity.ok(existingTerm);
   }
 
-  @Operation(summary = "DeleteWord")
+  @Operation(summary = "DeleteTerm")
   @DeleteMapping("/{word}")
-  public ResponseEntity<String> deleteByName(@PathVariable String word) {
+  public ResponseEntity<String> deleteByWord(@PathVariable String word) {
     try {
-      String name = word.toLowerCase();
-      int deletedCount = service.deleteByName(name);
+      String wordLower = word.toLowerCase();
+      int deletedCount = service.deleteByWord(wordLower);
       if (deletedCount == 0) {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
       }
-      return ResponseEntity.ok(deletedCount + (deletedCount > 1 ? " words" : " word") + " deleted successfully");
+      return ResponseEntity.ok(deletedCount + (deletedCount > 1 ? " terms" : " term") + " deleted successfully");
     } catch (Exception e) {
       log.warn("Exception occurred", e);
-      return ResponseEntity.status(500).body("Error when deleting word");
+      return ResponseEntity.status(500).body("Error when deleting term");
     }
   }
 

@@ -19,7 +19,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class Word {
+public class Term {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,13 +27,12 @@ public class Word {
 
     @NotNull
     @Column(unique = true)
-    private String name;
+    private String word;
 
     @ElementCollection
     private Set<String> synonyms;
 
-    public Word(String name) {
-        this.name = name;
+    public Term(String word) {
+        this.word = word;
     }
-
 }

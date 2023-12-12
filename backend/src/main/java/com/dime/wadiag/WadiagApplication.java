@@ -3,10 +3,8 @@ package com.dime.wadiag;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 import org.springframework.core.SpringVersion;
 import org.springframework.core.env.Environment;
 
@@ -15,11 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 @SpringBootApplication
 @Slf4j
 public class WadiagApplication {
-
-	@Bean
-	ModelMapper modelMapper() {
-		return new ModelMapper();
-	}
 
 	public static void main(String[] args) throws UnknownHostException {
 		var app = new SpringApplication(WadiagApplication.class);
