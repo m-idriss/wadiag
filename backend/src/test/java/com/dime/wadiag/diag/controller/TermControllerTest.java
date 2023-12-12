@@ -22,14 +22,14 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import com.dime.wadiag.diag.model.Word;
-import com.dime.wadiag.diag.service.WordService;
+import com.dime.wadiag.diag.model.Term;
+import com.dime.wadiag.diag.service.TermService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class WordControllerTest {
+class TermControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -40,116 +40,116 @@ class WordControllerTest {
     private final Faker faker = new Faker();
 
     @MockBean
-    private WordService service;
+    private TermService service;
 
     @DisplayName("Should save a new word and return 201 Created")
     @Test
     void test_save_new_word() throws Exception {
-        String name = faker.lorem().word();
-        Word word = new Word(name);
+        String word = faker.lorem().word();
+        Term term = new Term(word);
 
-        when(service.findByName(name)).thenReturn(null);
-        when(service.save(name)).thenReturn(word);
+        when(service.findByWord(word)).thenReturn(null);
+        when(service.save(word)).thenReturn(term);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/rest/words/{word}", name.toUpperCase()))
+        mockMvc.perform(MockMvcRequestBuilders.post("/rest/terms/{word}", word.toUpperCase()))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
-                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(word)));
+                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(term)));
 
-        verify(service, times(1)).findByName(name);
-        verify(service, times(1)).save(name);
+        verify(service, times(1)).findByWord(word);
+        verify(service, times(1)).save(word);
     }
 
     @DisplayName("Should return existing word and return 200 OK")
     @Test
     void test_return_existing_word() throws Exception {
-        String name = faker.lorem().word();
-        Word existingWord = new Word(name);
+        String word = faker.lorem().word();
+        Term existingTerm = new Term(word);
 
-        when(service.findByName(name)).thenReturn(existingWord);
+        when(service.findByWord(word)).thenReturn(existingTerm);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/rest/words/{word}", name.toUpperCase()))
+        mockMvc.perform(MockMvcRequestBuilders.post("/rest/terms/{word}", word.toUpperCase()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(existingWord)));
+                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(existingTerm)));
 
-        verify(service, times(1)).findByName(name);
-        verify(service, never()).save(name);
+        verify(service, times(1)).findByWord(word);
+        verify(service, never()).save(word);
     }
 
     @DisplayName("Should handle existing word and return 200 OK")
     @Test
     void test_handle_existing_word() throws Exception {
-        String name = faker.lorem().word();
-        Word existingWord = new Word(name);
+        String word = faker.lorem().word();
+        Term existingTerm = new Term(word);
 
-        when(service.findByName(name)).thenReturn(existingWord);
+        when(service.findByWord(word)).thenReturn(existingTerm);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/rest/words/{word}", name.toUpperCase()))
+        mockMvc.perform(MockMvcRequestBuilders.post("/rest/terms/{word}", word.toUpperCase()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(existingWord)));
+                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(existingTerm)));
 
-        verify(service, times(1)).findByName(name);
-        verify(service, never()).save(name);
+        verify(service, times(1)).findByWord(word);
+        verify(service, never()).save(word);
     }
 
     @DisplayName("Should handle missing word parameter and return 404 Not found")
     @Test
     void test_missing_word_parameter() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/rest/words/"))
+        mockMvc.perform(MockMvcRequestBuilders.post("/rest/terms/"))
                 .andExpect(MockMvcResultMatchers.status().is(404));
     }
 
-    @DisplayName("Should retrieve all words")
+    @DisplayName("Should retrieve all terms")
     @Test
     void test_find_all_words_endpoint() throws Exception {
-        // Assuming you have a list of words in your WordService or a database
-        List<Word> wordList = Arrays.asList(
-                new Word(faker.lorem().word()),
-                new Word(faker.lorem().word()),
-                new Word(faker.lorem().word()));
+        // Assuming you have a list of words in your TermService or a database
+        List<Term> termList = Arrays.asList(
+                new Term(faker.lorem().word()),
+                new Term(faker.lorem().word()),
+                new Term(faker.lorem().word()));
 
-        when(service.findAll()).thenReturn(wordList);
+        when(service.findAll()).thenReturn(termList);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/rest/words").contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(MockMvcRequestBuilders.get("/rest/terms").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(wordList)));
+                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(termList)));
     }
 
-    @DisplayName("Verify that the method returns a 200 status code when word is deleted")
+    @DisplayName("Verify that the method returns a 200 status code when term is deleted")
     @Test
     void test_returns_200_when_word_deleted() throws Exception {
         String wordToDelete = faker.lorem().word();
         int deletedCount = 1;
 
         // Mocking the behavior of the service
-        when(service.deleteByName(wordToDelete)).thenReturn(deletedCount);
+        when(service.deleteByWord(wordToDelete)).thenReturn(deletedCount);
 
         // Act and Assert
-        mockMvc.perform(MockMvcRequestBuilders.delete("/rest/words/{word}", wordToDelete.toUpperCase())
+        mockMvc.perform(MockMvcRequestBuilders.delete("/rest/terms/{word}", wordToDelete.toUpperCase())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string("1 word deleted successfully"));
+                .andExpect(MockMvcResultMatchers.content().string("1 term deleted successfully"));
 
         // Verify that the service method was called with the correct argument
-        verify(service, times(1)).deleteByName(wordToDelete);
+        verify(service, times(1)).deleteByWord(wordToDelete);
     }
 
-    @DisplayName("Verify that the method returns a 200 status code when words is deleted")
+    @DisplayName("Verify that the method returns a 200 status code when terms is deleted")
     @Test
     void test_returns_200_when_words_deleted() throws Exception {
         String wordToDelete = faker.lorem().word();
         int deletedCount = 3;
 
         // Mocking the behavior of the service
-        when(service.deleteByName(wordToDelete)).thenReturn(deletedCount);
+        when(service.deleteByWord(wordToDelete)).thenReturn(deletedCount);
 
         // Act and Assert
-        mockMvc.perform(MockMvcRequestBuilders.delete("/rest/words/{word}", wordToDelete.toUpperCase())
+        mockMvc.perform(MockMvcRequestBuilders.delete("/rest/terms/{word}", wordToDelete.toUpperCase())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string(("3 words deleted successfully")));
+                .andExpect(MockMvcResultMatchers.content().string(("3 terms deleted successfully")));
 
         // Verify that the service method was called with the correct argument
-        verify(service, times(1)).deleteByName(wordToDelete);
+        verify(service, times(1)).deleteByWord(wordToDelete);
     }
 
     @DisplayName("Verify that the method returns a 204 status code when the word to be deleted is not found")
@@ -159,25 +159,25 @@ class WordControllerTest {
         int deletedCount = 0;
 
         // Mocking the behavior of the service
-        when(service.deleteByName(wordToDelete)).thenReturn(deletedCount);
+        when(service.deleteByWord(wordToDelete)).thenReturn(deletedCount);
 
         // Act and Assert
-        mockMvc.perform(MockMvcRequestBuilders.delete("/rest/words/{word}", wordToDelete.toUpperCase())
+        mockMvc.perform(MockMvcRequestBuilders.delete("/rest/terms/{word}", wordToDelete.toUpperCase())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().is(HttpStatus.NO_CONTENT.value()));
 
         // Verify that the service method was called with the correct argument
-        verify(service, times(1)).deleteByName(wordToDelete);
+        verify(service, times(1)).deleteByWord(wordToDelete);
     }
 
     @DisplayName("Verify that the method returns a 500 status code and an error message when an exception is thrown during the deletion process")
     @Test
     void test_returns_500_status_code_and_error_message_when_exception_thrown_during_deletion() {
         // Arrange
-        WordController wordController = new WordController();
+        TermController wordController = new TermController();
 
         // Act
-        ResponseEntity<String> response = wordController.deleteByName("exception");
+        ResponseEntity<String> response = wordController.deleteByWord("exception");
 
         // Assert
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
@@ -188,12 +188,12 @@ class WordControllerTest {
     void testDeleteWordException() throws Exception {
         String wordToDelete = faker.lorem().word();
 
-        when(service.deleteByName(wordToDelete)).thenThrow(new RuntimeException("Simulated exception"));
+        when(service.deleteByWord(wordToDelete)).thenThrow(new RuntimeException("Simulated exception"));
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/rest/words/{word}", wordToDelete))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/rest/terms/{word}", wordToDelete))
                 .andExpect(MockMvcResultMatchers.status().isInternalServerError())
-                .andExpect(MockMvcResultMatchers.content().string("Error when deleting word"));
+                .andExpect(MockMvcResultMatchers.content().string("Error when deleting term"));
 
-        verify(service, times(1)).deleteByName(wordToDelete);
+        verify(service, times(1)).deleteByWord(wordToDelete);
     }
 }

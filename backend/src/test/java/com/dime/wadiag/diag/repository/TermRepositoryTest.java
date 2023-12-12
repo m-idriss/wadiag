@@ -11,14 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
-import com.dime.wadiag.diag.model.Word;
+import com.dime.wadiag.diag.model.Term;
 import com.github.javafaker.Faker;
 
 @DataJpaTest
-class WordRepositoryTest {
+class TermRepositoryTest {
 
     @Autowired
-    private WordRepository wordRepository;
+    private TermRepository termRepository;
 
     @Autowired
     private TestEntityManager entityManager;
@@ -28,24 +28,24 @@ class WordRepositoryTest {
     @DisplayName("Should save and retrieve word")
     @Test
     void test_save_and_retrieve_word() {
-        Word word = new Word(faker.lorem().word());
+        Term word = new Term(faker.lorem().word());
         entityManager.persistAndFlush(word);
 
-        Word retrievedWord = wordRepository.findById(word.getId()).orElse(null);
+        Term retrievedWord = termRepository.findById(word.getId()).orElse(null);
         assertThat(retrievedWord).isNotNull();
-        assertThat(retrievedWord.getName()).isEqualTo(word.getName());
+        assertThat(retrievedWord.getWord()).isEqualTo(word.getWord());
     }
 
     @DisplayName("Should find word by name")
     @Test
-    void test_find_by_name() {
-        String randomName = faker.lorem().word();
-        Word word = new Word(randomName);
-        entityManager.persistAndFlush(word);
+    void test_find_by_word() {
+        String word = faker.lorem().word();
+        Term term = new Term(word);
+        entityManager.persistAndFlush(term);
 
-        Word retrievedWord = wordRepository.findByName(randomName);
+        Term retrievedWord = termRepository.findByWord(word);
         assertThat(retrievedWord).isNotNull();
-        assertThat(retrievedWord.getName()).isEqualTo(randomName);
+        assertThat(retrievedWord.getWord()).isEqualTo(word);
     }
 
     @DisplayName("Should find all word already save")
@@ -56,11 +56,11 @@ class WordRepositoryTest {
         list.add("toto");
         list.add("tata");
 
-        entityManager.persistAndFlush(new Word(list.get(0)));
-        entityManager.persistAndFlush(new Word(list.get(1)));
+        entityManager.persistAndFlush(new Term(list.get(0)));
+        entityManager.persistAndFlush(new Term(list.get(1)));
 
-        List<Word> wordList = wordRepository.findAll();
-        assertThat(wordList).extracting(Word::getName)
+        List<Term> wordList = termRepository.findAll();
+        assertThat(wordList).extracting(Term::getWord)
                 .containsExactlyInAnyOrderElementsOf(list);
     }
 
