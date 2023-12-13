@@ -2,13 +2,13 @@ package com.dime.wadiag.diag.model;
 
 import java.util.Set;
 
+import io.micrometer.common.lang.NonNull;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -25,14 +25,11 @@ public class Term {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+    @NonNull
     @Column(unique = true)
-    private String word;
+    private final String word;
 
     @ElementCollection
     private Set<String> synonyms;
 
-    public Term(String word) {
-        this.word = word;
-    }
 }

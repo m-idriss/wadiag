@@ -185,7 +185,7 @@ class TermControllerTest {
 
     @DisplayName("Should handle exception and return 500 Internal Server Error")
     @Test
-    void testDeleteWordException() throws Exception {
+    void test_delete_word_exception() throws Exception {
         String wordToDelete = faker.lorem().word();
 
         when(service.deleteByWord(wordToDelete)).thenThrow(new RuntimeException("Simulated exception"));
