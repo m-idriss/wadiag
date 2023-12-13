@@ -1,5 +1,7 @@
 # Welcome to My GitHub Playground! 🚀
 
+![Coverage](https://img.shields.io/badge/coverage-${COVERAGE_PERCENTAGE}%25-brightgreen)
+
 ## About Me
 
 Hi, I'm Idriss, a passionate Java backend developer exploring and learning, especially in the realms of Spring and Flutter. This repository serves as my playground for personal projects and a way to share my software development journey.
