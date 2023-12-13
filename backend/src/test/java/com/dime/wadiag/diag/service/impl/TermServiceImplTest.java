@@ -39,9 +39,7 @@ class TermServiceImplTest {
     void test_save_new_word() throws IOException {
         // Given
         String word = faker.lorem().word();
-        Term mockApiResponse = new Term();
-        mockApiResponse.setWord(word);
-        mockApiResponse.setSynonyms(Set.of(faker.lorem().word(), faker.lorem().word()));
+        Term mockApiResponse = new Term(1L, word, Set.of(faker.lorem().word(), faker.lorem().word()));
 
         // Mock external API response
         Mockito.when(wordsApiService.getSynonymsForWord(word)).thenReturn(mockApiResponse);
