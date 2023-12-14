@@ -59,7 +59,7 @@ jobs:
           script: |
             cd dev/projects/wadiag
             docker-compose down
-            docker-compose up -d
+            docker-compose up --build
         continue-on-error: true
 
       - name: Check if Docker Compose restart was successful
