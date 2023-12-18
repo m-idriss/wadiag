@@ -3,10 +3,15 @@ package com.dime.wadiag.diag.service.impl;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.junit.jupiter.api.DisplayName;
@@ -26,45 +31,37 @@ class TermServiceImplTest {
 
     private final Faker faker = new Faker();
     @Mock
-    private TermRepository termRepository;
+    private TermRepository repository;
 
     @Mock
     private WordsApiServiceImpl wordsApiService;
 
     @InjectMocks
-    private TermServiceImpl termServiceImpl;
+    private TermServiceImpl service;
 
     @DisplayName("Saving a new word should create a Word entity with the given name and return it")
     @Test
     void test_save_new_word() throws IOException {
-        // Given
+        // Arrange
         String word = faker.lorem().word();
         Term mockApiResponse = new Term(1L, word, Set.of(faker.lorem().word(), faker.lorem().word()));
-
-        // Mock external API response
-        Mockito.when(wordsApiService.getSynonymsForWord(word)).thenReturn(mockApiResponse);
-
-        // Mock repository save
-        Mockito.when(termRepository.save(any(Term.class))).thenAnswer(invocation -> {
+        when(wordsApiService.getSynonymsForWord(word)).thenReturn(mockApiResponse);
+        when(repository.save(any(Term.class))).thenAnswer(invocation -> {
             Term savedTerm = invocation.getArgument(0);
-            savedTerm.setId(1L); // Assign a mock ID
+            savedTerm.setId(1L);
             return savedTerm;
         });
 
-        // When
-        Term savedTerm = termServiceImpl.save(word);
+        // Act
+        Term savedTerm = service.save(word);
 
-        // Then
+        // Assert
         assertThat(savedTerm).isNotNull();
-        assertThat(savedTerm.getId()).isNotNull(); // ID should be assigned after saving
+        assertThat(savedTerm.getId()).isNotNull();
         assertThat(savedTerm.getWord()).isEqualTo(word);
         assertThat(savedTerm.getSynonyms()).isEqualTo(mockApiResponse.getSynonyms());
-
-        // Verify that external service was called
-        Mockito.verify(wordsApiService, Mockito.times(1)).getSynonymsForWord(word);
-
-        // Verify that repository save was called
-        Mockito.verify(termRepository, Mockito.times(1)).save(any(Term.class));
+        verify(wordsApiService, times(1)).getSynonymsForWord(word);
+        verify(repository, times(1)).save(any(Term.class));
 
     }
 
@@ -72,39 +69,39 @@ class TermServiceImplTest {
     @Test()
     void test_find_by_word() {
         // Arrange
-        TermRepository dao = Mockito.mock(TermRepository.class);
-        WordsApiServiceImpl wordsApiService = Mockito.mock(WordsApiServiceImpl.class);
+        TermRepository dao = mock(TermRepository.class);
+        WordsApiServiceImpl wordsApiService = mock(WordsApiServiceImpl.class);
         TermServiceImpl termService = new TermServiceImpl(dao, wordsApiService);
         String word = faker.lorem().word();
         Term expectedEntity = new Term(word);
-        Mockito.when(dao.findByWord(word)).thenReturn(expectedEntity);
+        when(dao.findByWord(word)).thenReturn(expectedEntity);
 
         // Act
         Term result = termService.findByWord(word);
 
         // Assert
         assertEquals(expectedEntity, result);
-        Mockito.verify(dao, Mockito.times(1)).findByWord(word);
+        verify(dao, times(1)).findByWord(word);
     }
 
     @DisplayName("Finding all words should return a list of all Word entities in the repository")
     @Test()
     void test_find_all() {
         // Arrange
-        TermRepository dao = Mockito.mock(TermRepository.class);
-        WordsApiServiceImpl wordsApiService = Mockito.mock(WordsApiServiceImpl.class);
+        TermRepository dao = mock(TermRepository.class);
+        WordsApiServiceImpl wordsApiService = mock(WordsApiServiceImpl.class);
         TermServiceImpl termService = new TermServiceImpl(dao, wordsApiService);
         List<Term> expectedList = new ArrayList<>();
         expectedList.add(new Term(faker.lorem().word()));
         expectedList.add(new Term(faker.lorem().word()));
-        Mockito.when(dao.findAll()).thenReturn(expectedList);
+        when(dao.findAll()).thenReturn(expectedList);
 
         // Act
         List<Term> result = termService.findAll();
 
         // Assert
         assertEquals(expectedList, result);
-        Mockito.verify(dao, Mockito.times(1)).findAll();
+        verify(dao, times(1)).findAll();
     }
 
     @DisplayName("Should return the Word entity with the given name if it exists in the repository")
@@ -113,14 +110,14 @@ class TermServiceImplTest {
         // Arrange
         String word = faker.lorem().word();
         Term expectedEntity = new Term(word);
-        Mockito.when(termRepository.findByWord(word)).thenReturn(expectedEntity);
+        when(repository.findByWord(word)).thenReturn(expectedEntity);
 
         // Act
-        Term result = termServiceImpl.findByWord(word);
+        Term result = service.findByWord(word);
 
         // Assert
         assertEquals(expectedEntity, result);
-        Mockito.verify(termRepository, Mockito.times(1)).findByWord(word);
+        verify(repository, times(1)).findByWord(word);
     }
 
     @DisplayName("Deletes a word that exists in the database and returns the count of deleted words")
@@ -129,14 +126,49 @@ class TermServiceImplTest {
         // Arrange
         String word = faker.lorem().word();
         int expectedDeletedCount = 3;
-        Mockito.when(termRepository.deleteByWord(word)).thenReturn(expectedDeletedCount);
+        when(repository.deleteByWord(word)).thenReturn(expectedDeletedCount);
 
         // Act
-        int actualDeletedCount = termServiceImpl.deleteByWord(word);
+        int actualDeletedCount = service.deleteByWord(word);
 
         // Assert
         assertEquals(expectedDeletedCount, actualDeletedCount, "Deleted count should match");
-        Mockito.verify(termRepository, Mockito.times(1)).deleteByWord(word);
+        verify(repository, times(1)).deleteByWord(word);
+    }
+
+    @DisplayName("Returns an Optional object containing the Term with the given id, if it exists in the repository")
+    @Test
+    void test_returns_optional_with_existing_id() {
+        // Arrange
+        Long id = 1L;
+        Term term = new Term();
+        term.setId(id);
+        Optional<Term> expected = Optional.of(term);
+        when(repository.findById(id)).thenReturn(expected);
+
+        // Act
+        Optional<Term> result = service.findById(id);
+
+        // Assert
+        assertEquals(expected, result);
+        verify(repository, times(1)).findById(id);
+
+    }
+
+    @DisplayName("Returns an empty Optional object if no Term with the given id exists in the repository")
+    @Test
+    void test_returns_empty_optional_with_non_existing_id() {
+        // Arrange
+        Long id = 1L;
+        Optional<Term> expected = Optional.empty();
+        when(repository.findById(id)).thenReturn(expected);
+
+        // Act
+        Optional<Term> result = service.findById(id);
+
+        // Assert
+        assertEquals(expected, result);
+        verify(repository, times(1)).findById(id);
     }
 
 }

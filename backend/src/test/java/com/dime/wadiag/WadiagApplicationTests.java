@@ -38,7 +38,7 @@ class WadiagApplicationTests {
 
 	@DisplayName("Should generate correct's log message from environnement")
 	@Test
-	void testLogMessage() throws UnknownHostException {
+	void test_log_message() throws UnknownHostException {
 
 		Environment env = mock(Environment.class);
 		when(env.getProperty("spring.application.name")).thenReturn("Test Application");

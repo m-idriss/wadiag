@@ -2,6 +2,7 @@ package com.dime.wadiag.diag.service.impl;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -21,9 +22,8 @@ public class TermServiceImpl implements TermService {
     private final WordsApiServiceImpl service;
 
     @Override
-    public Term save(String word) throws IOException {
-        Term term = service.getSynonymsForWord(word);
-        return repository.save(term);
+    public Optional<Term> findById(Long id) {
+        return repository.findById(id);
     }
 
     @Override
@@ -36,6 +36,12 @@ public class TermServiceImpl implements TermService {
         Term entity = repository.findByWord(word);
         log.debug("Found word: {}", entity);
         return entity;
+    }
+
+    @Override
+    public Term save(String word) throws IOException {
+        Term term = service.getSynonymsForWord(word);
+        return repository.save(term);
     }
 
     @Override
