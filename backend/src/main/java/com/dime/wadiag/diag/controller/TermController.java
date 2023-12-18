@@ -32,7 +32,22 @@ public class TermController {
   @Operation(summary = "FindAllTerms")
   @GetMapping()
   public ResponseEntity<List<Term>> findAll() {
-    return ResponseEntity.ok(service.findAll());
+    List<Term> allTerms = service.findAll();
+    if (allTerms == null)
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    else if (allTerms.isEmpty())
+      return new ResponseEntity<>(allTerms, HttpStatus.NO_CONTENT);
+    else
+      return new ResponseEntity<>(allTerms, HttpStatus.OK);
+  }
+
+  @Operation(summary = "GetTerm")
+  @GetMapping("/{id}")
+  public ResponseEntity<Term> getTerm(@PathVariable Long id) {
+    return service
+        .findById(id)
+        .map(ResponseEntity::ok)
+        .orElseGet(() -> ResponseEntity.notFound().build());
   }
 
   @Operation(summary = "SaveTerm")
@@ -55,7 +70,7 @@ public class TermController {
       String wordLower = word.toLowerCase();
       int deletedCount = service.deleteByWord(wordLower);
       if (deletedCount == 0) {
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity.noContent().build();
       }
       return ResponseEntity.ok(deletedCount + (deletedCount > 1 ? " terms" : " term") + " deleted successfully");
     } catch (Exception e) {
