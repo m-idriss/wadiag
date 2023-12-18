@@ -6,12 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.dime.wadiag.diag.model.Term;
 import com.dime.wadiag.diag.service.TermService;
@@ -21,62 +16,59 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
-@Slf4j
 @RequestMapping("/rest/terms")
 @Tag(name = "Terms", description = "Manage Terms")
+@Slf4j
 public class TermController {
 
   @Autowired
-  private TermService service;
+  private TermService termService;
 
-  @Operation(summary = "FindAllTerms")
-  @GetMapping()
-  public ResponseEntity<List<Term>> findAll() {
-    List<Term> allTerms = service.findAll();
-    if (allTerms == null)
-      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    else if (allTerms.isEmpty())
-      return new ResponseEntity<>(allTerms, HttpStatus.NO_CONTENT);
-    else
-      return new ResponseEntity<>(allTerms, HttpStatus.OK);
+  @Operation(summary = "Find All Terms")
+  @GetMapping
+  public ResponseEntity<List<Term>> findAllTerms() {
+    List<Term> allTerms = termService.findAll();
+    if (allTerms.isEmpty()) {
+      return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+    return new ResponseEntity<>(allTerms, HttpStatus.OK);
   }
 
-  @Operation(summary = "GetTerm")
+  @Operation(summary = "Get Term by ID")
   @GetMapping("/{id}")
-  public ResponseEntity<Term> getTerm(@PathVariable Long id) {
-    return service
-        .findById(id)
+  public ResponseEntity<Term> getTermById(@PathVariable Long id) {
+    return termService.findById(id)
         .map(ResponseEntity::ok)
         .orElseGet(() -> ResponseEntity.notFound().build());
   }
 
-  @Operation(summary = "SaveTerm")
+  @Operation(summary = "Save Term")
   @PostMapping("/{word}")
-  public ResponseEntity<Term> saveWord(@PathVariable(name = "word", required = true) String word)
-      throws IOException {
+  public ResponseEntity<Term> saveTerm(@PathVariable(name = "word") String word) throws IOException {
     String wordLower = word.toLowerCase();
-    Term existingTerm = service.findByWord(wordLower);
+    Term existingTerm = termService.findByWord(wordLower);
     if (existingTerm == null) {
-      Term entity = service.save(wordLower);
-      return ResponseEntity.status(HttpStatus.CREATED).body(entity);
+      Term savedTerm = termService.save(wordLower);
+      return ResponseEntity.status(HttpStatus.CREATED).body(savedTerm);
     }
     return ResponseEntity.ok(existingTerm);
   }
 
-  @Operation(summary = "DeleteTerm")
+  @Operation(summary = "Delete Term by Word")
   @DeleteMapping("/{word}")
   public ResponseEntity<String> deleteByWord(@PathVariable String word) {
     try {
       String wordLower = word.toLowerCase();
-      int deletedCount = service.deleteByWord(wordLower);
+      int deletedCount = termService.deleteByWord(wordLower);
       if (deletedCount == 0) {
         return ResponseEntity.noContent().build();
       }
-      return ResponseEntity.ok(deletedCount + (deletedCount > 1 ? " terms" : " term") + " deleted successfully");
+      String responseMessage = String.format("%d term%s deleted successfully", deletedCount,
+          (deletedCount > 1 ? "s" : ""));
+      return ResponseEntity.ok(responseMessage);
     } catch (Exception e) {
       log.warn("Exception occurred", e);
-      return ResponseEntity.status(500).body("Error when deleting term");
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error when deleting term");
     }
   }
-
 }

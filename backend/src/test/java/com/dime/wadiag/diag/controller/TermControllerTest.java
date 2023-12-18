@@ -119,16 +119,6 @@ class TermControllerTest {
                 .andExpect(content().json(objectMapper.writeValueAsString(termList)));
     }
 
-    @DisplayName("Should returns a 404 Not Found response when the list of terms is null")
-    @Test
-    void test_returns_not_found_when_terms_null() throws Exception {
-
-        when(service.findAll()).thenReturn(null);
-
-        mockMvc.perform(get("/rest/terms").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
-    }
-
     @DisplayName("Should returns a 204 No Content response when there are no terms in the database")
     @Test
     void test_returns_no_content_when_no_terms_exist() throws Exception {
