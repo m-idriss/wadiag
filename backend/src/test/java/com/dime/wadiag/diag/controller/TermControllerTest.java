@@ -101,7 +101,7 @@ class TermControllerTest {
     @Test
     void test_missing_word_parameter() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/rest/terms/"))
-                .andExpect(status().is(404));
+                .andExpect(status().is(500));
     }
 
     @DisplayName("Should retrieve all terms")

@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.dime.wadiag.diag.exception.ResourceNotFoundException;
 import com.dime.wadiag.diag.model.Term;
 import com.dime.wadiag.diag.service.TermService;
 
@@ -39,7 +40,7 @@ public class TermController {
   public ResponseEntity<Term> getTermById(@PathVariable Long id) {
     return termService.findById(id)
         .map(ResponseEntity::ok)
-        .orElseGet(() -> ResponseEntity.notFound().build());
+        .orElseThrow(() -> new ResourceNotFoundException("Term with ID " + id + " not found"));
   }
 
   @Operation(summary = "Save Term")
