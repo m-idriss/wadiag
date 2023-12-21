@@ -11,10 +11,8 @@ import com.dime.wadiag.diag.repository.TermRepository;
 import com.dime.wadiag.diag.service.TermService;
 
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Service
-@Slf4j
 @AllArgsConstructor
 public class TermServiceImpl implements TermService {
 
@@ -27,27 +25,22 @@ public class TermServiceImpl implements TermService {
     }
 
     @Override
-    public List<Term> findAll() {
-        return repository.findAll();
+    public Optional<List<Term>> findAll() {
+        return Optional.ofNullable(repository.findAll());
     }
 
     @Override
-    public Term findByWord(String word) {
-        Term entity = repository.findByWord(word);
-        log.debug("Found word: {}", entity);
-        return entity;
+    public Optional<Term> findByWord(String word) {
+        return Optional.ofNullable(repository.findByWord(word));
     }
 
     @Override
-    public Term save(String word) throws IOException {
-        Term term = service.getSynonymsForWord(word);
-        return repository.save(term);
+    public Optional<Term> save(String word) throws IOException {
+        return Optional.of(repository.save(service.getSynonymsForWord(word)));
     }
 
     @Override
-    public int deleteByWord(String word) {
-        int count = repository.deleteByWord(word);
-        log.debug("delete {} count(s) of word: {}", count, word);
-        return count;
+    public Optional<Integer> deleteByWord(String word) {
+        return Optional.of(repository.deleteByWord(word));
     }
 }

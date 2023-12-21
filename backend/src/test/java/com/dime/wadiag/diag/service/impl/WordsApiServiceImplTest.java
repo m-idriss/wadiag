@@ -8,8 +8,8 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.web.server.ResponseStatusException;
 
+import com.dime.wadiag.diag.exception.WadiagException;
 import com.dime.wadiag.diag.model.Term;
 import com.dime.wadiag.diag.wordsapi.WordsApiProperties;
 
@@ -33,7 +33,6 @@ class WordsApiServiceImplTest {
 
     @BeforeEach
     void setup() {
-        // Create an instance of the Retrofit client with the test server's base URL
         service = new WordsApiServiceImpl(testProperties);
     }
 
@@ -53,9 +52,9 @@ class WordsApiServiceImplTest {
     @DisplayName("Get synonyms for an invalid word")
     @Test
     void test_get_synonyms_for_word_resource_not_found_exception() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        WadiagException exception = assertThrows(WadiagException.class,
                 () -> service.getSynonymsForWord("toto"));
-        assertThat(exception.getMessage()).isEqualTo("404 NOT_FOUND \"synonyms not found for: toto\"");
+        assertThat(exception.getMessage()).isEqualTo("Word [toto] do not exists");
     }
 
     @DisplayName("test request to WordsAPI and receives a successful response")
@@ -96,14 +95,14 @@ class WordsApiServiceImplTest {
 
     @Test
     void test_bad_request() throws IOException {
-
         WordsApiProperties properties = new WordsApiProperties();
         properties.setKey("key");
         properties.setUrl(testProperties.getUrl());
         service = new WordsApiServiceImpl(properties);
 
-        IOException exception = assertThrows(IOException.class, () -> service.testWordsApiConnection());
-        assertEquals("Failed to connect to WordsAPI. HTTP status code: 403", exception.getMessage());
+        WadiagException exception = assertThrows(WadiagException.class,
+                () -> service.testWordsApiConnection());
+        assert (exception.getMessage()).contains("Failed to connect to dependency code : [");
     }
 
 }

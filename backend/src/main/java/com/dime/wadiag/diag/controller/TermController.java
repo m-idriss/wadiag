@@ -1,24 +1,30 @@
 package com.dime.wadiag.diag.controller;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import com.dime.wadiag.diag.exception.WadiagError;
 import com.dime.wadiag.diag.model.Term;
 import com.dime.wadiag.diag.service.TermService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/rest/terms")
 @Tag(name = "Terms", description = "Manage Terms")
-@Slf4j
 public class TermController {
 
   @Autowired
@@ -27,11 +33,7 @@ public class TermController {
   @Operation(summary = "Find All Terms")
   @GetMapping
   public ResponseEntity<List<Term>> findAllTerms() {
-    List<Term> allTerms = termService.findAll();
-    if (allTerms.isEmpty()) {
-      return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-    return new ResponseEntity<>(allTerms, HttpStatus.OK);
+    return ResponseEntity.ok(termService.findAll().orElse(List.of()));
   }
 
   @Operation(summary = "Get Term by ID")
@@ -39,36 +41,33 @@ public class TermController {
   public ResponseEntity<Term> getTermById(@PathVariable Long id) {
     return termService.findById(id)
         .map(ResponseEntity::ok)
-        .orElseGet(() -> ResponseEntity.notFound().build());
+        .orElseThrow(() -> WadiagError.TERM_NOT_FOUND.exWithArguments(Map.of("id", id)));
   }
 
   @Operation(summary = "Save Term")
   @PostMapping("/{word}")
-  public ResponseEntity<Term> saveTerm(@PathVariable(name = "word") String word) throws IOException {
+  public ResponseEntity<Term> saveTerm(@PathVariable String word) throws IOException {
     String wordLower = word.toLowerCase();
-    Term existingTerm = termService.findByWord(wordLower);
-    if (existingTerm == null) {
-      Term savedTerm = termService.save(wordLower);
-      return ResponseEntity.status(HttpStatus.CREATED).body(savedTerm);
+    Optional<Term> existingTerm = termService.findByWord(wordLower);
+    if (existingTerm.isPresent()) {
+      Term term = existingTerm.get();
+      return ResponseEntity.created(URI.create("/rest/terms/" + term.getId()))
+          .body(term);
+    } else {
+      Term savedTerm = termService.save(wordLower)
+          .orElseThrow(() -> WadiagError.WORD_NOT_FOUND.exWithArguments(Map.of("word", wordLower)));
+      return ResponseEntity.ok()
+          .location(URI.create("/rest/terms/" + savedTerm.getId()))
+          .body(savedTerm);
     }
-    return ResponseEntity.ok(existingTerm);
   }
 
   @Operation(summary = "Delete Term by Word")
   @DeleteMapping("/{word}")
-  public ResponseEntity<String> deleteByWord(@PathVariable String word) {
-    try {
-      String wordLower = word.toLowerCase();
-      int deletedCount = termService.deleteByWord(wordLower);
-      if (deletedCount == 0) {
-        return ResponseEntity.noContent().build();
-      }
-      String responseMessage = String.format("%d term%s deleted successfully", deletedCount,
-          (deletedCount > 1 ? "s" : ""));
-      return ResponseEntity.ok(responseMessage);
-    } catch (Exception e) {
-      log.warn("Exception occurred", e);
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error when deleting term");
-    }
+  public ResponseEntity<Void> deleteTerm(@PathVariable String word) {
+    String wordLower = word.toLowerCase();
+    return termService.deleteByWord(wordLower)
+        .map(count -> ResponseEntity.ok().<Void>build())
+        .orElseThrow(() -> WadiagError.WORD_NOT_FOUND.exWithArguments(Map.of("word", wordLower)));
   }
 }

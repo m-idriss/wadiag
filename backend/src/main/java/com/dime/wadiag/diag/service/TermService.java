@@ -7,14 +7,14 @@ import java.util.Optional;
 import com.dime.wadiag.diag.model.Term;
 
 public interface TermService {
-    Term save(String word) throws IOException;
+    Optional<Term> save(String word) throws IOException;
 
-    List<Term> findAll();
+    Optional<List<Term>> findAll();
 
     Optional<Term> findById(Long id);
 
-    Term findByWord(String word);
+    Optional<Term> findByWord(String word);
 
-    int deleteByWord(String word);
+    Optional<Integer> deleteByWord(String word);
 
 }
