@@ -40,7 +40,7 @@ class TermServiceImplTest {
 
     @DisplayName("Saving a new word should create a Word entity with the given name and return it")
     @Test
-    void test_save_new_word() throws IOException {
+    void test_create_new_word() throws IOException {
         // Arrange
         String word = faker.lorem().word();
         Term mockApiResponse = new Term(1L, word, Set.of(faker.lorem().word(), faker.lorem().word()));
@@ -52,13 +52,13 @@ class TermServiceImplTest {
         });
 
         // Act
-        Term savedTerm = service.save(word).get();
+        Term createdTerm = service.create(word).get();
 
         // Assert
-        assertThat(savedTerm).isNotNull();
-        assertThat(savedTerm.getId()).isNotNull();
-        assertThat(savedTerm.getWord()).isEqualTo(word);
-        assertThat(savedTerm.getSynonyms()).isEqualTo(mockApiResponse.getSynonyms());
+        assertThat(createdTerm).isNotNull();
+        assertThat(createdTerm.getId()).isNotNull();
+        assertThat(createdTerm.getWord()).isEqualTo(word);
+        assertThat(createdTerm.getSynonyms()).isEqualTo(mockApiResponse.getSynonyms());
         verify(wordsApiService, times(1)).getSynonymsForWord(word);
         verify(repository, times(1)).save(any(Term.class));
 

@@ -35,7 +35,7 @@ public class TermServiceImpl implements TermService {
     }
 
     @Override
-    public Optional<Term> save(String word) throws IOException {
+    public Optional<Term> create(String word) throws IOException {
         return Optional.of(repository.save(service.getSynonymsForWord(word)));
     }
 

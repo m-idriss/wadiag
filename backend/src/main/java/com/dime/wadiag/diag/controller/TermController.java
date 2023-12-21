@@ -2,6 +2,7 @@ package com.dime.wadiag.diag.controller;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -33,7 +34,7 @@ public class TermController {
   @Operation(summary = "Find All Terms")
   @GetMapping
   public ResponseEntity<List<Term>> findAllTerms() {
-    return ResponseEntity.ok(termService.findAll().orElse(List.of()));
+    return ResponseEntity.ok(termService.findAll().orElse(Collections.emptyList()));
   }
 
   @Operation(summary = "Get Term by ID")
@@ -44,22 +45,19 @@ public class TermController {
         .orElseThrow(() -> WadiagError.TERM_NOT_FOUND.exWithArguments(Map.of("id", id)));
   }
 
-  @Operation(summary = "Save Term")
+  @Operation(summary = "Create Term")
   @PostMapping("/{word}")
-  public ResponseEntity<Term> saveTerm(@PathVariable String word) throws IOException {
+  public ResponseEntity<Term> createTerm(@PathVariable String word) throws IOException {
     String wordLower = word.toLowerCase();
     Optional<Term> existingTerm = termService.findByWord(wordLower);
+    Term term = null;
     if (existingTerm.isPresent()) {
-      Term term = existingTerm.get();
-      return ResponseEntity.created(URI.create("/rest/terms/" + term.getId()))
-          .body(term);
+      term = existingTerm.get();
     } else {
-      Term savedTerm = termService.save(wordLower)
+      term = termService.create(wordLower)
           .orElseThrow(() -> WadiagError.WORD_NOT_FOUND.exWithArguments(Map.of("word", wordLower)));
-      return ResponseEntity.ok()
-          .location(URI.create("/rest/terms/" + savedTerm.getId()))
-          .body(savedTerm);
     }
+    return ResponseEntity.created(URI.create("/rest/terms/" + term.getId())).body(term);
   }
 
   @Operation(summary = "Delete Term by Word")
@@ -67,7 +65,7 @@ public class TermController {
   public ResponseEntity<Void> deleteTerm(@PathVariable String word) {
     String wordLower = word.toLowerCase();
     return termService.deleteByWord(wordLower)
-        .map(count -> ResponseEntity.ok().<Void>build())
+        .map(count -> ResponseEntity.noContent().<Void>build())
         .orElseThrow(() -> WadiagError.WORD_NOT_FOUND.exWithArguments(Map.of("word", wordLower)));
   }
 }

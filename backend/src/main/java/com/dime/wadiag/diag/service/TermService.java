@@ -7,7 +7,7 @@ import java.util.Optional;
 import com.dime.wadiag.diag.model.Term;
 
 public interface TermService {
-    Optional<Term> save(String word) throws IOException;
+    Optional<Term> create(String word) throws IOException;
 
     Optional<List<Term>> findAll();
 

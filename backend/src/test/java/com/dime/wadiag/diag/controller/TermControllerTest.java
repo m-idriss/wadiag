@@ -52,14 +52,14 @@ class TermControllerTest {
         Term term = new Term(word);
 
         when(service.findByWord(word)).thenReturn(Optional.empty());
-        when(service.save(word)).thenReturn(Optional.of(term));
+        when(service.create(word)).thenReturn(Optional.of(term));
 
         mockMvc.perform(MockMvcRequestBuilders.post("/rest/terms/{word}", word.toUpperCase()))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(content().json(objectMapper.writeValueAsString(term)));
 
         verify(service, times(1)).findByWord(word);
-        verify(service, times(1)).save(word);
+        verify(service, times(1)).create(word);
     }
 
     @DisplayName("Should handle existing word and return 200 OK")
@@ -75,7 +75,7 @@ class TermControllerTest {
                 .andExpect(content().json(objectMapper.writeValueAsString(existingTerm)));
 
         verify(service, times(1)).findByWord(word);
-        verify(service, never()).save(word);
+        verify(service, never()).create(word);
     }
 
     @DisplayName("Should handle missing word parameter and return 404 Not found")
@@ -147,7 +147,7 @@ class TermControllerTest {
         // Act and Assert
         mockMvc.perform(MockMvcRequestBuilders.delete("/rest/terms/{word}", wordToDelete.toUpperCase())
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
         verify(service, times(1)).deleteByWord(wordToDelete);
     }
 
@@ -161,7 +161,7 @@ class TermControllerTest {
         // Act and Assert
         mockMvc.perform(delete("/rest/terms/{word}", wordToDelete.toUpperCase())
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
         verify(service, times(1)).deleteByWord(wordToDelete);
     }
 
