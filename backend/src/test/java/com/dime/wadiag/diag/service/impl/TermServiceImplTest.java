@@ -52,7 +52,7 @@ class TermServiceImplTest {
         });
 
         // Act
-        Term savedTerm = service.save(word);
+        Term savedTerm = service.save(word).get();
 
         // Assert
         assertThat(savedTerm).isNotNull();
@@ -76,7 +76,7 @@ class TermServiceImplTest {
         when(dao.findByWord(word)).thenReturn(expectedEntity);
 
         // Act
-        Term result = termService.findByWord(word);
+        Term result = termService.findByWord(word).get();
 
         // Assert
         assertEquals(expectedEntity, result);
@@ -96,7 +96,7 @@ class TermServiceImplTest {
         when(dao.findAll()).thenReturn(expectedList);
 
         // Act
-        List<Term> result = termService.findAll();
+        List<Term> result = termService.findAll().get();
 
         // Assert
         assertEquals(expectedList, result);
@@ -112,7 +112,7 @@ class TermServiceImplTest {
         when(repository.findByWord(word)).thenReturn(expectedEntity);
 
         // Act
-        Term result = service.findByWord(word);
+        Term result = service.findByWord(word).get();
 
         // Assert
         assertEquals(expectedEntity, result);
@@ -128,7 +128,7 @@ class TermServiceImplTest {
         when(repository.deleteByWord(word)).thenReturn(expectedDeletedCount);
 
         // Act
-        int actualDeletedCount = service.deleteByWord(word);
+        int actualDeletedCount = service.deleteByWord(word).get();
 
         // Assert
         assertEquals(expectedDeletedCount, actualDeletedCount, "Deleted count should match");
