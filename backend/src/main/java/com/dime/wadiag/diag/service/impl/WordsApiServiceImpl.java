@@ -6,7 +6,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import com.dime.wadiag.configuration.RetrofitConfig;
-import com.dime.wadiag.diag.exception.WadiagError;
+import com.dime.wadiag.diag.exception.GenericError;
 import com.dime.wadiag.diag.model.Term;
 import com.dime.wadiag.diag.service.WordsApiService;
 import com.dime.wadiag.diag.wordsapi.WordsApiProperties;
@@ -33,7 +33,7 @@ public class WordsApiServiceImpl {
             return response.body();
         } else {
             log.error(response.toString());
-            throw WadiagError.WORD_NOT_FOUND.exWithArguments(Map.of("word", word));
+            throw GenericError.WORD_NOT_FOUND.exWithArguments(Map.of("word", word));
         }
     }
 
@@ -41,7 +41,7 @@ public class WordsApiServiceImpl {
         Call<ResponseBody> call = service.testWordsApiConnection();
         retrofit2.Response<ResponseBody> response = call.execute();
         if (!response.isSuccessful()) {
-            throw WadiagError.FAILED_DEPENDENCY.exWithArguments(Map.of("code", response.code()));
+            throw GenericError.FAILED_DEPENDENCY.exWithArguments(Map.of("code", response.code()));
         }
         return true;
     }

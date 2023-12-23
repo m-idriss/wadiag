@@ -1,10 +1,10 @@
-package com.dime.wadiag.diag.exception;
+package com.dime.wadiag.diag.model;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class WadiagHttpResponseConstants {
+public class GenericConstants {
 
     public static final String STATUS = "status";
     public static final String ERROR = "error";

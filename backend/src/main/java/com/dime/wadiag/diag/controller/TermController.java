@@ -1,9 +1,6 @@
 package com.dime.wadiag.diag.controller;
 
 import java.io.IOException;
-import java.net.URI;
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -16,8 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dime.wadiag.diag.exception.WadiagError;
+import com.dime.wadiag.diag.exception.GenericError;
 import com.dime.wadiag.diag.model.Term;
+import com.dime.wadiag.diag.model.GenericResponseHandler;
 import com.dime.wadiag.diag.service.TermService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,21 +31,23 @@ public class TermController {
 
   @Operation(summary = "Find All Terms")
   @GetMapping
-  public ResponseEntity<List<Term>> findAllTerms() {
-    return ResponseEntity.ok(termService.findAll().orElse(Collections.emptyList()));
+  public ResponseEntity<GenericResponseHandler<Term>> findAllTerms() {
+    return termService.findAll()
+        .map(term -> GenericResponseHandler.success(term).entityOk())
+        .orElse(ResponseEntity.ok().build());
   }
 
   @Operation(summary = "Get Term by ID")
   @GetMapping("/{id}")
-  public ResponseEntity<Term> getTermById(@PathVariable Long id) {
+  public ResponseEntity<GenericResponseHandler<Term>> getTermById(@PathVariable Long id) {
     return termService.findById(id)
-        .map(ResponseEntity::ok)
-        .orElseThrow(() -> WadiagError.TERM_NOT_FOUND.exWithArguments(Map.of("id", id)));
+        .map(term -> GenericResponseHandler.success(term).entityOk())
+        .orElseThrow(() -> GenericError.TERM_NOT_FOUND.exWithArguments(Map.of("id", id)));
   }
 
   @Operation(summary = "Create Term")
   @PostMapping("/{word}")
-  public ResponseEntity<Term> createTerm(@PathVariable String word) throws IOException {
+  public ResponseEntity<GenericResponseHandler<Term>> createTerm(@PathVariable String word) throws IOException {
     String wordLower = word.toLowerCase();
     Optional<Term> existingTerm = termService.findByWord(wordLower);
     Term term = null;
@@ -55,9 +55,10 @@ public class TermController {
       term = existingTerm.get();
     } else {
       term = termService.create(wordLower)
-          .orElseThrow(() -> WadiagError.WORD_NOT_FOUND.exWithArguments(Map.of("word", wordLower)));
+          .orElseThrow(() -> GenericError.WORD_NOT_FOUND.exWithArguments(Map.of("word", wordLower)));
     }
-    return ResponseEntity.created(URI.create("/rest/terms/" + term.getId())).body(term);
+
+    return GenericResponseHandler.success(term).entityCreated();
   }
 
   @Operation(summary = "Delete Term by Word")
@@ -66,6 +67,6 @@ public class TermController {
     String wordLower = word.toLowerCase();
     return termService.deleteByWord(wordLower)
         .map(count -> ResponseEntity.noContent().<Void>build())
-        .orElseThrow(() -> WadiagError.WORD_NOT_FOUND.exWithArguments(Map.of("word", wordLower)));
+        .orElseThrow(() -> GenericError.WORD_NOT_FOUND.exWithArguments(Map.of("word", wordLower)));
   }
 }

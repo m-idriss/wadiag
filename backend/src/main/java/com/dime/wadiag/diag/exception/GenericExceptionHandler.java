@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 
+import com.dime.wadiag.diag.model.GenericConstants;
+
 import lombok.RequiredArgsConstructor;
 
 @RestControllerAdvice
@@ -18,10 +20,10 @@ import lombok.RequiredArgsConstructor;
 /**
  * https://medium.com/@iyusubov444/spring-rest-api-exception-handling-a312eafe85e7
  */
-public class WadiagExceptionHandler extends DefaultErrorAttributes {
+public class GenericExceptionHandler extends DefaultErrorAttributes {
 
-    @ExceptionHandler(WadiagException.class)
-    public ResponseEntity<Map<String, Object>> handle(WadiagException ex,
+    @ExceptionHandler(GenericException.class)
+    public ResponseEntity<Map<String, Object>> handle(GenericException ex,
             WebRequest request) {
         return ofType(request, ex.getErrorResponse().getHttpStatus(), ex.getErrorResponse().getKey());
     }
@@ -29,10 +31,10 @@ public class WadiagExceptionHandler extends DefaultErrorAttributes {
     private ResponseEntity<Map<String, Object>> ofType(WebRequest request, HttpStatus status,
             String key) {
         Map<String, Object> attributes = getErrorAttributes(request, ErrorAttributeOptions.defaults());
-        attributes.put(WadiagHttpResponseConstants.STATUS, status.value());
-        attributes.put(WadiagHttpResponseConstants.ERROR, status);
-        attributes.put(WadiagHttpResponseConstants.ERROR_KEY, key);
-        attributes.put(WadiagHttpResponseConstants.PATH, getRequestPath(request));
+        attributes.put(GenericConstants.STATUS, status.value());
+        attributes.put(GenericConstants.ERROR, status);
+        attributes.put(GenericConstants.ERROR_KEY, key);
+        attributes.put(GenericConstants.PATH, getRequestPath(request));
         return new ResponseEntity<>(attributes, status);
     }
 

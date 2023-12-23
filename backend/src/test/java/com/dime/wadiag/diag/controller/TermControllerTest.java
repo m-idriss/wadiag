@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import com.dime.wadiag.diag.model.GenericResponseHandler;
 import com.dime.wadiag.diag.model.Term;
 import com.dime.wadiag.diag.service.TermService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -50,13 +52,16 @@ class TermControllerTest {
     void test_save_new_word() throws Exception {
         String word = faker.lorem().word();
         Term term = new Term(word);
+        term.setId(345L);
+        GenericResponseHandler<Term> response = GenericResponseHandler.success(term);
 
         when(service.findByWord(word)).thenReturn(Optional.empty());
         when(service.create(word)).thenReturn(Optional.of(term));
 
         mockMvc.perform(MockMvcRequestBuilders.post("/rest/terms/{word}", word.toUpperCase()))
                 .andExpect(status().isCreated())
-                .andExpect(content().json(objectMapper.writeValueAsString(term)));
+                .andExpect(content().json(objectMapper.writeValueAsString(response)))
+                .andExpect(jsonPath("$.links.link_0").value("/rest/term/345"));
 
         verify(service, times(1)).findByWord(word);
         verify(service, times(1)).create(word);
@@ -67,12 +72,13 @@ class TermControllerTest {
     void test_handle_existing_word() throws Exception {
         String word = faker.lorem().word();
         Term existingTerm = new Term(word);
+        GenericResponseHandler<Term> response = GenericResponseHandler.success(existingTerm);
 
         when(service.findByWord(word)).thenReturn(Optional.of(existingTerm));
 
         mockMvc.perform(MockMvcRequestBuilders.post("/rest/terms/{word}", word.toUpperCase()))
                 .andExpect(status().isCreated())
-                .andExpect(content().json(objectMapper.writeValueAsString(existingTerm)));
+                .andExpect(content().json(objectMapper.writeValueAsString(response)));
 
         verify(service, times(1)).findByWord(word);
         verify(service, never()).create(word);
@@ -92,12 +98,13 @@ class TermControllerTest {
                 new Term(faker.lorem().word()),
                 new Term(faker.lorem().word()),
                 new Term(faker.lorem().word()));
+        GenericResponseHandler<Term> response = GenericResponseHandler.success(termList);
 
         when(service.findAll()).thenReturn(Optional.of(termList));
 
         mockMvc.perform(get("/rest/terms").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(termList)));
+                .andExpect(content().json(objectMapper.writeValueAsString(response)));
     }
 
     @DisplayName("Should returns a 204 No Content response when there are no terms in the database")
@@ -115,14 +122,17 @@ class TermControllerTest {
     void test_valid_id() throws Exception {
         // Arrange
         Long termId = 1L;
-        Term mockTerm = new Term();
-        when(service.findById(anyLong())).thenReturn(Optional.of(mockTerm));
+        Term term = new Term();
+        GenericResponseHandler<Term> response = GenericResponseHandler.success(term);
+
+        when(service.findById(anyLong())).thenReturn(Optional.of(term));
 
         // Act and Assert
         mockMvc.perform(get("/rest/terms/{id}", termId)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+                .andExpect(content().json(objectMapper.writeValueAsString(response)));
+
         verify(service, times(1)).findById(termId);
     }
 

@@ -21,7 +21,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @RequiredArgsConstructor
 @NoArgsConstructor(force = true)
-public class Term {
+public class Term implements GenericEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

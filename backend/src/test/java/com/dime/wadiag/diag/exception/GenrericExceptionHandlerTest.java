@@ -13,17 +13,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.WebRequest;
 
-class WadiagExceptionHandlerTest {
+import com.dime.wadiag.diag.model.GenericConstants;
+
+class GenrericExceptionHandlerTest {
     @DisplayName("Handle WadiagException for Resource Not Found")
     @Test
     void test_handle_resource_not_found_exception() {
         // Arrange
-        WadiagException ex = new WadiagException(WadiagError.WORD_NOT_FOUND, Map.of("word", "toto"));
+        GenericException ex = new GenericException(GenericError.WORD_NOT_FOUND, Map.of("word", "toto"));
         WebRequest request = mock(WebRequest.class);
         when(request.getContextPath()).thenReturn("/api");
 
         // Act
-        ResponseEntity<Map<String, Object>> response = new WadiagExceptionHandler()
+        ResponseEntity<Map<String, Object>> response = new GenericExceptionHandler()
                 .handle(ex, request);
 
         // Assert
@@ -31,10 +33,10 @@ class WadiagExceptionHandlerTest {
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         Map<String, Object> body = response.getBody();
         assertNotNull(body);
-        assertEquals(HttpStatus.NOT_FOUND.value(), body.get(WadiagHttpResponseConstants.STATUS));
-        assertEquals(HttpStatus.NOT_FOUND, body.get(WadiagHttpResponseConstants.ERROR));
-        assertEquals(WadiagError.WORD_NOT_FOUND.toString(), body.get(WadiagHttpResponseConstants.ERROR_KEY));
-        assertEquals("/api", body.get(WadiagHttpResponseConstants.PATH));
+        assertEquals(HttpStatus.NOT_FOUND.value(), body.get(GenericConstants.STATUS));
+        assertEquals(HttpStatus.NOT_FOUND, body.get(GenericConstants.ERROR));
+        assertEquals(GenericError.WORD_NOT_FOUND.toString(), body.get(GenericConstants.ERROR_KEY));
+        assertEquals("/api", body.get(GenericConstants.PATH));
 
     }
 
