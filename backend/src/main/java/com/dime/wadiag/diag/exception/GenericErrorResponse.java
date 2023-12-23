@@ -2,7 +2,7 @@ package com.dime.wadiag.diag.exception;
 
 import org.springframework.http.HttpStatus;
 
-public interface WadiagErrorResponse {
+public interface GenericErrorResponse {
 
     String getKey();
 

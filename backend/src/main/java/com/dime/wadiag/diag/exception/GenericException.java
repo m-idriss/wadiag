@@ -9,9 +9,9 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class WadiagException extends RuntimeException {
+public class GenericException extends RuntimeException {
 
-    private final transient WadiagErrorResponse errorResponse;
+    private final transient GenericErrorResponse errorResponse;
     private final transient Map<String, Object> messageArguments;
 
     @Override

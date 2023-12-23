@@ -9,7 +9,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum WadiagError implements WadiagErrorResponse {
+public enum GenericError implements GenericErrorResponse {
 
         TERM_NOT_FOUND("ID_NOT_FOUND", HttpStatus.NOT_FOUND, "Term with id [{id}] not found"),
         TERM_CONFLITS("ID_CONFLICT", HttpStatus.CONFLICT, "Term with id [{id}] make conflict"),
@@ -25,8 +25,8 @@ public enum WadiagError implements WadiagErrorResponse {
         HttpStatus httpStatus;
         String message;
 
-        public WadiagException exWithArguments(Map<String, Object> arguments) {
-                return new WadiagException(this, arguments);
+        public GenericException exWithArguments(Map<String, Object> arguments) {
+                return new GenericException(this, arguments);
         }
 
 }

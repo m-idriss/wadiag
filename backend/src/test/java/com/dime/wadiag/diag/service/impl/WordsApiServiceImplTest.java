@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 
-import com.dime.wadiag.diag.exception.WadiagException;
+import com.dime.wadiag.diag.exception.GenericException;
 import com.dime.wadiag.diag.model.Term;
 import com.dime.wadiag.diag.wordsapi.WordsApiProperties;
 
@@ -52,7 +52,7 @@ class WordsApiServiceImplTest {
     @DisplayName("Get synonyms for an invalid word")
     @Test
     void test_get_synonyms_for_word_resource_not_found_exception() {
-        WadiagException exception = assertThrows(WadiagException.class,
+        GenericException exception = assertThrows(GenericException.class,
                 () -> service.getSynonymsForWord("toto"));
         assertThat(exception.getMessage()).isEqualTo("Word [toto] do not exists");
     }
@@ -100,7 +100,7 @@ class WordsApiServiceImplTest {
         properties.setUrl(testProperties.getUrl());
         service = new WordsApiServiceImpl(properties);
 
-        WadiagException exception = assertThrows(WadiagException.class,
+        GenericException exception = assertThrows(GenericException.class,
                 () -> service.testWordsApiConnection());
         assert (exception.getMessage()).contains("Failed to connect to dependency code : [");
     }
