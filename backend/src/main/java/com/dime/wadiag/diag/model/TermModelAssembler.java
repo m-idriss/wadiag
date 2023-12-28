@@ -1,0 +1,25 @@
+package com.dime.wadiag.diag.model;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.hateoas.server.RepresentationModelAssembler;
+import org.springframework.stereotype.Component;
+
+import com.dime.wadiag.diag.controller.TermController;
+
+@Component
+public class TermModelAssembler implements RepresentationModelAssembler<Term, EntityModel<Term>> {
+
+    @Override
+    public EntityModel<Term> toModel(Term entity) {
+        EntityModel<Term> accountModel = EntityModel.of(entity);
+
+        accountModel.add(linkTo(methodOn(TermController.class).getOne(entity.getId())).withSelfRel());
+        accountModel.add(linkTo(methodOn(TermController.class).listAll()).withRel(IanaLinkRelations.COLLECTION));
+
+        return accountModel;
+    }
+}
