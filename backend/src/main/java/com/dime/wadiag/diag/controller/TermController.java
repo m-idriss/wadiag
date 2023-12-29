@@ -28,6 +28,7 @@ import com.dime.wadiag.diag.service.TermService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import java.util.Collections;
 
 /*
  * https://www.codejava.net/frameworks/spring-boot/rest-api-crud-with-hateoas-tutorial
@@ -46,15 +47,16 @@ public class TermController {
   @Operation(summary = "Find All Terms")
   @GetMapping
   public CollectionModel<EntityModel<Term>> listAll() {
-    Optional<List<Term>> listTerm = termService.findAll();
-    if (listTerm.isPresent()) {
-      List<EntityModel<Term>> listEntityModel = listTerm.get()
-          .stream().map(modelAssembler::toModel).collect(Collectors.toList());
-      CollectionModel<EntityModel<Term>> collectionModel = CollectionModel.of(listEntityModel);
-      collectionModel.add(linkTo(methodOn(TermController.class).listAll()).withSelfRel());
-      return collectionModel;
-    }
-    return CollectionModel.empty();
+    List<Term> terms = termService.findAll().orElse(Collections.emptyList());
+
+    List<EntityModel<Term>> entityModels = terms.stream()
+        .map(modelAssembler::toModel)
+        .collect(Collectors.toList());
+
+    CollectionModel<EntityModel<Term>> collectionModel = CollectionModel.of(entityModels);
+    collectionModel.add(linkTo(methodOn(TermController.class).listAll()).withSelfRel());
+
+    return collectionModel;
   }
 
   @Operation(summary = "Get Term by ID")
@@ -65,7 +67,7 @@ public class TermController {
       EntityModel<Term> model = modelAssembler.toModel(term.get());
       return new ResponseEntity<>(model, HttpStatus.OK);
     }
-    return ResponseEntity.notFound().build();
+    throw GenericError.TERM_NOT_FOUND.exWithArguments(Map.of("id", id));
   }
 
   @Operation(summary = "Create Term")
@@ -88,8 +90,10 @@ public class TermController {
   @DeleteMapping("/{word}")
   public ResponseEntity<Void> deleteTerm(@PathVariable String word) {
     String wordLower = word.toLowerCase();
-    return termService.deleteByWord(wordLower)
-        .map(count -> ResponseEntity.noContent().<Void>build())
-        .orElseThrow(() -> GenericError.WORD_NOT_FOUND.exWithArguments(Map.of("word", wordLower)));
+    Optional<Integer> count = termService.deleteByWord(wordLower);
+    if (count.isPresent() && count.get() > 0) {
+      return ResponseEntity.noContent().<Void>build();
+    }
+    throw GenericError.WORD_NOT_FOUND.exWithArguments(Map.of("word", wordLower));
   }
 }

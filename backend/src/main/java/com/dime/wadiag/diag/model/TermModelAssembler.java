@@ -15,11 +15,10 @@ public class TermModelAssembler implements RepresentationModelAssembler<Term, En
 
     @Override
     public EntityModel<Term> toModel(Term entity) {
-        EntityModel<Term> accountModel = EntityModel.of(entity);
+        EntityModel<Term> termModel = EntityModel.of(entity);
 
-        accountModel.add(linkTo(methodOn(TermController.class).getOne(entity.getId())).withSelfRel());
-        accountModel.add(linkTo(methodOn(TermController.class).listAll()).withRel(IanaLinkRelations.COLLECTION));
-
-        return accountModel;
+        termModel.add(linkTo(methodOn(TermController.class).getOne(entity.getId())).withSelfRel());
+        termModel.add(linkTo(methodOn(TermController.class).listAll()).withRel(IanaLinkRelations.COLLECTION));
+        return termModel;
     }
 }
