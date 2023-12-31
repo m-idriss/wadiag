@@ -1,36 +1,30 @@
 <!DOCTYPE HTML>
 <html lang="fr">
+
 <head>
     <title>Diag API demo</title>
-    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+    <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
+
 <body>
-<div style="text-align: center">
-    <img src="./3dime-logo-blue-small.png" alt="logo"/>
-</div>
-<br>
-<br>
-<div style="text-align: center">
-    <label for="word_name"></label><input id="word_name" placeholder="word-name" type="text" value="school"/>
-    <button onclick="getWord()">Word</button>
-</div>
-<br>
-<br>
-<div id="result"></div>
+    <div id="logo">
+        <img src="./3dime-logo-blue-small.png" alt="logo" />
+    </div>
+    <div id="input-container">
+        <label for="word_name"></label><input id="word_name" placeholder="word-name" type="text" value="school" />
+        <button onclick="getWord()">Get Word</button>
+        <button id="copyButton" onclick="copyResultToClipboard()">Copy Result</button>
+    </div>
+    <div id="result-container">
+        <div id="result"></div>
+        <div id="all-terms-container">
+            <ul id="all-terms-list"></ul>
+        </div>
+    </div>
+
 </body>
-<script>
 
-    function getWord() {
-        const word_name = document.getElementById("word_name").value;
-        const xhttp = new XMLHttpRequest();
-        xhttp.open("POST", "/rest/terms/" + word_name, true);
-        xhttp.onreadystatechange = function () {
-            if (this.readyState === 4 && this.status === 200) {
-                document.getElementById("result").innerHTML = xhttp.responseText;
-            }
-        };
-        xhttp.send();
-    }
+<script src="script.js"></script>
 
-</script>
 </html>

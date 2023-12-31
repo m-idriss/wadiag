@@ -14,8 +14,7 @@ Hi, I'm Idriss, a passionate Java backend developer exploring and learning, espe
 Feel free to connect with me on these platforms:
 
 - [LinkedIn](https://www.linkedin.com/in/i-mohamady/)
-- [Twitter](https://twitter.com/3dime13)
-- [Portfolio Website](https://www.3dime.com)
+- [Twitter/X](https://twitter.com/3dime13)
 
 ## Languages and Tools
 
