@@ -1,30 +1,44 @@
-<!DOCTYPE HTML>
-<html lang="fr">
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">    
     <title>Diag API demo</title>
-    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
-    <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
+<body class="bg-light">
 
-<body>
-    <div id="logo">
-        <img src="./3dime-logo-blue-small.png" alt="logo" />
-    </div>
-    <div id="input-container">
-        <label for="word_name"></label><input id="word_name" placeholder="word-name" type="text" value="school" />
-        <button onclick="getWord()">Get Word</button>
-        <button id="copyButton" onclick="copyResultToClipboard()">Copy Result</button>
-    </div>
-    <div id="result-container">
-        <div id="result"></div>
-        <div id="all-terms-container">
-            <ul id="all-terms-list"></ul>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-9">
+            <div class="text-center mb-4">
+                <img src="./3dime-logo-blue-small.png" alt="logo" class="img-fluid">
+            </div>
+            <div class="input-group mb-3">
+                <input id="word_name" type="text" class="form-control" placeholder="Word name" value="school">
+                <div class="input-group-append">
+                    <button class="btn btn-success mb-3" type="button" onclick="getWord()">Get Word</button>
+                    <button id="copyButton" class="btn btn-warning mb-3 ml-2" onclick="copyResultToClipboard()">Copy Result</button>
+                </div>
+            </div>
+            <div class="card mb-12">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div id="result"></div>
+                        </div>
+                        <div class="col-md-3">
+                            <div id="all-terms-list" class="list-group"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
-</body>
+</div>
 
 <script src="script.js"></script>
 
+</body>
 </html>
