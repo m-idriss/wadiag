@@ -2,6 +2,8 @@ package com.dime.wadiag.diag.model;
 
 import java.util.Set;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import io.micrometer.common.lang.NonNull;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -10,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +24,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @RequiredArgsConstructor
 @NoArgsConstructor(force = true)
-public class Term implements GenericEntity {
+@EqualsAndHashCode(callSuper = true)
+public class Term extends RepresentationModel<Term> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

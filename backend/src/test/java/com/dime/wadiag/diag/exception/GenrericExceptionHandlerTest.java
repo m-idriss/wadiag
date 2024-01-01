@@ -36,6 +36,7 @@ class GenrericExceptionHandlerTest {
         assertEquals(HttpStatus.NOT_FOUND.value(), body.get(GenericConstants.STATUS));
         assertEquals(HttpStatus.NOT_FOUND, body.get(GenericConstants.ERROR));
         assertEquals(GenericError.WORD_NOT_FOUND.toString(), body.get(GenericConstants.ERROR_KEY));
+        assertEquals(String.format("Word [%s] do not exists", "toto"), body.get(GenericConstants.MESSAGE));
         assertEquals("/api", body.get(GenericConstants.PATH));
 
     }

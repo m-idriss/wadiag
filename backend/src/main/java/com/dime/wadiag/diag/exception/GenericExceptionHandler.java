@@ -25,16 +25,17 @@ public class GenericExceptionHandler extends DefaultErrorAttributes {
     @ExceptionHandler(GenericException.class)
     public ResponseEntity<Map<String, Object>> handle(GenericException ex,
             WebRequest request) {
-        return ofType(request, ex.getErrorResponse().getHttpStatus(), ex.getErrorResponse().getKey());
+        return ofType(request, ex.getErrorResponse().getHttpStatus(), ex.getErrorResponse().getKey(), ex.getMessage());
     }
 
     private ResponseEntity<Map<String, Object>> ofType(WebRequest request, HttpStatus status,
-            String key) {
+            String key, String message) {
         Map<String, Object> attributes = getErrorAttributes(request, ErrorAttributeOptions.defaults());
         attributes.put(GenericConstants.STATUS, status.value());
         attributes.put(GenericConstants.ERROR, status);
         attributes.put(GenericConstants.ERROR_KEY, key);
         attributes.put(GenericConstants.PATH, getRequestPath(request));
+        attributes.put(GenericConstants.MESSAGE, message);
         return new ResponseEntity<>(attributes, status);
     }
 
