@@ -109,11 +109,11 @@ class TermControllerTest {
                 mockMvc.perform(get("/api/v1/terms")
                                 .contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk())
-                                .andExpect(jsonPath("$._embedded.termList", hasSize(termList.size())))
+                                .andExpect(jsonPath("$._embedded.terms", hasSize(termList.size())))
                                 .andExpect(
-                                                jsonPath("$._embedded.termList[2]._links.self.href",
+                                                jsonPath("$._embedded.terms[2]._links.self.href",
                                                                 matchesPattern("http.*/api/v1/terms/789")))
-                                .andExpect(jsonPath("$._embedded.termList[2].synonyms", hasItem("zaza")))
+                                .andExpect(jsonPath("$._embedded.terms[2].synonyms", hasItem("zaza")))
                                 .andExpect(jsonPath("$._links.self.href", matchesPattern("http.*/api/v1/terms")));
                 ;
         }

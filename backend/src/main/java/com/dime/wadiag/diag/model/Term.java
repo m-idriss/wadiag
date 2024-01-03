@@ -3,6 +3,7 @@ package com.dime.wadiag.diag.model;
 import java.util.Set;
 
 import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
 
 import io.micrometer.common.lang.NonNull;
 import jakarta.persistence.Column;
@@ -25,6 +26,7 @@ import lombok.Setter;
 @RequiredArgsConstructor
 @NoArgsConstructor(force = true)
 @EqualsAndHashCode(callSuper = true)
+@Relation(collectionRelation = "terms")
 public class Term extends RepresentationModel<Term> {
 
     @Id

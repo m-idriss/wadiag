@@ -11,9 +11,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.context.request.WebRequest;
 
 import com.dime.wadiag.diag.model.GenericConstants;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 class GenrericExceptionHandlerTest {
     @DisplayName("Handle WadiagException for Resource Not Found")
@@ -21,12 +22,12 @@ class GenrericExceptionHandlerTest {
     void test_handle_resource_not_found_exception() {
         // Arrange
         GenericException ex = new GenericException(GenericError.WORD_NOT_FOUND, Map.of("word", "toto"));
-        WebRequest request = mock(WebRequest.class);
-        when(request.getContextPath()).thenReturn("/api");
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        when(request.getRequestURI()).thenReturn("/api");
 
         // Act
         ResponseEntity<Map<String, Object>> response = new GenericExceptionHandler()
-                .handle(ex, request);
+                .handleGenericException(ex, request);
 
         // Assert
         assertNotNull(response);
