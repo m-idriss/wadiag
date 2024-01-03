@@ -9,10 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.ServletWebRequest;
-import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.dime.wadiag.diag.model.GenericConstants;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 @RestControllerAdvice
@@ -23,14 +24,15 @@ import lombok.RequiredArgsConstructor;
 public class GenericExceptionHandler extends DefaultErrorAttributes {
 
     @ExceptionHandler(GenericException.class)
-    public ResponseEntity<Map<String, Object>> handle(GenericException ex,
-            WebRequest request) {
+    public ResponseEntity<Map<String, Object>> handleGenericException(GenericException ex,
+            HttpServletRequest request) {
         return ofType(request, ex.getErrorResponse().getHttpStatus(), ex.getErrorResponse().getKey(), ex.getMessage());
     }
 
-    private ResponseEntity<Map<String, Object>> ofType(WebRequest request, HttpStatus status,
+    private ResponseEntity<Map<String, Object>> ofType(HttpServletRequest request, HttpStatus status,
             String key, String message) {
-        Map<String, Object> attributes = getErrorAttributes(request, ErrorAttributeOptions.defaults());
+        Map<String, Object> attributes = getErrorAttributes(new ServletWebRequest(request),
+                ErrorAttributeOptions.defaults());
         attributes.put(GenericConstants.STATUS, status.value());
         attributes.put(GenericConstants.ERROR, status);
         attributes.put(GenericConstants.ERROR_KEY, key);
@@ -39,11 +41,10 @@ public class GenericExceptionHandler extends DefaultErrorAttributes {
         return new ResponseEntity<>(attributes, status);
     }
 
-    private String getRequestPath(WebRequest request) {
-        if (request instanceof ServletWebRequest) {
-            return ((ServletWebRequest) request).getRequest().getRequestURI();
-        } else {
-            return request.getContextPath();
-        }
+    private String getRequestPath(HttpServletRequest request) {
+        return ServletUriComponentsBuilder.fromRequestUri(request)
+                .build()
+                .toUriString();
+
     }
 }
