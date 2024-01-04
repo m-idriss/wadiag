@@ -70,7 +70,7 @@ function updateAllTermsList(response) {
     const allTermsListContainer = document.getElementById("all-terms-list");
     allTermsListContainer.innerHTML = "";
 
-    const terms = response._embedded.termList;
+    const terms = response._embedded.terms;
 
     terms.forEach(term => {
         const wordButton = createWordButton(term);
