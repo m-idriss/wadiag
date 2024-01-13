@@ -11,7 +11,7 @@ public interface TermService {
 
     Optional<List<Term>> findAll();
 
-    Optional<Term> findById(long id);
+    Optional<Term> findById(Long id);
 
     Optional<Term> findByWord(String word);
 

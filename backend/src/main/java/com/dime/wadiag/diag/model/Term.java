@@ -31,7 +31,7 @@ public class Term extends RepresentationModel<Term> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @NonNull
     @Column(unique = true)
