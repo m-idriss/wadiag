@@ -3,8 +3,6 @@ spring:
     name: Wadiag Application
   jpa:
     open-in-view: true
-    hibernate:
-      ddl-auto: create
 
   datasource:
     url: jdbc:postgresql://${DB_SERVER:localhost}:5432/diag
