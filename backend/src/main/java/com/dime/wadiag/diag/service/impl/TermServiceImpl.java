@@ -20,7 +20,7 @@ public class TermServiceImpl implements TermService {
     private final WordsApiServiceImpl service;
 
     @Override
-    public Optional<Term> findById(Long id) {
+    public Optional<Term> findById(long id) {
         return repository.findById(id);
     }
 
