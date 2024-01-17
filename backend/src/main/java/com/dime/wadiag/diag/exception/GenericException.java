@@ -11,6 +11,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class GenericException extends RuntimeException {
 
+    private static final long serialVersionUID = -3784903329806863768L;
     private final transient GenericErrorResponse errorResponse;
     private final transient Map<String, Object> messageArguments;
 
