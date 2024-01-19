@@ -30,7 +30,7 @@ public class WadiagApplication {
 				"\n" + """
 						----------------------------------------------------------+
 						 Application \t: {}
-						 Spring Boot \t: Version {}
+						 Spring \t: Version {}
 
 						 Access URLs:
 						 - External \t: {}://{}:{}

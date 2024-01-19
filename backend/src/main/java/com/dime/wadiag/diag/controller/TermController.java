@@ -32,7 +32,7 @@ import lombok.AllArgsConstructor;
  * https://www.codejava.net/frameworks/spring-boot/rest-api-crud-with-hateoas-tutorial
  */
 @RestController
-@RequestMapping("/api/v1/terms")
+@RequestMapping("api/v1/terms")
 @AllArgsConstructor
 @Tag(name = "Terms", description = "Manage Terms")
 public class TermController {
