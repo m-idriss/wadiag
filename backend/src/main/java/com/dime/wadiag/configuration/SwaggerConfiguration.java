@@ -55,7 +55,7 @@ public class SwaggerConfiguration {
     return new Info()
         .title("Wadiag")
         .description(
-            "This is a API Wadiag game Server based on the OpenAPI 3.0 specification. Click [here](https://github.com/m-idriss/wadiag). You can load via the `Code > Clone` menu option!_  Some useful links: - [The Author repositories](https://github.com/m-idriss)")
+            "This is a API Wadiag game Server based on the OpenAPI 3.0 specification. Click [here](https://github.com/m-idriss/wadiag). You can load via the `Code > Clone`, enjoy.")
         .version("1.0")
         .contact(apiContact())
         .license(apiLicence());
@@ -77,7 +77,7 @@ public class SwaggerConfiguration {
   private ExternalDocumentation apiExternalDocs() {
     return new ExternalDocumentation()
         .description("Test Documentation")
-        .url("https://github.com/m-idriss/wadiag");
+        .url("https://github.com/m-idriss/wadiag?tab=readme-ov-file#readme");
   }
 
 }
