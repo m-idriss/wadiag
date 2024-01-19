@@ -37,6 +37,9 @@ springdoc:
   swagger-ui:
     path: /swagger-ui.html
     enabled: true
+    urlsPrimaryName: public-apis
+    defaultModelsExpandDepth: -1
+
   show-actuator: true
 
 # Configure Actuator endpoints

@@ -39,10 +39,11 @@ class TermControllerTest {
         @Autowired
         private MockMvc mockMvc;
 
-        private final Faker faker = new Faker();
-
         @MockBean
         private TermService service;
+
+        private final Faker faker = new Faker();
+        private static final String BASE_PATH = "/api/v1";
 
         @DisplayName("Should save a new word and return 201 Created")
         @Test
@@ -55,7 +56,7 @@ class TermControllerTest {
                 when(service.findByWord(word)).thenReturn(Optional.empty());
                 when(service.create(word)).thenReturn(Optional.of(term));
 
-                mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/terms/{word}", word.toUpperCase())
+                mockMvc.perform(MockMvcRequestBuilders.post(BASE_PATH + "/terms/{word}", word.toUpperCase())
                                 .contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isCreated())
                                 .andExpect(jsonPath("$.id").value(123))
@@ -63,8 +64,10 @@ class TermControllerTest {
                                 .andExpect(jsonPath("$.synonyms", hasItem("tata")))
                                 .andExpect(jsonPath("$.synonyms", hasItem("toto")))
                                 .andExpect(jsonPath("$.synonyms", hasSize(2)))
-                                .andExpect(jsonPath("$._links.self.href", matchesPattern("http.*/api/v1/terms/123")))
-                                .andExpect(jsonPath("$._links.collection.href", matchesPattern("http.*/api/v1/terms")));
+                                .andExpect(jsonPath("$._links.self.href",
+                                                matchesPattern("http.*" + BASE_PATH + "/terms/123")))
+                                .andExpect(jsonPath("$._links.collection.href",
+                                                matchesPattern("http.*" + BASE_PATH + "/terms")));
 
                 verify(service, times(1)).findByWord(word);
                 verify(service, times(1)).create(word);
@@ -79,11 +82,13 @@ class TermControllerTest {
 
                 when(service.findByWord(word)).thenReturn(Optional.of(term));
 
-                mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/terms/{word}", word.toUpperCase())
+                mockMvc.perform(MockMvcRequestBuilders.post(BASE_PATH + "/terms/{word}", word.toUpperCase())
                                 .contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk())
-                                .andExpect(jsonPath("$._links.self.href", matchesPattern("http.*/api/v1/terms/345")))
-                                .andExpect(jsonPath("$._links.collection.href", matchesPattern("http.*/api/v1/terms")));
+                                .andExpect(jsonPath("$._links.self.href",
+                                                matchesPattern("http.*" + BASE_PATH + "/terms/345")))
+                                .andExpect(jsonPath("$._links.collection.href",
+                                                matchesPattern("http.*" + BASE_PATH + "/terms")));
                 ;
                 verify(service, times(1)).findByWord(word);
                 verify(service, times(0)).create(word);
@@ -92,7 +97,7 @@ class TermControllerTest {
         @DisplayName("Should handle missing word parameter and return 404 Not found")
         @Test
         void test_missing_word_parameter() throws Exception {
-                mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/terms/"))
+                mockMvc.perform(MockMvcRequestBuilders.post(BASE_PATH + "/terms/"))
                                 .andExpect(status().isNotFound());
         }
 
@@ -106,15 +111,16 @@ class TermControllerTest {
 
                 when(service.findAll()).thenReturn(Optional.of(termList));
 
-                mockMvc.perform(get("/api/v1/terms")
+                mockMvc.perform(get(BASE_PATH + "/terms")
                                 .contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk())
                                 .andExpect(jsonPath("$._embedded.terms", hasSize(termList.size())))
                                 .andExpect(
                                                 jsonPath("$._embedded.terms[2]._links.self.href",
-                                                                matchesPattern("http.*/api/v1/terms/789")))
+                                                                matchesPattern("http.*" + BASE_PATH + "/terms/789")))
                                 .andExpect(jsonPath("$._embedded.terms[2].synonyms", hasItem("zaza")))
-                                .andExpect(jsonPath("$._links.self.href", matchesPattern("http.*/api/v1/terms")));
+                                .andExpect(jsonPath("$._links.self.href",
+                                                matchesPattern("http.*" + BASE_PATH + "/terms")));
                 ;
         }
 
@@ -124,10 +130,11 @@ class TermControllerTest {
 
                 when(service.findAll()).thenReturn(Optional.of(new ArrayList<>()));
 
-                mockMvc.perform(get("/api/v1/terms")
+                mockMvc.perform(get(BASE_PATH + "/terms")
                                 .contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk())
-                                .andExpect(jsonPath("$._links.self.href", matchesPattern("http.*/api/v1/terms")));
+                                .andExpect(jsonPath("$._links.self.href",
+                                                matchesPattern("http.*" + BASE_PATH + "/terms")));
 
         }
 
@@ -141,7 +148,7 @@ class TermControllerTest {
                 when(service.findById(anyLong())).thenReturn(Optional.of(term));
 
                 // Act and Assert
-                mockMvc.perform(get("/api/v1/terms/{id}", termId)
+                mockMvc.perform(get(BASE_PATH + "/terms/{id}", termId)
                                 .contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk());
 
@@ -154,7 +161,7 @@ class TermControllerTest {
                 int id = 2;
 
                 // Act and Assert
-                mockMvc.perform(get("/api/v1/terms/{id}", id)
+                mockMvc.perform(get(BASE_PATH + "/terms/{id}", id)
                                 .contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isNotFound())
                                 .andExpect(jsonPath("$.message")
@@ -171,7 +178,7 @@ class TermControllerTest {
                 when(service.deleteByWord(wordToDelete)).thenReturn(Optional.of(deletedCount));
 
                 // Act and Assert
-                mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/terms/{word}", wordToDelete.toUpperCase())
+                mockMvc.perform(MockMvcRequestBuilders.delete(BASE_PATH + "/terms/{word}", wordToDelete.toUpperCase())
                                 .contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isNoContent());
                 verify(service, times(1)).deleteByWord(wordToDelete);
@@ -185,7 +192,7 @@ class TermControllerTest {
                 when(service.deleteByWord(wordToDelete)).thenReturn(Optional.of(deletedCount));
 
                 // Act and Assert
-                mockMvc.perform(delete("/api/v1/terms/{word}", wordToDelete.toUpperCase())
+                mockMvc.perform(delete(BASE_PATH + "/terms/{word}", wordToDelete.toUpperCase())
                                 .contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isNotFound())
                                 .andExpect(jsonPath("$.message")

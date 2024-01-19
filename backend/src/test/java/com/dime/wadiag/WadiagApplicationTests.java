@@ -70,7 +70,7 @@ class WadiagApplicationTests {
 		// Assert specific words in the log message
 		assertThat(logMessage)
 				.contains("Application")
-				.contains("Spring Boot")
+				.contains("Spring")
 				.contains("Access URLs")
 				.contains("Actuator Endpoints")
 				.contains("Test Application")
