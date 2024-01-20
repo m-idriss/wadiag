@@ -130,9 +130,12 @@ build/
 .vscode/
 *.code-workspace
 
+### ENV ###
+
 /backend/logs
 /backend/src/main/resources/application-dev.yml
-/backend/src/main/resources/application-test.yml
+/backend/src/main/resources/application-prod.yml
+.env.prod
 
 ### VS Code ### plugin SQLTools ###
 *.session.sql
