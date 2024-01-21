@@ -57,6 +57,11 @@ jobs:
       - name: Build and Test with Maven
         run: cd backend && mvn verify --file pom.xml -Dspring.profiles.active=staging
 
+  coverage:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
       - name: Test Reporter
         uses: dorny/test-reporter@v1.7.0
         with:
@@ -85,6 +90,7 @@ jobs:
         with:
           category: "/language:${{matrix.language}}"
   deploy:
+    needs: coverage
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.event.ref == 'refs/heads/master'
     environment: staging
