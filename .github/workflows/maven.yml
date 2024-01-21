@@ -60,9 +60,6 @@ jobs:
       - name: Build and Test with Maven
         run: cd backend && mvn verify --file pom.xml -Dspring.profiles.active=staging
 
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
       - name: Test Reporter
         uses: dorny/test-reporter@v1.7.0
         with:
