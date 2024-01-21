@@ -14,6 +14,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import static org.mockito.Mockito.*;
@@ -37,9 +39,9 @@ class WadiagApplicationTests {
 			String baseUrl = "http://localhost:" + port;
 			System.out.println("Base URL: " + baseUrl);
 
-			RestTemplate restTemplate = new RestTemplate();
-			String response = restTemplate.getForObject(baseUrl + "/", String.class);
-			Assertions.assertNotNull(response);
+			ResponseEntity<String> responseEntity = new RestTemplate().getForEntity(baseUrl, String.class);
+			Assertions.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+
 		});
 	}
 
