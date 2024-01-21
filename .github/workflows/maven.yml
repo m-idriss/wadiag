@@ -60,18 +60,6 @@ jobs:
       - name: Build and Test with Maven
         run: cd backend && mvn verify --file pom.xml -Dspring.profiles.active=staging
 
-  coverage:
-    needs: build
-    runs-on: ubuntu-latest
-    environment: staging
-
-    steps:
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          java-version: "17"
-          distribution: "temurin"
-
       - name: Checkout Code
         uses: actions/checkout@v4
 
