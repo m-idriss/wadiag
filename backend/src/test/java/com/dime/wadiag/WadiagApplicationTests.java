@@ -11,23 +11,36 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
+import org.springframework.web.client.RestTemplate;
+
 import static org.mockito.Mockito.*;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class WadiagApplicationTests {
 
 	@Autowired
 	private ApplicationContext context;
 
+	@LocalServerPort
+	private int port;
+
 	@DisplayName("Should load application")
 	@Test
 	void test_main() {
-		Assertions.assertDoesNotThrow(() -> WadiagApplication.main(new String[] {}));
+		Assertions.assertDoesNotThrow(() -> {
+			String baseUrl = "http://localhost:" + port;
+			System.out.println("Base URL: " + baseUrl);
+
+			RestTemplate restTemplate = new RestTemplate();
+			String response = restTemplate.getForObject(baseUrl + "/", String.class);
+			Assertions.assertNotNull(response);
+		});
 	}
 
 	@DisplayName("Should load context")
