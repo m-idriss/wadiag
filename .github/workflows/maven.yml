@@ -15,6 +15,8 @@ jobs:
     environment: staging
     env:
       WORDSAPI_KEY: ${{ secrets.WORDSAPI_KEY }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     services:
       postgres:
         image: postgres
@@ -49,6 +51,7 @@ jobs:
 
       - name: Checkout Code
         uses: actions/checkout@v4
+
       - name: Debug Environment Variables
         run: |
           echo "WORDSAPI_KEY: $WORDSAPI_KEY"
@@ -99,15 +102,17 @@ jobs:
         uses: github/codeql-action/analyze@v2
         with:
           category: "/language:${{matrix.language}}"
+
   deploy:
     needs: coverage
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.event.ref == 'refs/heads/master'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     environment: staging
+
     env:
       PUBLIC_IP: ${{ secrets.PUBLIC_IP }}
       PI_USERNAME: ${{ secrets.PI_USERNAME }}
-      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
