@@ -1,34 +1,53 @@
-# Docker Compose file Reference (https://docs.docker.com/compose/compose-file/)
 version: '3'
 
-#Define services
 services:
 
-  #PostgreSQL Database for the application
   diag-postgres:
-    image: "postgres:alpine"
+    image: "postgres:13-alpine"
     restart: always
     container_name: diag-postgres
-    #Volume mounted for database for the storage
     volumes:
-      - diag-data:/var/lib/postgresql/data
+      - diag_postgres_data:/var/lib/postgresql/data
     ports:
-      - '5432:5432' # Forward the exposed port 5432 on the container to port 5432 on the host machine
-
-    #Environment variable for DB name, user and password
+      - '5432:5432'
     environment:
       - POSTGRES_DB=diag
       - POSTGRES_USER=diag
       - POSTGRES_PASSWORD=diag
 
-  #Back-end Spring Boot Application
+    healthcheck:
+      test: ["CMD", "pg_isready", "-q", "-h", "localhost", "-U", "diag"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  diag-kafka:
+      image: "wurstmeister/kafka:2.13-2.8.1"
+      restart: always
+      container_name: diag-kafka
+      ports:
+        - "9092:9092"
+      expose:
+        - "9093"
+      environment:
+        KAFKA_ADVERTISED_LISTENERS: INSIDE://diag-kafka:9093,OUTSIDE://localhost:9092
+        KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
+        KAFKA_LISTENERS: INSIDE://0.0.0.0:9093,OUTSIDE://0.0.0.0:9092
+        KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+        KAFKA_ZOOKEEPER_CONNECT: "diag-zookeeper:2181"
+      command: sh -c "echo '127.0.0.1 kafka' >> /etc/hosts"
+
+  diag-zookeeper:
+    image: "wurstmeister/zookeeper:3.4.6"
+    restart: always
+    container_name: diag-zookeeper
+    ports:
+      - "2181:2181"
+
   diag-app:
-    #The docker file in diag-app build the jar and provides the docker image with the following name.
     build: ./backend
     container_name: diag-app
     restart: always
-    
-    #Environment variables for Spring Boot Application.
     environment:
       - DB_SERVER=diag-postgres
       - POSTGRES_DB=diag
@@ -36,14 +55,16 @@ services:
       - POSTGRES_PASSWORD=diag
       - SPRING_PORT=${SPRING_PORT}
       - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
+      - KAFKA_BOOTSTRAP_SERVERS=diag-kafka:9092  # Add this line for Kafka integration
 
     ports:
-      - '${SPRING_PORT}:${SPRING_PORT}' # Forward the exposed port ${SPRING_PORT} on the container to port 8081 on the host machine
+      - '${SPRING_PORT}:${SPRING_PORT}'
     links:
       - diag-postgres
+      - diag-kafka
     depends_on:
       - diag-postgres
+      - diag-kafka
 
-#Volumes for DB data
 volumes:
-  diag-data:
+  diag_postgres_data:
