@@ -6,8 +6,10 @@ COPY src ./src
 RUN mvn clean install
 
 ### STAGE 2: Run ###
-FROM openjdk:17-slim
+FROM openjdk:17.0.1-slim
 WORKDIR /app
 COPY --from=build /workspace/target/*.jar ./app.jar
-EXPOSE 8080
+
+ENV KAFKA_BOOTSTRAP_SERVERS=diag-kafka:9092
+
 ENTRYPOINT ["java", "-jar", "app.jar"]
