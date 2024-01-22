@@ -6,8 +6,13 @@ COPY src ./src
 RUN mvn clean install
 
 ### STAGE 2: Run ###
-FROM openjdk:17-slim
+FROM openjdk:17.0.1-slim
 WORKDIR /app
 COPY --from=build /workspace/target/*.jar ./app.jar
+
 EXPOSE 8080
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s CMD curl -f http://localhost:8080/actuator/health || exit 1
+
 ENTRYPOINT ["java", "-jar", "app.jar"]
