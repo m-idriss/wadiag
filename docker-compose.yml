@@ -1,34 +1,30 @@
-# Docker Compose file Reference (https://docs.docker.com/compose/compose-file/)
 version: '3'
 
-#Define services
 services:
 
-  #PostgreSQL Database for the application
   diag-postgres:
-    image: "postgres:alpine"
+    image: "postgres:13-alpine"
     restart: always
     container_name: diag-postgres
-    #Volume mounted for database for the storage
     volumes:
-      - diag-data:/var/lib/postgresql/data
+      - diag_postgres_data:/var/lib/postgresql/data
     ports:
-      - '5432:5432' # Forward the exposed port 5432 on the container to port 5432 on the host machine
-
-    #Environment variable for DB name, user and password
+      - '5432:5432'
     environment:
       - POSTGRES_DB=diag
       - POSTGRES_USER=diag
       - POSTGRES_PASSWORD=diag
 
-  #Back-end Spring Boot Application
+    healthcheck:
+      test: ["CMD", "pg_isready", "-q", "-h", "localhost", "-U", "diag"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
   diag-app:
-    #The docker file in diag-app build the jar and provides the docker image with the following name.
     build: ./backend
     container_name: diag-app
     restart: always
-    
-    #Environment variables for Spring Boot Application.
     environment:
       - DB_SERVER=diag-postgres
       - POSTGRES_DB=diag
@@ -38,12 +34,11 @@ services:
       - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
 
     ports:
-      - '${SPRING_PORT}:${SPRING_PORT}' # Forward the exposed port ${SPRING_PORT} on the container to port 8081 on the host machine
+      - '${SPRING_PORT}:${SPRING_PORT}'
     links:
       - diag-postgres
     depends_on:
       - diag-postgres
 
-#Volumes for DB data
 volumes:
-  diag-data:
+  diag_postgres_data:
