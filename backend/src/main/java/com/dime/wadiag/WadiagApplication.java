@@ -2,6 +2,7 @@ package com.dime.wadiag;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Arrays;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -22,7 +23,8 @@ public class WadiagApplication {
 
 	public static void logMessage(Environment env) throws UnknownHostException {
 		String protocol = "http";
-		if (env.getProperty("server.ssl.key-store") != null) {
+		if (Arrays.asList(env.getActiveProfiles()).contains("prod")
+				|| env.getProperty("server.ssl.key-store") != null) {
 			protocol = "https";
 		}
 		final String port = env.getProperty("server.port");
