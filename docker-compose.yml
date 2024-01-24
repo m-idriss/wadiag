@@ -3,7 +3,7 @@ version: '3'
 services:
 
   diag-postgres:
-    image: "postgres:16-alpine"
+    image: "postgres:13-alpine"
     restart: always
     container_name: diag-postgres
     volumes:
@@ -22,7 +22,7 @@ services:
       retries: 3
 
   diag-kafka:
-      image: "wurstmeister/kafka:2.13-2.8.1"
+      image: "bitnami/kafka:3.4"
       restart: always
       container_name: diag-kafka
       ports:
@@ -35,15 +35,18 @@ services:
         KAFKA_LISTENERS: INSIDE://0.0.0.0:9093,OUTSIDE://0.0.0.0:9092
         KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
         KAFKA_ZOOKEEPER_CONNECT: "diag-zookeeper:2181"
+        KAFKA_LOG4J_ROOT_LOGLEVEL: WARN
+        KAFKA_TOOLS_LOG4J_LOGLEVEL: ERROR
       command: sh -c "echo '127.0.0.1 kafka' >> /etc/hosts"
 
   diag-zookeeper:
-    image: "wurstmeister/zookeeper:3.4.6"
+    image: "bitnami/zookeeper:3.9"
     restart: always
     container_name: diag-zookeeper
     ports:
       - "2181:2181"
-
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
   diag-app:
     build: ./backend
     container_name: diag-app
