@@ -3,7 +3,7 @@ version: '3'
 services:
 
   diag-postgres:
-    image: "postgres:16-alpine"
+    image: "postgres:13-alpine"
     restart: always
     container_name: diag-postgres
     volumes:
