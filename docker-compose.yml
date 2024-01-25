@@ -22,7 +22,7 @@ services:
       retries: 3
 
   diag-kafka:
-      image: "bitnami/kafka:3.4"
+      image: "bitnami/kafka:3.6.1"
       restart: always
       container_name: diag-kafka
       ports:
