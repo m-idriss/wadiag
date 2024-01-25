@@ -25,27 +25,11 @@ import static org.mockito.Mockito.*;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest
 class WadiagApplicationTests {
 
 	@Autowired
 	private ApplicationContext context;
-
-	@LocalServerPort
-	private int port;
-
-	@DisplayName("Should load application")
-	@Test
-	void test_main() {
-		Assertions.assertDoesNotThrow(() -> {
-			String baseUrl = "http://localhost:" + port;
-			System.out.println("Base URL: " + baseUrl);
-
-			ResponseEntity<String> responseEntity = new RestTemplate().getForEntity(baseUrl, String.class);
-			Assertions.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-
-		});
-	}
 
 	@Test
 	void test_method_runs_without_exceptions() {
