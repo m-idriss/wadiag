@@ -37,7 +37,7 @@ services:
         KAFKA_ZOOKEEPER_CONNECT: "diag-zookeeper:2181"
         KAFKA_LOG4J_ROOT_LOGLEVEL: WARN
         KAFKA_TOOLS_LOG4J_LOGLEVEL: ERROR
-      command: sh -c "echo '127.0.0.1 kafka' >> /etc/hosts"
+        KAFKA_MESSAGE_MAX_BYTES: 1000000
 
   diag-zookeeper:
     image: "bitnami/zookeeper:3.9"

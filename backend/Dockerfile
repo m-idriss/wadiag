@@ -10,6 +10,9 @@ FROM openjdk:17.0.1-slim
 WORKDIR /app
 COPY --from=build /workspace/target/*.jar ./app.jar
 
+# Install curl
+RUN apt-get update && apt-get install -y curl && apt-get clean
+
 EXPOSE 8080
 
 # Health check
