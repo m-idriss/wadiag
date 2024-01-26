@@ -1,7 +1,14 @@
 package com.dime.wadiag.diag.service.impl;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.io.IOException;
+import java.util.Arrays;
+
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -13,14 +20,6 @@ import com.dime.wadiag.diag.exception.GenericException;
 import com.dime.wadiag.diag.model.Term;
 import com.dime.wadiag.diag.wordsapi.WordsApiProperties;
 
-import java.io.IOException;
-import java.util.Arrays;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 @SpringBootTest
 @ContextConfiguration
 class WordsApiServiceImplTest {
@@ -30,11 +29,6 @@ class WordsApiServiceImplTest {
 
     @Autowired
     WordsApiProperties testProperties;
-
-    @BeforeEach
-    void setup() {
-        service = new WordsApiServiceImpl(testProperties);
-    }
 
     @DisplayName("Get synonyms for a valid word")
     @Test

@@ -1,4 +1,4 @@
-package com.dime.wadiag.diag.service;
+package com.dime.wadiag.kafka;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
@@ -9,8 +9,6 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
 
-import com.dime.wadiag.diag.model.LogData;
-
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Request;
 import retrofit2.Response;
@@ -19,34 +17,35 @@ import retrofit2.Response;
 @Service
 public class CreateLogProducer {
 
-    private final KafkaTemplate<String, LogData> createLogKafkaTemplate;
+    private final KafkaTemplate<String, LogModel> createLogKafkaTemplate;
 
     private final String createLogTopic;
-|
+
     @Autowired
     private LogService logService;
 
-    public CreateLogProducer(KafkaTemplate<String, LogData> createLogKafkaTemplate,
+    public CreateLogProducer(KafkaTemplate<String, LogModel> createLogKafkaTemplate,
             @Value("${spring.kafka.log.topic.create-log}") String createLogTopic) {
         this.createLogKafkaTemplate = createLogKafkaTemplate;
         this.createLogTopic = createLogTopic;
     }
 
-    public boolean sendLogEvent(LogData logData) throws ExecutionException, InterruptedException, IOException {
-        SendResult<String, LogData> sendResult = createLogKafkaTemplate.send(createLogTopic, logData).get();
-        log.info("Create log {} event sent via Kafka", logData);
+    public boolean sendLogEvent(LogModel logModel) throws ExecutionException, InterruptedException, IOException {
+        SendResult<String, LogModel> sendResult = createLogKafkaTemplate.send(createLogTopic, logModel).get();
+        log.info("Create log {} event sent via Kafka", logModel);
         log.info(sendResult.toString());
-        logService.save(logData);
+        logService.save(logModel);
         return true;
     }
 
     public <T> void sendLogEvent(Response<T> response, Request request)
             throws ExecutionException, InterruptedException, IOException {
-        LogData logData = new LogData();
-        logData.setContent(response.message());
-        logData.setHttpStatus(response.code());
-        logData.setKey(request.url().toString());
-        logData.setMessage(response.toString());
-        sendLogEvent(logData);
+                LogModel logModel = new LogModel();
+        logModel.setContent(response.message());
+        logModel.setTopic("log");
+        logModel.setHttpStatus(response.code());
+        logModel.setDetail(request.url().toString());
+        logModel.setMessage(response.toString());
+        sendLogEvent(logModel);
     }
 }

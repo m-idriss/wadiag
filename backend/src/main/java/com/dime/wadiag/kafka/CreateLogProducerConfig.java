@@ -1,4 +1,4 @@
-package com.dime.wadiag.diag.service;
+package com.dime.wadiag.kafka;
 
 import java.util.HashMap;
 import java.util.Map;

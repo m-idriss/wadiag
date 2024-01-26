@@ -1,4 +1,4 @@
-package com.dime.wadiag.configuration;
+package com.dime.wadiag.kafka;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,8 +18,6 @@ import org.springframework.kafka.listener.ContainerProperties;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
-import com.dime.wadiag.diag.model.LogData;
-
 //https://docs.codenow.com/java-spring-boot-complex-examples/java-spring-boot-kafka-producer-consumer
 
 @EnableKafka
@@ -33,7 +31,7 @@ public class CreateLogConsumerConfig {
     private String groupId;
 
     @Bean("NotificationConsumerFactory")
-    public ConsumerFactory<String, LogData> createLogConsumerFactory() {
+    public ConsumerFactory<String, LogModel> createLogConsumerFactory() {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         props.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
@@ -43,12 +41,12 @@ public class CreateLogConsumerConfig {
         props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
 
         return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(),
-                new JsonDeserializer<>(LogData.class));
+                new JsonDeserializer<>(LogModel.class));
     }
 
     @Bean("NotificationContainerFactory")
-    public ConcurrentKafkaListenerContainerFactory<String, LogData> createLogKafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, LogData> factory = new ConcurrentKafkaListenerContainerFactory<>();
+    public ConcurrentKafkaListenerContainerFactory<String, LogModel> createLogKafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, LogModel> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(createLogConsumerFactory());
         factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL_IMMEDIATE);
         return factory;

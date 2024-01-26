@@ -1,4 +1,4 @@
-package com.dime.wadiag.diag.model;
+package com.dime.wadiag.kafka;
 
 import java.util.Date;
 
@@ -19,15 +19,15 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 @Relation(collectionRelation = "log")
-public class LogData {
+public class LogModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private String logUUID;
+    private String topic;
     private Date dateOfCreation = new Date();
     private String content;
-    private String key;
+    private String detail;
     private int httpStatus;
     private String message;
 }

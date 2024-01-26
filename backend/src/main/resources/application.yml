@@ -7,10 +7,10 @@ spring:
       ddl-auto: create
 
   kafka:
-    order:
-      bootstrap-servers: ${KAFKA_RESERVATION_BOOTSTRAP_SERVERS:localhost:9092}
+    log:
+      bootstrap-servers: diag-kafka:9092
       topic:
-        create-order: create-order
+        create-log: create-log
       consumer:
         group-id:
           notification: notification

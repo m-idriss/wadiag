@@ -7,6 +7,17 @@ spring:
     hibernate:
       ddl-auto: create
 
+  kafka:
+    log:
+      bootstrap-servers: localhost:9092
+      topic:
+        create-log: create-log
+      consumer:
+        auto-offset-reset: earliest
+        group-id:
+          notification: notification
+          service: service
+
   datasource:
     url: jdbc:h2:mem:testdb
     username: sa
@@ -56,3 +67,6 @@ management:
 wordsapi:
   host:
     url: https://wordsapiv1.p.rapidapi.com
+
+test:
+  topic: embedded-test-topic

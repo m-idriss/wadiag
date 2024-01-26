@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 import com.dime.wadiag.configuration.RetrofitConfig;
 import com.dime.wadiag.diag.exception.GenericError;
 import com.dime.wadiag.diag.model.Term;
-import com.dime.wadiag.diag.service.CreateLogProducer;
 import com.dime.wadiag.diag.service.WordsApiService;
 import com.dime.wadiag.diag.wordsapi.WordsApiProperties;
+import com.dime.wadiag.kafka.CreateLogProducer;
 
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.ResponseBody;
