@@ -16,7 +16,7 @@ RUN apt-get update && apt-get install -y curl && apt-get clean
 EXPOSE 8080
 
 # Health check
-HEALTHCHECK --interval=30s --timeout=10s CMD curl -f http://localhost:8080/actuator/health || exit 1
+HEALTHCHECK --interval=600s --timeout=10s CMD curl -f http://localhost:8080/actuator/health || exit 1
 
 ENV KAFKA_BOOTSTRAP_SERVERS=diag-kafka:9092
 
