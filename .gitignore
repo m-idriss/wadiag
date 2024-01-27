@@ -132,9 +132,9 @@ build/
 
 ### ENV ###
 
-/backend/logs
-/backend/src/main/resources/application-dev.yml
-/backend/src/main/resources/application-prod.yml
+/diag-app/logs
+/diag-app/src/main/resources/application-dev.yml
+/diag-app/src/main/resources/application-prod.yml
 .env.prod
 
 ### VS Code ### plugin SQLTools ###
