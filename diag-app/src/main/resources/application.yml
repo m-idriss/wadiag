@@ -58,3 +58,5 @@ management:
 wordsapi:
   host:
     url: https://wordsapiv1.p.rapidapi.com
+    key: # get api key here : https://rapidapi.com/dpventures/api/wordsapi/
+
