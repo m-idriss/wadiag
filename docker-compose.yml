@@ -1,5 +1,9 @@
 version: "3"
 
+networks:
+  diag-net:
+    driver: bridge
+
 services:
   diag-postgres:
     image: "postgres:16-alpine"
@@ -19,6 +23,39 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+    networks:
+      - diag-net
+
+  diag-kafka:
+    image: "bitnami/kafka:3.6.1"
+    restart: always
+    container_name: diag-kafka
+    ports:
+      - "9092:9092"
+    expose:
+      - "9093"
+    environment:
+      KAFKA_ADVERTISED_LISTENERS: INSIDE://diag-kafka:9093,OUTSIDE://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
+      KAFKA_LISTENERS: INSIDE://0.0.0.0:9093,OUTSIDE://0.0.0.0:9092
+      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+      KAFKA_ZOOKEEPER_CONNECT: "diag-zookeeper:2181"
+      KAFKA_LOG4J_ROOT_LOGLEVEL: ERROR
+      KAFKA_TOOLS_LOG4J_LOGLEVEL: ERROR
+      KAFKA_MESSAGE_MAX_BYTES: 1000000
+    networks:
+      - diag-net
+
+  diag-zookeeper:
+    image: "bitnami/zookeeper:3.9"
+    restart: always
+    container_name: diag-zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    networks:
+      - diag-net
 
   diag-app:
     build: ./diag-app
@@ -31,13 +68,18 @@ services:
       - POSTGRES_PASSWORD=diag
       - SPRING_PORT=${SPRING_PORT}
       - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
+      - KAFKA_BOOTSTRAP_SERVERS=diag-kafka:9092
 
     ports:
       - "${SPRING_PORT}:${SPRING_PORT}"
     links:
       - diag-postgres
+      - diag-kafka
     depends_on:
       - diag-postgres
+      - diag-kafka
+    networks:
+      - diag-net
 
 volumes:
   diag_postgres_data:
