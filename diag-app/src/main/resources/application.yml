@@ -5,7 +5,10 @@ spring:
     open-in-view: true
     hibernate:
       ddl-auto: create
-
+  kafka:
+    consumer:
+      group-id: dime-wadiag-group
+    bootstrap-servers: diag-kafka:9092
   datasource:
     url: jdbc:postgresql://${DB_SERVER:localhost}:5432/diag
     username: diag
