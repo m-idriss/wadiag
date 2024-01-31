@@ -58,7 +58,7 @@ jobs:
           echo "GITHUB_TOKEN: $GITHUB_TOKEN"
 
       - name: Build and Test with Maven
-        run: mvn verify --file pom.xml -Dspring.profiles.active=staging
+        run: cd diag-app && mvn verify --file pom.xml -Dspring.profiles.active=staging
 
       - name: Test Reporter
         uses: dorny/test-reporter@v1.8.0
