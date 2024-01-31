@@ -268,4 +268,4 @@ if [ -n "$wrapperSha256Sum" ]; then
   fi
 fi
 
-MAVEN_OPTS="$(concat_lines "$MAVEN_PROJECTBASEDIR/.mvn/jvm.config") $"
+MAVEN_OPTS="$(concat_lines "$MAVEN_PROJECTBASEDIR/.mvn/jvm.config")"
