@@ -61,7 +61,7 @@ jobs:
         run: cd diag-app && mvn verify --file pom.xml -Dspring.profiles.active=staging
 
       - name: Test Reporter
-        uses: dorny/test-reporter@v1.7.0
+        uses: dorny/test-reporter@v1.8.0
         with:
           name: test-results
           path: diag-app/target/surefire-reports/*.xml
@@ -85,8 +85,6 @@ jobs:
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
-        with:
-          category: "/language:${{matrix.language}}"
 
   deploy:
     needs: build
