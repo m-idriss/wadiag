@@ -58,13 +58,13 @@ jobs:
           echo "GITHUB_TOKEN: $GITHUB_TOKEN"
 
       - name: Build and Test with Maven
-        run: mvn verify --file pom.xml -Dspring.profiles.active=staging
+        run: cd wadiag && mvn verify --file pom.xml -Dspring.profiles.active=staging
 
       - name: Test Reporter
         uses: dorny/test-reporter@v1.8.0
         with:
           name: test-results
-          path: diag-app/target/surefire-reports/*.xml
+          path: wadiag/diag-app/target/surefire-reports/*.xml
           path-replace-backslashes: false
           reporter: java-junit
           list-suites: all
