@@ -87,7 +87,6 @@ jobs:
         uses: github/codeql-action/analyze@v3
         with:
           category: "/language:${{matrix.language}}"
-          checkout_path: "/home/runner/work/wadiag/diag-app"
 
   deploy:
     needs: build
