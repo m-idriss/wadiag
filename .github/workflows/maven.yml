@@ -82,6 +82,8 @@ jobs:
 
       - name: Autobuild
         uses: github/codeql-action/autobuild@v3
+        with:
+          working-directory: ./diag-app
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
