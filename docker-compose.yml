@@ -58,7 +58,7 @@ services:
       - diag-net
 
   diag-app:
-    build: .
+    build: ./diag-app
     container_name: diag-app
     restart: always
     environment:
