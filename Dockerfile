@@ -1,5 +1,5 @@
 ### STAGE 1: Build ###
-FROM maven:3.8.4-openjdk-17-slim AS build
+FROM maven:3.9-eclipse-temurin-21-alpine AS build
 WORKDIR /opt/apt
 COPY pom.xml .
 # copy module diag-app
@@ -9,7 +9,7 @@ COPY diag-app/pom.xml ./diag-app
 RUN mvn -f diag-app/pom.xml clean install
 
 ### STAGE 2: Run ###
-FROM openjdk:17.0.1-slim
+FROM openjdk:21-slim
 WORKDIR /app
 COPY --from=build /opt/apt/diag-app/target/*.jar ./app.jar
 
