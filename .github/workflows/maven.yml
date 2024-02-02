@@ -83,13 +83,11 @@ jobs:
       - name: Autobuild
         uses: github/codeql-action/autobuild@v3
 
-      - name: move
-        run: cd diag-app
-
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
         with:
           category: "/language:${{matrix.language}}"
+          checkout_path: "/home/runner/work/wadiag/wadiag/diag-app"
 
   deploy:
     needs: build
