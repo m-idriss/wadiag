@@ -1,17 +1,17 @@
 ### STAGE 1: Build ###
 FROM maven:3.9-eclipse-temurin-21-alpine AS build
-WORKDIR /opt/apt/diag-app
-COPY pom.xml ./diag-app
+WORKDIR /opt/apt
+COPY pom.xml .
 # copy module diag-app
-COPY diag-app/src ./diag-app/diag-app/src
-COPY diag-app/pom.xml ./diag-app/diag-app
+COPY diag-app/src ./diag-app/src
+COPY diag-app/pom.xml ./diag-app
 # Build app
-RUN mvn -f diag-app/diag-app/pom.xml clean install
+RUN mvn -f diag-app/pom.xml clean install
 
 ### STAGE 2: Run ###
 FROM openjdk:21-slim
 WORKDIR /app
-COPY --from=build /opt/apt/diag-app/diag-app/target/*.jar ./app.jar
+COPY --from=build /opt/apt/diag-app/target/*.jar ./app.jar
 
 # Install curl
 RUN apt-get update && apt-get install -y curl && apt-get clean
