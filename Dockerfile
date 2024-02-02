@@ -1,12 +1,12 @@
 ### STAGE 1: Build ###
 FROM maven:3.9-eclipse-temurin-21-alpine AS build
-WORKDIR /opt/apt
-COPY pom.xml ./wadiag
+WORKDIR /opt/apt/wadiag
+COPY pom.xml .
 # copy module diag-app
-COPY diag-app/src ./wadiag/diag-app/src
-COPY diag-app/pom.xml ./wadiag/diag-app
+COPY diag-app/src ./diag-app/src
+COPY diag-app/pom.xml ./diag-app
 # Build app
-RUN mvn -f wadiag/diag-app/pom.xml clean install
+RUN mvn -f diag-app/pom.xml clean install
 
 ### STAGE 2: Run ###
 FROM openjdk:21-slim
