@@ -5,6 +5,9 @@ COPY pom.xml .
 # copy module diag-app
 COPY diag-app/src ./diag-app/src
 COPY diag-app/pom.xml ./diag-app
+# copy module diag-log
+COPY diag-log/src ./diag-log/src
+COPY diag-log/pom.xml ./diag-log
 # Build app
 RUN mvn -f diag-app/pom.xml clean install
 

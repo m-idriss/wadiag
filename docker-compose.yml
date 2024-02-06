@@ -57,6 +57,29 @@ services:
     networks:
       - diag-net
 
+  diag-log:
+    build: .
+    container_name: diag-log
+    restart: always
+    environment:
+      - DB_SERVER=diag-postgres
+      - POSTGRES_DB=diag
+      - POSTGRES_USER=diag
+      - POSTGRES_PASSWORD=diag
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
+      - KAFKA_BOOTSTRAP_SERVERS=diag-kafka:9092
+
+    ports:
+      - "8085:8085"
+    links:
+      - diag-postgres
+      - diag-kafka
+    depends_on:
+      - diag-postgres
+      - diag-kafka
+    networks:
+      - diag-net
+
   diag-app:
     build: .
     container_name: diag-app

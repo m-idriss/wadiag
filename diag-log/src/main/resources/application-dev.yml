@@ -1,0 +1,9 @@
+spring:
+  jpa:
+    show-sql: true
+
+logging:
+  level:
+    web: DEBUG
+    org:
+      SQL: DEBUG
