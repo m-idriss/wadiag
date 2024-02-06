@@ -13,9 +13,9 @@ spring:
           service: service
 
   datasource:
-    url: jdbc:postgresql://${DB_SERVER:localhost}:5432/diag
-    username: diag
-    password: diag
+    url: jdbc:postgresql://${DB_SERVER:localhost}:5432/diag-log
+    username: diag-log
+    password: diag-log
     driver-class-name: org.postgresql.Driver
 
   profiles:
@@ -25,9 +25,11 @@ logging:
   level:
     root: INFO
     web: INFO
-    org.springframework: INFO
-    org.hibernate: INFO
-    com.dime.wadiag: INFO
+    org:
+      springframework: INFO
+      hibernate: INFO
+      dime:
+        wadiag: INFO
 
 server:
   port: 8085

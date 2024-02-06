@@ -31,16 +31,19 @@ public class CreateLogProducer {
     }
 
     public boolean sendLogEvent(LogModel logModel) throws ExecutionException, InterruptedException, IOException {
-        SendResult<String, LogModel> sendResult = createLogKafkaTemplate.send(createLogTopic, logModel).get();
-        log.info("Create log {} event sent via Kafka", logModel);
-        log.info(sendResult.toString());
-        logService.save(logModel);
-        return true;
+        if (createLogTopic != null) {
+            SendResult<String, LogModel> sendResult = createLogKafkaTemplate.send(createLogTopic, logModel).get();
+            log.info("Create log {} event sent via Kafka", logModel);
+            log.info(sendResult.toString());
+            logService.save(logModel);
+            return true;
+        }
+        return false;
     }
 
     public <T> void sendLogEvent(Response<T> response, Request request)
             throws ExecutionException, InterruptedException, IOException {
-                LogModel logModel = new LogModel();
+        LogModel logModel = new LogModel();
         logModel.setContent(response.message());
         logModel.setTopic("log");
         logModel.setHttpStatus(response.code());
