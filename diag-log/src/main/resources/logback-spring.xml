@@ -6,7 +6,7 @@
 	<appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 			<Pattern>
-				%green(%date{HH:mm:ss.SSS}) [%highlight(%-5level)] %cyan(%-36.36logger{36}) : %msg%n%throwable 
+				%green(%date{HH:mm:ss.SSS}) [%highlight(%-5level)] %cyan(%-36.36logger{36}) : %msg%n%throwable
 			</Pattern>
 		</encoder>
 	</appender>
@@ -29,10 +29,10 @@
 			<Pattern>%d %p %logger{36} [%t] %m%n</Pattern>
 		</encoder>
 	</appender>
-	<logger name="com.dime" level="DEBUG" />
+	<logger name="com.dime" level="INFO" />
 
 	<!-- LOG everything at INFO level -->
-	<root level="DEBUG">
+	<root level="INFO">
 		<appender-ref ref="RollingFile" />
 		<appender-ref ref="Console" />
 	</root>

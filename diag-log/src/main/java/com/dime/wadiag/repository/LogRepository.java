@@ -1,9 +1,9 @@
-package com.dime.wadiag.kafka;
+package com.dime.wadiag.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
-@Repository
+import com.dime.wadiag.model.LogModel;
+
 public interface LogRepository extends JpaRepository<LogModel, Long> {
 
 }

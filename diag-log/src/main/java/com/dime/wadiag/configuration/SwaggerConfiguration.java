@@ -18,7 +18,7 @@ public class SwaggerConfiguration {
 
   @Bean
   public OpenAPI customOpenAPI() {
-    final String securitySchemeName = "Wadiag-log";
+    final String securitySchemeName = "Wadiag-mdp-log";
 
     return new OpenAPI()
         .info(apiInfo())
@@ -53,9 +53,9 @@ public class SwaggerConfiguration {
 
   private Info apiInfo() {
     return new Info()
-        .title("Wadiag-log")
+        .title("Wadiag")
         .description(
-            "This is a API for log of Wadiag game Server based on the OpenAPI 3.0 specification. Click [here](https://github.com/m-idriss/wadiag). You can load via the `Code > Clone`, enjoy.")
+            "This is a API for logs of Wadiag game Server based on the OpenAPI 3.0 specification. Click [here](https://github.com/m-idriss/wadiag). You can load via the `Code > Clone`, enjoy.")
         .version("1.0")
         .contact(apiContact())
         .license(apiLicence());

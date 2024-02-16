@@ -32,12 +32,12 @@ public class WadiagApplication {
 				"\n" + """
 						----------------------------------------------------------+
 						 Application \t: {}
-						 Spring \t: Version {}
+						 Spring \t\t: Version {}
 
 						 Access URLs:
 						 - External \t: {}://{}:{}
-						 - Index \t: {}://localhost:{}/index.html
-						 - Local \t: {}://localhost:{}
+						 - Index \t\t: {}://localhost:{}/index.html
+						 - Local \t\t: {}://localhost:{}
 						 - Swagger UI \t: {}://localhost:{}/swagger-ui.html
 
 						 Actuator Endpoints:

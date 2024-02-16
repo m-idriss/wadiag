@@ -1,6 +1,6 @@
-package com.dime.wadiag.kafka;
+package com.dime.wadiag.model;
 
-import java.util.Date;
+import java.time.Instant;
 
 import org.springframework.hateoas.server.core.Relation;
 
@@ -9,15 +9,17 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
+@Entity(name = "log")
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor(force = true)
+@NoArgsConstructor
+@Builder
 @Relation(collectionRelation = "log")
 public class LogModel {
 
@@ -25,7 +27,8 @@ public class LogModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String topic;
-    private Date dateOfCreation = new Date();
+    @Builder.Default
+    private Instant dateOfCreation = Instant.now();
     private String content;
     private String detail;
     private int httpStatus;

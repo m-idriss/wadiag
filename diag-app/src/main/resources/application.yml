@@ -1,38 +1,43 @@
 spring:
   application:
-    name: Wadiag Application
+    name: Wadiag-app
   jpa:
     open-in-view: true
+    generate-ddl: true
     hibernate:
       ddl-auto: create
-  kafka:
-    consumer:
-      group-id: dime-wadiag-group
-    bootstrap-servers: diag-kafka:9092
+
   datasource:
     url: jdbc:postgresql://${DB_SERVER:localhost}:5432/diag
     username: diag
     password: diag
     driver-class-name: org.postgresql.Driver
 
+  kafka:
+    bootstrap-servers: diag-redpanda-1:9092
+
   liquibase:
+    enabled: true
     change-log: classpath:/db/changelogs/db.changelog-master.xml
 
   profiles:
     active: dev
-    config:
-      import: optional:file:./application-${spring.profiles.active}.yml
+  config:
+    import: optional:file:./application-${spring.profiles.active}.yml
 
 logging:
   level:
     root: INFO
     web: INFO
-    org.springframework: INFO
-    org.hibernate: INFO
-    com.dime.wadiag: INFO
+    org:
+      springframework: INFO
+      hibernate: INFO
+      com:
+        dime:
+          wadiag: INFO
 
 server:
-  port: ${SPRING_PORT:8080}
+  port: ${PORT:8080}
 
 springdoc:
   api-docs:
@@ -61,5 +66,4 @@ management:
 wordsapi:
   host:
     url: https://wordsapiv1.p.rapidapi.com
-    key: # get api key here : https://rapidapi.com/dpventures/api/wordsapi/
-
+    key: # get api key here: https://rapidapi.com/dpventures/api/wordsapi/

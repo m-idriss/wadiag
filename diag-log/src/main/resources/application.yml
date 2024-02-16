@@ -1,38 +1,26 @@
 spring:
   application:
-    name: Wadiag log
-  kafka:
-    log:
-      bootstrap-servers: localhost:9092
-      topic:
-        create-log: create-log
-      consumer:
-        auto-offset-reset: earliest
-        group-id:
-          notification: notification
-          service: service
+    name: Wadiag-log
+  jpa:
+    open-in-view: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: none
 
   datasource:
-    url: jdbc:postgresql://${DB_SERVER:localhost}:5432/diag-log
-    username: diag-log
-    password: diag-log
+    url: jdbc:postgresql://${DB_SERVER:localhost}:5432/diaglog
+    username: diaglog
+    password: diaglog
     driver-class-name: org.postgresql.Driver
+
+  kafka:
+    bootstrap-servers: diag-redpanda-1:9092
 
   profiles:
     active: dev
 
-logging:
-  level:
-    root: INFO
-    web: INFO
-    org:
-      springframework: INFO
-      hibernate: INFO
-      dime:
-        wadiag: INFO
-
 server:
-  port: 8085
+  port: ${PORT:8080}
 
 springdoc:
   api-docs:
@@ -42,18 +30,3 @@ springdoc:
     enabled: true
     urlsPrimaryName: public-apis
     defaultModelsExpandDepth: -1
-
-  show-actuator: true
-
-# Configure Actuator endpoints
-management:
-  endpoint:
-    health:
-      show-details: always
-  endpoints:
-    web:
-      exposure:
-        include: health
-      base-path: /actuator
-  security:
-    enabled: false
