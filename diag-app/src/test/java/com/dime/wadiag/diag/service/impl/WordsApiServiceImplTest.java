@@ -12,6 +12,7 @@ import org.springframework.test.context.ContextConfiguration;
 import com.dime.wadiag.diag.exception.GenericException;
 import com.dime.wadiag.diag.model.Term;
 import com.dime.wadiag.diag.wordsapi.WordsApiProperties;
+import com.dime.wadiag.kafka.KafkaPublisher;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -31,9 +32,12 @@ class WordsApiServiceImplTest {
     @Autowired
     WordsApiProperties testProperties;
 
+    @Autowired
+    KafkaPublisher kafkaPublisher;
+
     @BeforeEach
     void setup() {
-        service = new WordsApiServiceImpl(testProperties);
+        service = new WordsApiServiceImpl(testProperties, kafkaPublisher);
     }
 
     @DisplayName("Get synonyms for a valid word")
@@ -98,7 +102,7 @@ class WordsApiServiceImplTest {
         WordsApiProperties properties = new WordsApiProperties();
         properties.setKey("key");
         properties.setUrl(testProperties.getUrl());
-        service = new WordsApiServiceImpl(properties);
+        service = new WordsApiServiceImpl(properties, kafkaPublisher);
 
         GenericException exception = assertThrows(GenericException.class,
                 () -> service.testWordsApiConnection());
