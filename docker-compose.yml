@@ -123,6 +123,8 @@ services:
             urls: ["http://diag-redpanda-1:8081"]
     ports:
       - "8086:8080"
+    expose:
+      - 8086
     depends_on:
       - redpanda
     networks:
