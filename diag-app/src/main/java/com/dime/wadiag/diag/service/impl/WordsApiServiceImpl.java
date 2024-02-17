@@ -24,11 +24,11 @@ public class WordsApiServiceImpl {
 
     private WordsApiService service;
 
-    @Autowired
-    private KafkaPublisher kafkaPublisher;
+    private final KafkaPublisher kafkaPublisher;
 
-    public WordsApiServiceImpl(WordsApiProperties apiProperties) {
-        service = new RetrofitConfig(apiProperties).createService(WordsApiService.class);
+    public WordsApiServiceImpl(WordsApiProperties apiProperties, KafkaPublisher kafkaPublisher) {
+        this.service = new RetrofitConfig(apiProperties).createService(WordsApiService.class);
+        this.kafkaPublisher = kafkaPublisher;
     }
 
     public Term getSynonymsForWord(String word) throws IOException {

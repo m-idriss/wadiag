@@ -16,6 +16,9 @@ spring:
     change-log: classpath:/db/changelogs/db.changelog-master.xml
     drop-first: true # Whether to first drop the database schema.
 
+  kafka:
+    bootstrap-servers: diag-redpanda-1:9092
+
   profiles:
     active: dev
   config:
