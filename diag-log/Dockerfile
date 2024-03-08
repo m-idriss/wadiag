@@ -16,7 +16,7 @@ COPY --from=build /opt/apt/target/*.jar diag-log.jar
 RUN apt-get update && apt-get install -y curl && apt-get clean
 
 # Health check
-HEALTHCHECK --interval=300s --timeout=10s CMD curl -f http://localhost:8085/actuator/health || exit 1
+HEALTHCHECK --interval=300s --timeout=10s --start-period=10s CMD curl -f http://localhost:8085/actuator/health || exit 1
 
 # Specify default command for container startup
 CMD ["java", "-jar", "diag-log.jar"]
