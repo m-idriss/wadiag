@@ -30,3 +30,9 @@ springdoc:
     enabled: true
     urlsPrimaryName: public-apis
     defaultModelsExpandDepth: -1
+
+logging:
+  level:
+    web: INFO
+    org:
+      SQL: INFO
