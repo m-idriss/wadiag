@@ -82,7 +82,7 @@ services:
       - diag-net
 
   diag-redpanda:
-    image: redpandadata/redpanda:v23.2.26-arm64
+    image: docker.redpanda.com/vectorized/redpanda:v23.3.5
     container_name: diag-redpanda-1
     restart: on-failure:10
     command:
