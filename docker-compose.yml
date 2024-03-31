@@ -81,23 +81,24 @@ services:
     networks:
       - diag-net
 
-  diag-redpanda:
+  redpanda:
     image: docker.redpanda.com/vectorized/redpanda:v23.3.5
     container_name: diag-redpanda-1
     restart: on-failure:10
+    ports:
+      - 9092:9092
     command:
       - redpanda start
       - --smp 1
+      - --memory 1G
+      - --reserve-memory 0M
       - --overprovisioned
       - --node-id 0
+      - --check=false
+      - --pandaproxy-addr PLAINTEXT://0.0.0.0:28082,OUTSIDE://0.0.0.0:8082
+      - --advertise-pandaproxy-addr PLAINTEXT://diag-redpanda-1:28082,OUTSIDE://diag-redpanda-1:8082
       - --kafka-addr PLAINTEXT://0.0.0.0:29092,OUTSIDE://0.0.0.0:9092
       - --advertise-kafka-addr PLAINTEXT://diag-redpanda-1:29092,OUTSIDE://diag-redpanda-1:9092
-      - --pandaproxy-addr 0.0.0.0:8082
-      - --advertise-pandaproxy-addr localhost:8082
-    ports:
-      - 8082:8082
-      - 9092:9092
-      - 29092:29092
     healthcheck:
       test: ["CMD", "rpk", "cluster", "health"]
       interval: 30s
@@ -125,7 +126,7 @@ services:
     expose:
       - 8086
     depends_on:
-      - diag-redpanda
+      - redpanda
     networks:
       - diag-net
 
