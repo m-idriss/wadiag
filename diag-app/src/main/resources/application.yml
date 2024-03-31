@@ -14,7 +14,7 @@ spring:
     driver-class-name: org.postgresql.Driver
 
   kafka:
-    bootstrap-servers: diag-redpanda-1:9092
+    bootstrap-servers: diag-kafka:9093
 
   liquibase:
     enabled: true
@@ -37,7 +37,7 @@ logging:
           wadiag: INFO
 
 server:
-  port: ${PORT:8080}
+  port: ${SPRING_PORT:8080}
 
 springdoc:
   api-docs:
