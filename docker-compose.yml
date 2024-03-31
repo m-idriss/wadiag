@@ -32,7 +32,7 @@ services:
     restart: always
     container_name: diag-postgres
     volumes:
-      - diag_postgres_data:/var/lib/postgresql/data
+      - diag_postgres_data:/var/lib/postgresql@16/data
     ports:
       - "5432:5432"
     environment:
@@ -46,6 +46,44 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+
+  diag-zookeeper:
+    image: "bitnami/zookeeper:3.9"
+    restart: always
+    container_name: diag-zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    networks:
+      - diag-net
+
+  diag-kafka:
+    image: "bitnami/kafka:3.6.1"
+    restart: always
+    container_name: diag-kafka
+    ports:
+      - "9092:9092"
+    expose:
+      - "9093"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ADVERTISED_LISTENERS: INSIDE://diag-kafka:9093,OUTSIDE://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
+      KAFKA_LISTENERS: INSIDE://0.0.0.0:9093,OUTSIDE://0.0.0.0:9092
+      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+      KAFKA_ZOOKEEPER_CONNECT: "diag-zookeeper:2181"
+      KAFKA_MESSAGE_MAX_BYTES: 1000000
+      KAFKA_WAIT_FOR_TOPICS: 600
+
+    links:
+      - diag-postgres
+      - diag-zookeeper
+    depends_on:
+      - diag-postgres
+      - diag-zookeeper
+    networks:
+      - diag-net
 
   diag-log:
     build: ./diag-log
@@ -69,46 +107,27 @@ services:
     container_name: diag-app
     restart: always
     environment:
-      - PORT=${SPRING_PORT}
       - DB_SERVER=diag-postgres
       - POSTGRES_DB=diag
       - POSTGRES_USER=diag
       - POSTGRES_PASSWORD=diag
+      - SPRING_PORT=${SPRING_PORT}
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
+      - KAFKA_BOOTSTRAP_SERVERS=diag-kafka:9093
+
     ports:
       - "${SPRING_PORT}:${SPRING_PORT}"
+    links:
+      - diag-postgres
+      - diag-kafka
     depends_on:
       - diag-postgres
+      - diag-kafka
     networks:
       - diag-net
 
-  redpanda:
-    image: docker.redpanda.com/vectorized/redpanda:v23.3.5
-    container_name: diag-redpanda-1
-    restart: on-failure:10
-    ports:
-      - 9092:9092
-    command:
-      - redpanda start
-      - --smp 1
-      - --memory 1G
-      - --reserve-memory 0M
-      - --overprovisioned
-      - --node-id 0
-      - --check=false
-      - --pandaproxy-addr PLAINTEXT://0.0.0.0:28082,OUTSIDE://0.0.0.0:8082
-      - --advertise-pandaproxy-addr PLAINTEXT://diag-redpanda-1:28082,OUTSIDE://diag-redpanda-1:8082
-      - --kafka-addr PLAINTEXT://0.0.0.0:29092,OUTSIDE://0.0.0.0:9092
-      - --advertise-kafka-addr PLAINTEXT://diag-redpanda-1:29092,OUTSIDE://diag-redpanda-1:9092
-    healthcheck:
-      test: ["CMD", "rpk", "cluster", "health"]
-      interval: 30s
-      timeout: 5s
-      retries: 3
-      start_period: 60s
-    networks:
-      - diag-net
-
-  kafka-console:
+  diag-kafka-console:
+    container_name: diag-kafka-console
     image: docker.redpanda.com/vectorized/console:latest
     restart: on-failure
     entrypoint: /bin/sh
@@ -117,14 +136,11 @@ services:
       CONFIG_FILEPATH: /tmp/config.yml
       CONSOLE_CONFIG_FILE: |
         kafka:
-          brokers: ["diag-redpanda-1:29092"]
-          schemaRegistry:
-            enabled: true
-            urls: ["http://diag-redpanda-1:8081"]
+          brokers: ["diag-kafka:9093"]
     ports:
-      - "8080:8080"
+      - "8086:8080"
     depends_on:
-      - redpanda
+      - diag-kafka
     networks:
       - diag-net
 
