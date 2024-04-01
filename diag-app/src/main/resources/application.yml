@@ -37,7 +37,7 @@ logging:
           wadiag: INFO
 
 server:
-  port: ${SPRING_PORT:8080}
+  port: ${PORT:8080}
 
 springdoc:
   api-docs:

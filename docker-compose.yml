@@ -111,7 +111,7 @@ services:
       - POSTGRES_DB=diag
       - POSTGRES_USER=diag
       - POSTGRES_PASSWORD=diag
-      - SPRING_PORT=${SPRING_PORT}
+      - PORT=${SPRING_PORT}
       - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
       - KAFKA_BOOTSTRAP_SERVERS=diag-kafka:9093
 
