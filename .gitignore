@@ -135,6 +135,7 @@ build/
 /diag-app/logs
 /diag-app/src/main/resources/application-dev.yml
 /diag-app/src/main/resources/application-prod.yml
+/diag-app/src/main/resources/keystore/
 .env.prod
 
 ### VS Code ### plugin SQLTools ###
