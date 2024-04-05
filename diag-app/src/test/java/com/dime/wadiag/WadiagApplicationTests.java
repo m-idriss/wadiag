@@ -74,7 +74,7 @@ class WadiagApplicationTests {
 				.contains("Actuator Endpoints")
 				.contains("Test Application")
 				.contains("8080")
-				.contains("https")
+				.contains("https:")
 				.contains("profile1")
 				.contains("profile2");
 	}
@@ -89,7 +89,7 @@ class WadiagApplicationTests {
 
 		// Assert specific words in the log message
 		assertThat(logMessage)
-				.contains("https")
+				.contains("http:")
 				.contains("prod")
 				.contains("profile2");
 	}
