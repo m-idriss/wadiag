@@ -56,7 +56,7 @@ class TermControllerTest {
                 when(service.findByWord(word)).thenReturn(Optional.empty());
                 when(service.create(word)).thenReturn(Optional.of(term));
 
-                mockMvc.perform(MockMvcRequestBuilders.post(BASE_PATH + "/terms/{word}", word.toUpperCase())
+                mockMvc.perform(MockMvcRequestBuilders.get(BASE_PATH + "/terms/{word}", word.toUpperCase())
                                 .contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isCreated())
                                 .andExpect(jsonPath("$.id").value(123))
@@ -82,7 +82,7 @@ class TermControllerTest {
 
                 when(service.findByWord(word)).thenReturn(Optional.of(term));
 
-                mockMvc.perform(MockMvcRequestBuilders.post(BASE_PATH + "/terms/{word}", word.toUpperCase())
+                mockMvc.perform(MockMvcRequestBuilders.get(BASE_PATH + "/terms/{word}", word.toUpperCase())
                                 .contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk())
                                 .andExpect(jsonPath("$._links.self.href",
