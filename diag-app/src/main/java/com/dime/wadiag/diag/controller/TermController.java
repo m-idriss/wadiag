@@ -51,15 +51,15 @@ public class TermController {
   }
 
   @Operation(summary = "Get Term by ID")
-  @GetMapping("/{id}")
+  @GetMapping("/{id:\\d+}")
   public ResponseEntity<EntityModel<Term>> getOne(@PathVariable Long id) {
     return termService.findById(id)
         .map(term -> ResponseEntity.ok(modelAssembler.toModel(term)))
         .orElseThrow(() -> GenericError.TERM_NOT_FOUND.exWithArguments(Map.of("id", id)));
   }
 
-  @Operation(summary = "Create Term")
-  @PostMapping("/{word}")
+  @Operation(summary = "Get Term by Word")
+  @GetMapping("/{word:\\D+}")
   public ResponseEntity<EntityModel<Term>> createTerm(@PathVariable String word) throws IOException {
     String wordLower = word.toLowerCase();
 
