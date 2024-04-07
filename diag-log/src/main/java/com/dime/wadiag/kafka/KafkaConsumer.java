@@ -30,7 +30,7 @@ public class KafkaConsumer {
         service.save(LogModel.builder()
                 .httpStatus((Integer.parseInt(messages[2])))
                 .content(word)
-                .message(message.substring(0, message.length() - word.length() - 1))
+                .message(messages[0] + "." + messages[1])
                 .topic(KafkaConstants.TOPIC)
                 .detail(KafkaConstants.GROUP_ID)
                 .build());
