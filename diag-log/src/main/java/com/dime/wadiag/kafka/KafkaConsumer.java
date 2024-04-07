@@ -1,7 +1,6 @@
 package com.dime.wadiag.kafka;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
@@ -26,9 +25,10 @@ public class KafkaConsumer {
             return;
         }
         log.info("Received Message in group " + KafkaConstants.GROUP_ID + " => " + message);
-        String word = message.split("\\.")[2];
+        String[] messages = message.split("\\.");
+        String word = messages[3];
         service.save(LogModel.builder()
-                .httpStatus(HttpStatus.OK.value())
+                .httpStatus((Integer.parseInt(messages[2])))
                 .content(word)
                 .message(message.substring(0, message.length() - word.length() - 1))
                 .topic(KafkaConstants.TOPIC)

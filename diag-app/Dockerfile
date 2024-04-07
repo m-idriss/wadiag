@@ -16,7 +16,7 @@ COPY --from=build /opt/apt/target/*.jar diag-app.jar
 RUN apt-get update && apt-get install -y curl && apt-get clean
 
 # Health check
-HEALTHCHECK --interval=300s --timeout=10s CMD sh -c 'if [ "$PORT" = "8443" ]; then curl -f https://localhost:$PORT/actuator/health; else curl -f http://localhost:$PORT/actuator/health; fi' || exit 1
+HEALTHCHECK --interval=300s --timeout=10s CMD sh -c 'if [ "$PORT" = "8443" ]; then curl -f https://localhost:8443/actuator/health; else curl -f http://localhost:8081/actuator/health; fi' || exit 1
 
 # Specify default command for container startup
 CMD ["java", "-jar", "diag-app.jar"]
