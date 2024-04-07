@@ -21,7 +21,6 @@ public class LogServiceImpl implements LogService {
         return repository.findAll();
     }
 
-    @SuppressWarnings("null")
     @Override
     public LogModel save(LogModel log) {
         return repository.save(log);

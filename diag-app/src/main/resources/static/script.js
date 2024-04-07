@@ -8,7 +8,7 @@ function getWord() {
 }
 
 function sendWord(word) {
-  fetchTerm("POST", "/api/v1/terms/" + word, "result");
+  fetchTerm("GET", "/api/v1/terms/" + word, "result");
   setTimeout(() => {
     fetchTerm("GET", "/api/v1/terms", "all-terms-list");
   }, 1500);
