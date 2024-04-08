@@ -20,7 +20,7 @@ public class KafkaConsumer {
     private final LogService service;
 
     @KafkaListener(topics = KafkaConstants.TOPIC, groupId = KafkaConstants.GROUP_ID)
-    public void listenGroupFoo(String message) {
+    public void listenGroup(String message) {
         if (StringUtils.isEmpty(message)) {
             return;
         }
