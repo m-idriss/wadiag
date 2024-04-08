@@ -56,7 +56,7 @@ class TermServiceImplTest {
 
         // Assert
         assertThat(createdTerm).isNotNull();
-        assertThat(createdTerm.getId()).isNotNull();
+        assertThat(createdTerm.getId()).isEqualTo(1);
         assertThat(createdTerm.getWord()).isEqualTo(word);
         assertThat(createdTerm.getSynonyms()).isEqualTo(mockApiResponse.getSynonyms());
         verify(wordsApiService, times(1)).getSynonymsForWord(word);
