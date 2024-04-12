@@ -75,6 +75,9 @@ jobs:
           only-summary: false
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Build and Test with Maven
+        run: cd diag-log && mvn verify --file pom.xml -Dspring.profiles.active=staging
+
       - name: Test Reporter diag-log
         uses: dorny/test-reporter@v1.8.0
         with:
