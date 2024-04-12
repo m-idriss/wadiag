@@ -13,11 +13,14 @@ import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 
+import lombok.Getter;
+
 @EnableKafka
 @Configuration
 public class KafkaConsumerConfig {
 
         @Value(value = "${spring.kafka.bootstrap-servers}")
+        @Getter
         private String bootstrapAddress;
 
         @Bean
