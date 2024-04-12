@@ -1,6 +1,10 @@
 version: 2
 updates:
   - package-ecosystem: "maven"
-    directory: "/"
+    directory: "/diag-app"
+    schedule:
+      interval: "daily"
+    - package-ecosystem: "maven"
+    directory: "/diag-log"
     schedule:
       interval: "daily"
