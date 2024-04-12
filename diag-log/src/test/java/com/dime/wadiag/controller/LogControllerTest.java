@@ -46,9 +46,10 @@ class LogControllerTest {
     void testFindById() throws Exception {
         Long id = 1L;
         LogModel mockLog = new LogModel();
+        mockLog.setId(id);
         when(logService.findById(id)).thenReturn(mockLog);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/logs/{id}", id))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/logs/{id}", mockLog.getId()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.message").value(mockLog.getMessage()));
