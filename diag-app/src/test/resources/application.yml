@@ -28,9 +28,11 @@ logging:
   level:
     root: INFO
     web: INFO
-    org.springframework: INFO
-    org.hibernate: INFO
-    com.dime.wadiag: INFO
+    org:
+      springframework: INFO
+      hibernate: INFO
+      dime:
+        wadiag: INFO
 
 server:
   port: 8082
@@ -53,8 +55,6 @@ management:
       exposure:
         include: health
       base-path: /actuator
-  security:
-    enabled: false
 
 wordsapi:
   host:
