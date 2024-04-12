@@ -63,7 +63,7 @@ jobs:
       - name: Test Reporter diag-app
         uses: dorny/test-reporter@v1.8.0
         with:
-          name: test-results
+          name: test-results-diag-app
           path: diag-app/target/surefire-reports/*.xml
           path-replace-backslashes: false
           reporter: java-junit
@@ -81,7 +81,7 @@ jobs:
       - name: Test Reporter diag-log
         uses: dorny/test-reporter@v1.8.0
         with:
-          name: test-results
+          name: test-results-diag-log
           path: diag-log/target/surefire-reports/*.xml
           path-replace-backslashes: false
           reporter: java-junit
