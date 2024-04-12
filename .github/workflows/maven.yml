@@ -60,11 +60,26 @@ jobs:
       - name: Build and Test with Maven
         run: cd diag-app && mvn verify --file pom.xml -Dspring.profiles.active=staging
 
-      - name: Test Reporter
+      - name: Test Reporter diag-app
         uses: dorny/test-reporter@v1.8.0
         with:
           name: test-results
           path: diag-app/target/surefire-reports/*.xml
+          path-replace-backslashes: false
+          reporter: java-junit
+          list-suites: all
+          list-tests: all
+          max-annotations: 10
+          fail-on-error: true
+          fail-on-empty: true
+          only-summary: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Test Reporter diag-log
+        uses: dorny/test-reporter@v1.8.0
+        with:
+          name: test-results
+          path: diag-log/target/surefire-reports/*.xml
           path-replace-backslashes: false
           reporter: java-junit
           list-suites: all
