@@ -29,11 +29,38 @@
 			<Pattern>%d %p %logger{36} [%t] %m%n</Pattern>
 		</encoder>
 	</appender>
-	<logger name="com.dime" level="INFO" />
+	<appender name="LOKI" class="com.github.loki4j.logback.Loki4jAppender">
+		<!-- (1) -->
+		<http>
+			<url>http://localhost:3100/loki/api/v1/push</url>
+		</http>
+		<format>
+			<!-- (2) -->
+			<label>
+				<pattern>app=${name},host=${HOSTNAME},level=%level</pattern>
+				<!-- (3) -->
+				<readMarkers>true</readMarkers>
+			</label>
+			<message>
+				<!-- (4) -->
+				<pattern>
+					{
+					"level":"%level",
+					"class":"%logger{36}",
+					"thread":"%thread",
+					"message": "%message",
+					"requestId": "%X{X-Request-ID}"
+					}
+				</pattern>
+			</message>
+		</format>
+	</appender>
+	<logger name="com.dime" level="DEBUG" />
 
 	<!-- LOG everything at INFO level -->
-	<root level="INFO">
+	<root level="DEBUG">
 		<appender-ref ref="RollingFile" />
 		<appender-ref ref="Console" />
+		<appender-ref ref="LOKI" />
 	</root>
 </configuration>

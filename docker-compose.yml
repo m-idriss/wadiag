@@ -144,6 +144,44 @@ services:
     networks:
       - diag-net
 
+  loki:
+    container_name: loki
+    image: grafana/loki:latest
+    command: -config.file=/etc/loki/local-config.yaml
+    ports:
+      - "3100:3100"
+    networks:
+      - diag-net
+  promtail:
+    image: grafana/promtail:latest
+    container_name: promtail
+    restart: always
+    volumes:
+      - ./monitoring/promtail/promtail-docker-config.yaml:/etc/promtail/docker-config.yaml
+      - ./diag-app/logs/spring-boot-logger.log:/var/log/monitoring.log
+    command: "--config.file=/etc/promtail/docker-config.yaml"
+    networks:
+      - diag-net
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - diag-net
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    volumes:
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning
+    networks:
+      - diag-net
 volumes:
   diag_postgres_data:
   diag_log_postgres_data:

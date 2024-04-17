@@ -58,8 +58,11 @@ management:
   endpoints:
     web:
       exposure:
-        include: health
+        include: "*"
       base-path: /actuator
+  metrics:
+    tags:
+      application: ${spring.application.name}
 
 wordsapi:
   host:

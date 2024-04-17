@@ -30,3 +30,19 @@ springdoc:
     enabled: true
     urlsPrimaryName: public-apis
     defaultModelsExpandDepth: -1
+
+  show-actuator: true
+
+# Configure Actuator endpoints
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      base-path: /actuator
+  metrics:
+    tags:
+      application: ${spring.application.name}
