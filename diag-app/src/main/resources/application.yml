@@ -1,3 +1,6 @@
+# Spring Boot Configuration
+
+# General Spring Configuration
 spring:
   application:
     name: Wadiag-app
@@ -7,24 +10,29 @@ spring:
     hibernate:
       ddl-auto: create
 
+  # Data Source Configuration
   datasource:
     url: jdbc:postgresql://${DB_SERVER:localhost}:5432/diag
     username: diag
     password: diag
     driver-class-name: org.postgresql.Driver
 
+  # Kafka Configuration
   kafka:
     bootstrap-servers: diag-kafka:9093
 
+  # Liquibase Configuration
   liquibase:
     enabled: true
     change-log: classpath:/db/changelogs/db.changelog-master.xml
 
+  # Active Profile and Configuration Import
   profiles:
     active: dev
   config:
     import: optional:file:./application-${spring.profiles.active}.yml
 
+# Logging Configuration
 logging:
   level:
     root: INFO
@@ -36,9 +44,11 @@ logging:
         dime:
           wadiag: INFO
 
+# Server Configuration
 server:
   port: ${PORT:8080}
 
+# Springdoc Configuration
 springdoc:
   api-docs:
     path: /api-docs
@@ -47,10 +57,9 @@ springdoc:
     enabled: true
     urlsPrimaryName: public-apis
     defaultModelsExpandDepth: -1
-
   show-actuator: true
 
-# Configure Actuator endpoints
+# Management and Actuator Endpoints Configuration
 management:
   endpoint:
     health:
@@ -58,10 +67,19 @@ management:
   endpoints:
     web:
       exposure:
-        include: health
+        include: "*"
       base-path: /actuator
+  metrics:
+    tags:
+      application: ${spring.application.name}
+      host: ${HOSTNAME:localhost}
+      level: ${LOG_LEVEL:INFO}
+      thread: ${THREAD_NAME:main-app}
+      message: ${MESSAGE:message-app}
+      request: ${REQUEST:request-app}
 
+# External API Configuration
 wordsapi:
   host:
     url: https://wordsapiv1.p.rapidapi.com
-    key: # get api key here: https://rapidapi.com/dpventures/api/wordsapi/
+    key: # Get API key from https://rapidapi.com/dpventures/api/wordsapi/

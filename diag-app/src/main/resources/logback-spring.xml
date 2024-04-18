@@ -6,7 +6,7 @@
 	<appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 			<Pattern>
-				%green(%date{HH:mm:ss.SSS}) [%highlight(%-5level)] %cyan(%-36.36logger{36}) : %msg%n%throwable 
+				%green(%date{HH:mm:ss.SSS}) [%highlight(%-5level)] %cyan(%-36.36logger{36}) : %msg%n%throwable
 			</Pattern>
 		</encoder>
 	</appender>
@@ -29,11 +29,50 @@
 			<Pattern>%d %p %logger{36} [%t] %m%n</Pattern>
 		</encoder>
 	</appender>
-	<logger name="com.dime" level="DEBUG" />
 
-	<!-- LOG everything at INFO level -->
-	<root level="DEBUG">
-		<appender-ref ref="RollingFile" />
-		<appender-ref ref="Console" />
-	</root>
+	<appender name="LOKI" class="com.github.loki4j.logback.Loki4jAppender">
+		<http>
+			<url>http://loki:3100/loki/api/v1/push</url>
+		</http>
+		<format>
+			<label>
+				<pattern>app=${name},host=${HOSTNAME},level=%level</pattern>
+				<readMarkers>true</readMarkers>
+			</label>
+			<message>
+				<pattern>
+					{
+					"level":"%level",
+					"class":"%logger{36}",
+					"thread":"%thread",
+					"message": "%message",
+					"requestId": "%X{X-Request-ID}"
+					}
+				</pattern>
+			</message>
+		</format>
+	</appender>
+	<springProfile name="staging">
+		<root level="WARN">
+			<appender-ref ref="Console" />
+			<appender-ref ref="RollingFile" />
+		</root>
+	</springProfile>
+
+	<springProfile name="dev">
+		<root level="INFO">
+			<appender-ref ref="Console" />
+			<appender-ref ref="RollingFile" />
+			<appender-ref ref="LOKI" />
+		</root>
+	</springProfile>
+
+	<springProfile name="prod">
+		<root level="WARN">
+			<appender-ref ref="Console" />
+			<appender-ref ref="RollingFile" />
+			<appender-ref ref="LOKI" />
+		</root>
+	</springProfile>
+	<logger name="com.dime" level="DEBUG" />
 </configuration>
