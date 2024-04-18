@@ -17,7 +17,7 @@ scrape_configs:
   - job_name: "diag-app-https"
     metrics_path: "/actuator/prometheus"
     scrape_interval: 3s
-    scheme: https
+    scheme: "https"
     static_configs:
       - targets:
           - host.docker.internal:8443
