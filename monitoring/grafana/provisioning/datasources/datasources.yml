@@ -4,7 +4,9 @@ datasources:
     type: prometheus
     access: proxy
     url: http://prometheus:9090
-    isDefault: true
+    basicAuth: false
+    version: 1
+    editable: false
   - name: Loki
     type: loki
     access: proxy
@@ -12,3 +14,6 @@ datasources:
     basicAuth: false
     version: 1
     editable: false
+    jsonData:
+      maxLines: 1000
+      minInterval: 1s

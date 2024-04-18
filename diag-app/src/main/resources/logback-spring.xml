@@ -29,20 +29,17 @@
 			<Pattern>%d %p %logger{36} [%t] %m%n</Pattern>
 		</encoder>
 	</appender>
+
 	<appender name="LOKI" class="com.github.loki4j.logback.Loki4jAppender">
-		<!-- (1) -->
 		<http>
-			<url>http://localhost:3100/loki/api/v1/push</url>
+			<url>http://loki:3100/loki/api/v1/push</url>
 		</http>
 		<format>
-			<!-- (2) -->
 			<label>
 				<pattern>app=${name},host=${HOSTNAME},level=%level</pattern>
-				<!-- (3) -->
 				<readMarkers>true</readMarkers>
 			</label>
 			<message>
-				<!-- (4) -->
 				<pattern>
 					{
 					"level":"%level",
@@ -55,12 +52,27 @@
 			</message>
 		</format>
 	</appender>
-	<logger name="com.dime" level="DEBUG" />
+	<springProfile name="staging">
+		<root level="WARN">
+			<appender-ref ref="Console" />
+			<appender-ref ref="RollingFile" />
+		</root>
+	</springProfile>
 
-	<!-- LOG everything at INFO level -->
-	<root level="DEBUG">
-		<appender-ref ref="RollingFile" />
-		<appender-ref ref="Console" />
-		<appender-ref ref="LOKI" />
-	</root>
+	<springProfile name="dev">
+		<root level="INFO">
+			<appender-ref ref="Console" />
+			<appender-ref ref="RollingFile" />
+			<appender-ref ref="LOKI" />
+		</root>
+	</springProfile>
+
+	<springProfile name="prod">
+		<root level="WARN">
+			<appender-ref ref="Console" />
+			<appender-ref ref="RollingFile" />
+			<appender-ref ref="LOKI" />
+		</root>
+	</springProfile>
+	<logger name="com.dime" level="DEBUG" />
 </configuration>

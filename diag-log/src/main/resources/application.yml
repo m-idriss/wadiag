@@ -46,3 +46,8 @@ management:
   metrics:
     tags:
       application: ${spring.application.name}
+      host: ${HOSTNAME:localhost}
+      level: ${LOG_LEVEL:INFO}
+      thread: ${THREAD_NAME:main-log}
+      message: ${MESSAGE:message-log}
+      request: ${REQUEST:request-log}
