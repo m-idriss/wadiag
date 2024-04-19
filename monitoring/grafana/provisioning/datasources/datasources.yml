@@ -7,13 +7,18 @@ datasources:
     basicAuth: false
     version: 1
     editable: false
-  - name: Loki
-    type: loki
+  - name: loki
     access: proxy
+    type: loki
     url: http://loki:3100
+    isDefault: true
+    database: ""
+    user: ""
+    password: ""
     basicAuth: false
-    version: 1
-    editable: false
+    id: 1
+    orgId: 1
+    readOnly: false
     jsonData:
-      maxLines: 1000
-      minInterval: 1s
+      keepCookies: []
+    typeLogoUrl: public/app/plugins/datasource/loki/img/loki_icon.svg
