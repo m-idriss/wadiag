@@ -32,10 +32,8 @@ scrape_configs:
           - host.docker.internal:8443
           - diag-app:8443
           - docker.for.mac.localhost:8443
-          - diag-app:8443
           - localhost:8443
         labels:
-          application: diag-app-https
           application: diag-app-https
   - job_name: "diag-log"
     metrics_path: "/actuator/prometheus"
