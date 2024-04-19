@@ -24,6 +24,8 @@ scrape_configs:
           - diag-app:8443
           - docker.for.mac.localhost:8443
           - localhost:8443
+          - localhost:8080
+          - diag-app:8080
         labels:
           application: diag-app-https
   - job_name: "diag-log"
