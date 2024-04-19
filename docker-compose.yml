@@ -157,7 +157,6 @@ services:
     container_name: promtail
     restart: always
     volumes:
-      - /var/log:/var/log
       - ./monitoring/promtail/promtail-docker-config.yaml:/etc/promtail/docker-config.yaml
       - ./diag-app/logs/spring-boot-logger.log:/var/log/monitoring.log
       - ./diag-log/logs/spring-boot-logger.log:/var/log/monitoring.log
