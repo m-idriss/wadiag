@@ -187,15 +187,13 @@ services:
     image: caddy:2.7.6-alpine
     container_name: caddy
     environment:
-      - EMAIL=${EMAIL}
-      - DOMAIN=${DOMAIN}
       - SPRING_PORT=${SPRING_PORT}
     ports:
       - "80:80"
       - "443:443"
       - "8088:8088"
     volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./${CADDY_FILE}:/etc/caddy/Caddyfile
     depends_on:
       - diag-log-postgres
       - diag-postgres

@@ -1,12 +1,8 @@
 {
-  email {$EMAIL}
+  email no-reply@damin.com
 }
 
 
 :80 {
-	reverse_proxy diag-app:{$SPRING_PORT}
-}
-
-{$DOMAIN}:80 {
 	reverse_proxy diag-app:{$SPRING_PORT}
 }

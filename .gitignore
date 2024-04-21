@@ -137,6 +137,7 @@ build/
 /diag-app/src/main/resources/application-prod.yml
 /diag-app/src/main/resources/keystore/
 .env.prod
+Caddyfile_prod
 
 ### VS Code ### plugin SQLTools ###
 *.session.sql
