@@ -183,6 +183,33 @@ services:
       - ./monitoring/grafana/provisioning:/etc/grafana/provisioning
     networks:
       - diag-net
+  caddy:
+    image: caddy:2.7.6-alpine
+    container_name: caddy
+    environment:
+      - EMAIL=${EMAIL}
+      - DOMAIN=${DOMAIN}
+      - SPRING_PORT=${SPRING_PORT}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8088:8088"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+    depends_on:
+      - diag-log-postgres
+      - diag-postgres
+      - diag-zookeeper
+      - diag-kafka
+      - diag-log
+      - diag-app
+      - diag-kafka-console
+      - loki
+      - promtail
+      - prometheus
+      - grafana
+    networks:
+      - diag-net
 volumes:
   diag_postgres_data:
   diag_log_postgres_data:
