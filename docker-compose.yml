@@ -160,7 +160,7 @@ services:
       - ./monitoring/promtail/promtail-docker-config.yaml:/etc/promtail/docker-config.yaml
       - ./diag-app/logs/spring-boot-logger.log:/var/log/monitoring.log
       - ./diag-log/logs/spring-boot-logger.log:/var/log/monitoring.log
-    command: -config.file=/etc/promtail/docker-config.yaml
+      command: -config.file=/etc/promtail/docker-config.yaml
     networks:
       - diag-net
 
@@ -181,30 +181,6 @@ services:
     restart: unless-stopped
     volumes:
       - ./monitoring/grafana/provisioning:/etc/grafana/provisioning
-    networks:
-      - diag-net
-  diag-caddy:
-    image: caddy:2.7.6-alpine
-    container_name: diag-caddy
-    environment:
-      - SPRING_PORT=${SPRING_PORT}
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./${CADDY_FILE}:/etc/caddy/Caddyfile
-    depends_on:
-      - diag-log-postgres
-      - diag-postgres
-      - diag-zookeeper
-      - diag-kafka
-      - diag-log
-      - diag-app
-      - diag-kafka-console
-      - loki
-      - promtail
-      - prometheus
-      - grafana
     networks:
       - diag-net
 volumes:
