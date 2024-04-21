@@ -133,6 +133,7 @@ build/
 ### ENV ###
 
 /diag-app/logs
+/diag-app/src/main/resources/application-test.yml
 /diag-app/src/main/resources/application-dev.yml
 /diag-app/src/main/resources/application-prod.yml
 /diag-app/src/main/resources/keystore/
