@@ -185,7 +185,7 @@ services:
       - diag-net
   diag-caddy:
     image: caddy:2.7.6-alpine
-    container_name: caddy
+    container_name: diag-caddy
     environment:
       - SPRING_PORT=${SPRING_PORT}
     ports:
