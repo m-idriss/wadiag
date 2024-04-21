@@ -183,7 +183,7 @@ services:
       - ./monitoring/grafana/provisioning:/etc/grafana/provisioning
     networks:
       - diag-net
-  caddy:
+  diag-caddy:
     image: caddy:2.7.6-alpine
     container_name: caddy
     environment:
@@ -191,7 +191,6 @@ services:
     ports:
       - "80:80"
       - "443:443"
-      - "8088:8088"
     volumes:
       - ./${CADDY_FILE}:/etc/caddy/Caddyfile
     depends_on:
