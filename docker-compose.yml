@@ -1,3 +1,14 @@
+x-logging: &default-logging
+  driver: loki
+  options:
+    loki-url: "http://loki:3100/loki/api/v1/push"
+    loki-pipeline-stages: |
+      - multiline:
+          firstline: '^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{3}'
+          max_wait_time: 3s
+      - regex:
+          expression: '^(?P<date>\d{4}-\d{2}-\d{2}) (?P<time>\d{2}:\d{2}:\d{2}.\d{3}) (?P<message>(?s:.*))$$'
+
 #version: "3"
 
 networks:
@@ -84,7 +95,12 @@ services:
       - diag-zookeeper
     networks:
       - diag-net
-
+    healthcheck:
+      test: nc -z kafka 9092
+      start_period: 10s
+      interval: 5s
+      timeout: 10s
+      retries: 10
   diag-log:
     build: ./diag-log
     container_name: diag-log
@@ -95,12 +111,19 @@ services:
       - POSTGRES_DB=diaglog
       - POSTGRES_USER=diaglog
       - POSTGRES_PASSWORD=diaglog
+      - TARGET_ONE_HOST=diag-log
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://${OTEL_COLLECTOR_HOST}:${OTEL_COLLECTOR_PORT_HTTP}
+      - OTEL_SERVICE_NAME=diag-log # service name for Span
+      - OTEL_RESOURCE_ATTRIBUTES=compose_service=diag-log # add custom resource attribute to Span for Grafana Trace to Logs feature
+      - OTEL_METRICS_EXPORTER=none # disable metrics exporter
+      - MANAGEMENT_METRICS_TAGS_APPLICATION=diag-log # override default value of management.metrics.tags.application in app/src/main/resources/application.properties
     ports:
       - "${SPRING_LOG_PORT}:${SPRING_LOG_PORT}"
     depends_on:
       - diag-log-postgres
     networks:
       - diag-net
+    logging: *default-logging
 
   diag-app:
     build: ./diag-app
@@ -114,7 +137,6 @@ services:
       - PORT=${SPRING_PORT}
       - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
       - KAFKA_BOOTSTRAP_SERVERS=diag-kafka:9093
-
     ports:
       - "${SPRING_PORT}:${SPRING_PORT}"
     links:
@@ -126,10 +148,22 @@ services:
     networks:
       - diag-net
 
+  tempo:
+    image: grafana/tempo:latest
+    container_name: tempo
+    restart: unless-stopped
+    command:
+      ["--target=all", "--storage.trace.backend=local", "--storage.trace.local.path=/var/tempo", "--auth.enabled=false"]
+    ports:
+      - "14250:14250"
+      - "4317:4317"
+    depends_on:
+      - loki
+
   diag-kafka-console:
     container_name: diag-kafka-console
     image: docker.redpanda.com/vectorized/console:latest
-    restart: on-failure
+    restart: unless-stopped
     entrypoint: /bin/sh
     command: -c "echo \"$$CONSOLE_CONFIG_FILE\" > /tmp/config.yml; /app/console"
     environment:
@@ -146,33 +180,25 @@ services:
 
   loki:
     container_name: loki
+    restart: unless-stopped
     image: grafana/loki:latest
     command: -config.file=/etc/loki/local-config.yaml
     ports:
       - "3100:3100"
     networks:
       - diag-net
-  promtail:
-    image: grafana/promtail:latest
-    container_name: promtail
-    restart: always
-    volumes:
-      - ./monitoring/promtail/promtail-docker-config.yaml:/etc/promtail/docker-config.yaml
-      - ./diag-app/logs/spring-boot-logger.log:/var/log/monitoring.log
-      - ./diag-log/logs/spring-boot-logger.log:/var/log/monitoring.log
-    command: "--config.file=/etc/promtail/docker-config.yaml"
-    networks:
-      - diag-net
 
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
+    restart: unless-stopped
     ports:
       - "9090:9090"
     volumes:
-      - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./etc/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     networks:
       - diag-net
+
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
@@ -180,9 +206,15 @@ services:
       - "3000:3000"
     restart: unless-stopped
     volumes:
-      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning
+      - ./etc/grafana/:/etc/grafana/provisioning/datasources
+      - ./etc/dashboards.yaml:/etc/grafana/provisioning/dashboards/dashboards.yaml
+      - ./etc/dashboards:/etc/grafana/dashboards
+    depends_on:
+      - loki
+      - prometheus
     networks:
       - diag-net
+
 volumes:
   diag_postgres_data:
   diag_log_postgres_data:
