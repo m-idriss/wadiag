@@ -67,7 +67,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: prometheus
+        include: "*"
       base-path: /actuator
   metrics:
     tags:
