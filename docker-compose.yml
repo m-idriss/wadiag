@@ -1,4 +1,15 @@
-#version: "3"
+x-logging: &default-logging
+  driver: loki
+  options:
+    loki-url: "http://localhost:3100/api/prom/push"
+    loki-pipeline-stages: |
+      - multiline:
+          firstline: '^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{3}'
+          max_wait_time: 3s
+      - regex:
+          expression: '^(?P<date>\d{4}-\d{2}-\d{2}) (?P<time>\d{2}:\d{2}:\d{2}.\d{3}) (?P<message>(?s:.*))$$'
+
+#version: "3.8"
 
 networks:
   diag-net:
@@ -21,6 +32,7 @@ services:
       - POSTGRES_PASSWORD=diaglog
     networks:
       - diag-net
+    logging: *default-logging
     healthcheck:
       test: ["CMD", "pg_isready", "-q", "-h", "localhost", "-U", "diaglog"]
       interval: 10s
@@ -41,6 +53,7 @@ services:
       - POSTGRES_PASSWORD=diag
     networks:
       - diag-net
+    logging: *default-logging
     healthcheck:
       test: ["CMD", "pg_isready", "-q", "-h", "localhost", "-U", "diag"]
       interval: 10s
@@ -57,6 +70,7 @@ services:
       - ALLOW_ANONYMOUS_LOGIN=yes
     networks:
       - diag-net
+    logging: *default-logging
 
   diag-kafka:
     image: "bitnami/kafka:3.6.1"
@@ -73,17 +87,18 @@ services:
       KAFKA_LISTENERS: INSIDE://0.0.0.0:9093,OUTSIDE://0.0.0.0:9092
       KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
       KAFKA_ZOOKEEPER_CONNECT: "diag-zookeeper:2181"
-      KAFKA_MESSAGE_MAX_BYTES: 1000000
-      KAFKA_WAIT_FOR_TOPICS: 600
-
-    links:
-      - diag-postgres
-      - diag-zookeeper
     depends_on:
       - diag-postgres
       - diag-zookeeper
     networks:
       - diag-net
+    logging: *default-logging
+    healthcheck:
+      test: ["CMD", "kafka-topics.sh", "--bootstrap-server", "localhost:9092", "--list"]
+      start_period: 10s
+      interval: 5s
+      timeout: 10s
+      retries: 5
 
   diag-log:
     build: ./diag-log
@@ -95,12 +110,19 @@ services:
       - POSTGRES_DB=diaglog
       - POSTGRES_USER=diaglog
       - POSTGRES_PASSWORD=diaglog
+      - TARGET_ONE_HOST=diag-app
+      - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT}
+      - OTEL_SERVICE_NAME=diag-log # service name for Span
+      - OTEL_RESOURCE_ATTRIBUTES=compose_service=diag-log # add custom resource attribute to Span for Grafana Trace to Logs feature
+      - OTEL_METRICS_EXPORTER=none # disable metrics exporter
+      - MANAGEMENT_METRICS_TAGS_APPLICATION=diag-log # override default value of management.metrics.tags.application in app/src/main/resources/application.properties
     ports:
       - "${SPRING_LOG_PORT}:${SPRING_LOG_PORT}"
     depends_on:
       - diag-log-postgres
     networks:
       - diag-net
+    logging: *default-logging
 
   diag-app:
     build: ./diag-app
@@ -114,22 +136,25 @@ services:
       - PORT=${SPRING_PORT}
       - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
       - KAFKA_BOOTSTRAP_SERVERS=diag-kafka:9093
-
+      - TARGET_ONE_HOST=diag-log
+      - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT}
+      - OTEL_SERVICE_NAME=diag-app # service name for Span
+      - OTEL_RESOURCE_ATTRIBUTES=compose_service=diag-app # add custom resource attribute to Span for Grafana Trace to Logs feature
+      - OTEL_METRICS_EXPORTER=none # disable metrics exporter
+      - MANAGEMENT_METRICS_TAGS_APPLICATION=diag-app # override default value of management.metrics.tags.application in app/src/main/resources/application.properties
     ports:
       - "${SPRING_PORT}:${SPRING_PORT}"
-    links:
-      - diag-postgres
-      - diag-kafka
     depends_on:
       - diag-postgres
       - diag-kafka
     networks:
       - diag-net
+    logging: *default-logging
 
   diag-kafka-console:
     container_name: diag-kafka-console
     image: docker.redpanda.com/vectorized/console:latest
-    restart: on-failure
+    restart: unless-stopped
     entrypoint: /bin/sh
     command: -c "echo \"$$CONSOLE_CONFIG_FILE\" > /tmp/config.yml; /app/console"
     environment:
@@ -144,45 +169,74 @@ services:
     networks:
       - diag-net
 
+  # Infrastructure
   loki:
     container_name: loki
-    image: grafana/loki:latest
+    restart: always
+    image: grafana/loki:2.9.2
     command: -config.file=/etc/loki/local-config.yaml
     ports:
       - "3100:3100"
-    networks:
-      - diag-net
-  promtail:
-    image: grafana/promtail:latest
-    container_name: promtail
-    restart: always
-    volumes:
-      - ./monitoring/promtail/promtail-docker-config.yaml:/etc/promtail/docker-config.yaml
-      - ./diag-app/logs/spring-boot-logger.log:/var/log/monitoring.log
-      - ./diag-log/logs/spring-boot-logger.log:/var/log/monitoring.log
-    command: -config.file=/etc/promtail/docker-config.yaml
-    networks:
-      - diag-net
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:3100/ready || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   prometheus:
-    image: prom/prometheus:latest
     container_name: prometheus
+    image: prom/prometheus:v2.47.2
+    restart: always
     ports:
       - "9090:9090"
     volumes:
-      - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-    networks:
-      - diag-net
+      - ./etc/prometheus:/workspace
+    command:
+      - --config.file=/workspace/prometheus.yml
+      - --web.enable-remote-write-receiver
+      - --enable-feature=exemplar-storage
+    depends_on:
+      - loki
+    logging: *default-logging
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:9090/-/ready || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  tempo:
+    container_name: tempo
+    image: grafana/tempo:latest
+    restart: always
+    command:
+      ["--target=all", "--storage.trace.backend=local", "--storage.trace.local.path=/var/tempo", "--auth.enabled=false"]
+    ports:
+      - "14250:14250"
+      - "4317:4317"
+    depends_on:
+      - loki
+    logging: *default-logging
+
   grafana:
-    image: grafana/grafana:latest
     container_name: grafana
+    image: grafana/grafana:10.2.0
     ports:
       - "3000:3000"
-    restart: unless-stopped
+    restart: always
     volumes:
-      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning
-    networks:
-      - diag-net
+      - ./etc/grafana/:/etc/grafana/provisioning/datasources
+      - ./etc/dashboards.yaml:/etc/grafana/provisioning/dashboards/dashboards.yaml
+      - ./etc/dashboards:/etc/grafana/dashboards
+    depends_on:
+      - loki
+      - prometheus
+    logging: *default-logging
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
 volumes:
   diag_postgres_data:
   diag_log_postgres_data:

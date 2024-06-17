@@ -72,11 +72,11 @@ management:
   metrics:
     tags:
       application: ${spring.application.name}
-      host: ${HOSTNAME:localhost}
-      level: ${LOG_LEVEL:INFO}
-      thread: ${THREAD_NAME:main-app}
-      message: ${MESSAGE:message-app}
-      request: ${REQUEST:request-app}
+    distribution:
+      percentiles-histogram:
+        http:
+          server:
+            requests: "true"
 
 # External API Configuration
 wordsapi:
