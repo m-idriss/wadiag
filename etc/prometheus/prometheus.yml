@@ -8,13 +8,7 @@ scrape_configs:
     scrape_interval: 3s
     static_configs:
       - targets:
-          - host.docker.internal:8081
-          - diag-app:8081
           - docker.for.mac.localhost:8081
-          - host.docker.internal:8443
-          - diag-app:8443
-          - docker.for.mac.localhost:8443
-          - diag-app:8080
         labels:
           application: diag-app
   - job_name: "diag-log"
@@ -22,10 +16,7 @@ scrape_configs:
     scrape_interval: 3s
     static_configs:
       - targets:
-          - host.docker.internal:8085
-          - diag-log:8085
           - docker.for.mac.localhost:8085
-          - diag-log:8080
         labels:
           application: diag-log
   - job_name: "prometheus"
