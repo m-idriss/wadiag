@@ -20,7 +20,7 @@ spring:
     bootstrap-servers: diag-redpanda-1:9092
 
   profiles:
-    active: dev
+    active: test
   config:
     import: optional:file:./application-${spring.profiles.active}.yml
 

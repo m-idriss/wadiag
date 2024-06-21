@@ -8,19 +8,18 @@ spring:
       ddl-auto: none
 
   datasource:
-    url: jdbc:postgresql://${DB_SERVER:localhost}:5432/diaglog
+    url: jdbc:postgresql://${DB_SERVER:localhost}:5433/diaglog
     username: diaglog
     password: diaglog
     driver-class-name: org.postgresql.Driver
 
   kafka:
-    bootstrap-servers: diag-kafka:9093
-
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
   profiles:
     active: dev
 
 server:
-  port: ${PORT:8080}
+  port: ${PORT:8088}
 
 springdoc:
   api-docs:
