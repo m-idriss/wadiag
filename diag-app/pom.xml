@@ -25,7 +25,6 @@
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
             <version>4.28.0</version>
-            <version>4.28.0</version>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
@@ -57,7 +56,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-hateoas</artifactId>
-            <version>3.3.1</version>
             <version>3.3.1</version>
         </dependency>
         <!--
