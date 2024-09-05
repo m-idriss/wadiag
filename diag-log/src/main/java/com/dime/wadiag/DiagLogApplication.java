@@ -46,7 +46,8 @@ public class DiagLogApplication {
 				SpringVersion.getVersion(),
 				env.getActiveProfiles(),
 				protocol,
-				port);
+				port,
+				protocol, port);
 	}
 
 	@Bean

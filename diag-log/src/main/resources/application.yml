@@ -6,7 +6,8 @@ spring:
     generate-ddl: true
     hibernate:
       ddl-auto: none
-
+  main:
+    lazy-initialization: true
   datasource:
     url: jdbc:postgresql://${DB_SERVER:localhost}:5433/diaglog
     username: diaglog
